@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Maker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- MathJax CDN for LaTeX rendering -->
+    <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script>
+        // MathJax configuration to process inline math with $...$ and display math with $$...$$
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for better content flow */
+            min-height: 100vh; /* Full viewport height */
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            max-width: 90%; /* Responsive max-width */
+            width: 100%;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) { /* Medium screens and up (tablet landscape, desktop) */
+            .container {
+                max-width: 768px; /* Max width for larger screens */
+            }
+        }
+        textarea {
+            border: 1px solid #d1d5db; /* Light gray border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            resize: vertical; /* Allow vertical resizing */
+            min-height: 150px; /* Minimum height for textarea */
+            font-family: monospace; /* Monospace font for JSON */
+            font-size: 0.9rem;
+        }
+        .load-button {
+            background-color: #10b981; /* Green */
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .load-button:hover {
+            background-color: #059669; /* Darker green on hover */
+            transform: translateY(-1px);
+        }
+        .load-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .question-card, .fill-in-the-blank-card {
+            background-color: #f9fafb; /* Lighter background for question cards */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Very subtle shadow */
+            /* Ensure only one question is visible at a time */
+            display: none; /* Hidden by default */
+        }
+        .question-card.active {
+            display: block; /* Show active multiple-choice question */
+        }
+        .fill-in-the-blank-card.active {
+            display: flex; /* Show active fill-in-the-blank question as flex */
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb; /* Light gray border */
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #f3f4f6; /* Light gray on hover */
+            border-color: #d1d5db;
+        }
+        .option-label input[type="radio"] {
+            margin-right: 0.75rem;
+            accent-color: #4f46e5; /* Indigo accent color for radio buttons */
+        }
+        .submit-button, .nav-button {
+            background-color: #4f46e5; /* Indigo */
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .submit-button:hover, .nav-button:hover {
+            background-color: #4338ca; /* Darker indigo on hover */
+            transform: translateY(-1px); /* Slight lift effect */
+        }
+        .submit-button:active, .nav-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .nav-button:disabled {
+            background-color: #9ca3af; /* Gray for disabled */
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .result-message {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .result-message.pass {
+            background-color: #d1fae5; /* Light green */
+            color: #065f46; /* Dark green text */
+        }
+        .result-message.fail {
+            background-color: #fee2e2; /* Light red */
+            color: #991b1b; /* Dark red text */
+        }
+        .error-message {
+            color: #dc2626; /* Red text for errors */
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Styles for individual answer feedback */
+        .answer-feedback-item {
+            background-color: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .answer-feedback-item p {
+            margin-bottom: 0.5rem;
+        }
+        .answer-feedback-item .question-text {
+            font-weight: 600;
+            color: #374151;
+        }
+        .answer-feedback-item .your-answer {
+            color: #4b5563;
+        }
+        .answer-feedback-item .correct-answer {
+            color: #10b981; /* Green for correct */
+            font-weight: 500;
+        }
+        .answer-feedback-item.incorrect .your-answer {
+            color: #ef4444; /* Red for incorrect */
+            font-weight: 500;
+        }
+        .answer-feedback-item .feedback-icon {
+            margin-left: 0.5rem;
+            font-size: 1.2em;
+        }
+        .feedback-icon.correct {
+            color: #10b981;
+        }
+        .feedback-icon.incorrect {
+            color: #ef4444;
+        }
+
+        /* Live Check Feedback Styles */
+        .option-label.correct-live {
+            background-color: #d1fae5; /* Light green */
+            border-color: #065f46; /* Dark green border */
+        }
+        .option-label.incorrect-live {
+            background-color: #fee2e2; /* Light red */
+            border-color: #991b1b; /* Dark red border */
+        }
+        .option-label.correct-live .ml-3,
+        .option-label.incorrect-live .ml-3 {
+            color: #374151; /* Keep text color readable */
+        }
+        .option-label.correct-live input[type="radio"],
+        .option-label.incorrect-live input[type="radio"] {
+            accent-color: #065f46; /* Match accent color */
+        }
+
+        /* Fill-in-the-blank specific styles */
+        .fill-in-the-blank-card {
+            flex-direction: column; /* Ensure column layout for content */
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+        }
+        .fill-in-the-blank-card .question-text {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+        .fill-in-the-blank-card .reveal-answer-button {
+            background-color: #3b82f6; /* Blue */
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-top: 1rem;
+        }
+        .fill-in-the-blank-card .reveal-answer-button:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
+        .fill-in-the-blank-card .revealed-answer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #10b981; /* Green for revealed answer */
+            margin-top: 1rem;
+            display: none; /* Hidden by default */
+        }
+        .fill-in-the-blank-card .revealed-answer.show {
+            display: block;
+        }
+
+        /* Responsive adjustments for the slide container */
+        #questions-slide-container {
+            position: relative;
+            flex-grow: 1; /* Allow it to grow and take available space */
+            display: flex; /* To manage child question cards */
+            justify-content: center; /* Center question card horizontally */
+            align-items: center; /* Center question card vertically */
+            overflow: hidden; /* Hide overflow from non-active slides */
+            padding-bottom: 2rem; /* Add some padding at the bottom for content that might extend */
+            min-height: 250px; /* Ensure a reasonable minimum height for content */
+        }
+
+        /* Adjustments for smaller screens, especially landscape */
+        @media (max-width: 767px) {
+            .container {
+                padding: 0.5rem; /* Reduce overall padding on small screens */
+                gap: 1rem; /* Reduce gap between sections */
+            }
+            .question-card, .fill-in-the-blank-card {
+                padding: 1rem; /* Reduce padding inside question cards */
+            }
+            .option-label {
+                padding: 0.6rem 0.8rem; /* Adjust option padding */
+                font-size: 0.9rem; /* Slightly smaller font for options */
+            }
+            .question-text {
+                font-size: 1.1rem; /* Adjust question font size */
+            }
+            .nav-button, .submit-button, .reveal-answer-button {
+                padding: 0.6rem 1rem; /* Smaller buttons */
+                font-size: 0.9rem;
+            }
+            #questions-slide-container {
+                min-height: 200px; /* Slightly smaller min-height for very small screens */
+            }
+        }
+
+        /* Specific adjustments for landscape orientation on small devices */
+        @media (max-height: 500px) and (max-width: 900px) {
+            body {
+                padding: 0.5rem;
+                align-items: center; /* Center content vertically in landscape */
+            }
+            .container {
+                padding: 0.8rem;
+                max-height: 95vh; /* Limit container height to fit in landscape */
+                overflow-y: auto; /* Allow scrolling if content exceeds height */
+            }
+            #questions-slide-container {
+                min-height: 150px; /* Further reduce min-height for very limited vertical space */
+                padding-bottom: 1rem;
+            }
+            .question-text {
+                font-size: 1rem;
+            }
+            .option-label {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="container">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Quiz Maker</h1>
+
+        <!-- JSON Input Section -->
+        <div id="json-input-section" class="flex flex-col items-center justify-center p-6 bg-indigo-50 rounded-lg shadow-inner">
+            <label for="jsonTextArea" class="text-lg font-medium text-gray-700 mb-4">Paste your Quiz JSON here:</label>
+            <textarea id="jsonTextArea" placeholder='Paste your quiz JSON here, e.g., {"title": "My Quiz", "questions": [...]}' class="w-full max-w-lg border-2 border-indigo-300 rounded-lg p-4 text-indigo-700 bg-white focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"></textarea>
+
+            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 mt-4 w-full justify-center">
+                <div class="flex items-center">
+                    <input type="checkbox" id="shuffleQuestions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                    <label for="shuffleQuestions" class="ml-2 text-gray-700">Shuffle Questions</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="shuffleOptions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                    <label for="shuffleOptions" class="ml-2 text-gray-700">Shuffle Options</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="enableLiveCheck" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
+                    <label for="enableLiveCheck" class="ml-2 text-gray-700">Enable Live Check</label>
+                </div>
+            </div>
+
+            <button id="load-quiz-button" class="load-button w-full max-w-sm mt-4">Load Quiz</button>
+            <p class="text-sm text-gray-500 mt-2">Make sure your JSON follows the example format, using $...$ for inline math and **text** for bolding.</p>
+        </div>
+
+        <!-- Quiz Display Section (Initially Hidden) -->
+        <div id="quiz-section" class="hidden">
+            <h2 id="quiz-title" class="text-2xl font-semibold text-gray-800 mb-6 text-center"></h2>
+            <p id="question-counter" class="text-center text-gray-600 mb-4"></p>
+            <div id="questions-slide-container" class="relative">
+                <!-- Questions will be dynamically loaded here, only one visible at a time -->
+            </div>
+            <div class="flex justify-between mt-6">
+                <button id="prev-question" class="nav-button px-4 py-2">Back</button>
+                <button id="next-question" class="nav-button px-4 py-2">Next</button>
+            </div>
+            <button id="submit-quiz" class="submit-button w-full mt-6">Submit Quiz</button>
+        </div>
+
+        <!-- Results Section (Initially Hidden) -->
+        <div id="results-section" class="hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Quiz Results</h2>
+            <p id="score-display" class="text-xl font-bold text-center text-gray-700 mb-4"></p>
+            <div id="feedback-message" class="result-message hidden"></div>
+            <div id="answers-breakdown" class="mt-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Your Answers Breakdown</h3>
+                <div id="feedback-container">
+                    <!-- Individual answer feedback will be loaded here -->
+                </div>
+            </div>
+            <button id="retake-quiz" class="submit-button w-full mt-6">Retake Quiz</button>
+        </div>
+
+        <!-- Error Message Display -->
+        <div id="error-message" class="error-message hidden"></div>
+    </div>
+
+    <script>
+        // Global variables to store quiz data
+        let quizData = null;
+        let score = 0;
+        let userAnswers = []; // To store user's selected answers and correctness
+        let liveCheckEnabled = false; // Flag for live check mode
+        let currentQuestionIndex = 0; // Tracks the currently displayed question
+
+        // Get DOM elements
+        const jsonTextArea = document.getElementById('jsonTextArea');
+        const loadQuizButton = document.getElementById('load-quiz-button');
+        const jsonInputSection = document.getElementById('json-input-section');
+        const quizSection = document.getElementById('quiz-section');
+        const quizTitleElement = document.getElementById('quiz-title');
+        const questionCounter = document.getElementById('question-counter'); // New element
+        const questionsSlideContainer = document.getElementById('questions-slide-container'); // New container for slides
+        const submitQuizButton = document.getElementById('submit-quiz');
+        const resultsSection = document.getElementById('results-section');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const retakeQuizButton = document.getElementById('retake-quiz');
+        const errorMessageElement = document.getElementById('error-message');
+        const feedbackContainer = document.getElementById('feedback-container');
+
+        // New checkboxes for options
+        const shuffleQuestionsCheckbox = document.getElementById('shuffleQuestions');
+        const shuffleOptionsCheckbox = document.getElementById('shuffleOptions');
+        const enableLiveCheckCheckbox = document.getElementById('enableLiveCheck');
+
+        // Navigation buttons
+        const prevQuestionButton = document.getElementById('prev-question');
+        const nextQuestionButton = document.getElementById('next-question');
+
+        // Event listeners
+        loadQuizButton.addEventListener('click', loadQuizFromTextarea);
+        submitQuizButton.addEventListener('click', submitQuiz);
+        retakeQuizButton.addEventListener('click', resetQuiz);
+        prevQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex - 1));
+        nextQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex + 1));
+
+        /**
+         * Shuffles an array in place using the Fisher-Yates (Knuth) algorithm.
+         * @param {Array} array - The array to shuffle.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+        /**
+         * Removes alphabetical prefixes (like "a. ", "b. ") from a string.
+         * @param {string} text - The input string.
+         * @returns {string} The string with prefixes removed.
+         */
+        function stripPrefix(text) {
+            // Regex to match a single letter followed by a dot and optional space at the start of the string
+            return text.replace(/^[a-z]\.\s*/, '');
+        }
+
+        /**
+         * Converts **text** to <strong>text</strong> for bolding.
+         * @param {string} text - The input text.
+         * @returns {string} The text with bold formatting applied.
+         */
+        function applyBoldFormatting(text) {
+            // This regex finds **text** and replaces it with <strong>text</strong>
+            // The (.*?) is a non-greedy match for any characters between the asterisks.
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        /**
+         * Handles loading the quiz from the textarea content.
+         */
+        function loadQuizFromTextarea() {
+            const jsonText = jsonTextArea.value;
+            if (!jsonText.trim()) {
+                showError("Please paste your JSON quiz data into the text area.");
+                return;
+            }
+
+            try {
+                // Get settings from checkboxes
+                const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
+                const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
+                liveCheckEnabled = enableLiveCheckCheckbox.checked;
+
+                // Deep clone quizData to avoid modifying the original parsed object for re-quiz
+                const parsedData = JSON.parse(jsonText);
+                validateQuizData(parsedData); // Validate the structure
+
+                quizData = JSON.parse(JSON.stringify(parsedData)); // Create a deep copy for the quiz instance
+
+                // Apply shuffling based on settings
+                if (shouldShuffleQuestions) {
+                    shuffleArray(quizData.questions);
+                }
+                if (shouldShuffleOptions) {
+                    quizData.questions.forEach(q => {
+                        if (q.type === 'multiple_choice') { // Only shuffle options for multiple choice
+                            shuffleArray(q.options);
+                        }
+                    });
+                }
+
+                displayQuiz(quizData);
+                hideError();
+            } catch (parseError) {
+                showError("Error parsing JSON data. Please ensure it's valid JSON. " + parseError.message);
+                console.error("JSON parsing error:", parseError);
+            }
+        }
+
+        /**
+         * Validates the structure of the loaded quiz data.
+         * Throws an error if the structure is invalid.
+         * @param {Object} data - The parsed quiz data.
+         */
+        function validateQuizData(data) {
+            if (!data || typeof data !== 'object') {
+                throw new Error("Quiz data must be an object.");
+            }
+            if (typeof data.title !== 'string' || data.title.trim() === '') {
+                throw new Error("Quiz must have a 'title' string.");
+            }
+            if (!Array.isArray(data.questions) || data.questions.length === 0) {
+                throw new Error("Quiz must have a non-empty 'questions' array.");
+            }
+            data.questions.forEach((q, index) => {
+                if (typeof q.type !== 'string' || !['multiple_choice', 'fill_in_the_blank'].includes(q.type)) {
+                    throw new Error(`Question ${index + 1} has an invalid or missing 'type'. Must be 'multiple_choice' or 'fill_in_the_blank'.`);
+                }
+                if (typeof q.question !== 'string' || q.question.trim() === '') {
+                    throw new Error(`Question ${index + 1} is missing 'question' text.`);
+                }
+                if (typeof q.correctAnswer !== 'string' || q.correctAnswer.trim() === '') {
+                    throw new Error(`Question ${index + 1} is missing 'correctAnswer'.`);
+                }
+
+                if (q.type === 'multiple_choice') {
+                    if (!Array.isArray(q.options) || q.options.length < 2) {
+                        throw new Error(`Multiple-choice question ${index + 1} must have at least two 'options'.`);
+                    }
+                    // Trim and convert to lowercase, and strip prefixes for robust comparison
+                    const trimmedCorrectAnswerLower = stripPrefix(q.correctAnswer).trim().toLowerCase();
+                    const trimmedOptionsLower = q.options.map(opt => stripPrefix(opt).trim().toLowerCase());
+
+                    if (!trimmedOptionsLower.includes(trimmedCorrectAnswerLower)) {
+                        throw new Error(`Multiple-choice question ${index + 1}: 'correctAnswer' must be one of the 'options'.`);
+                    }
+                } else if (q.type === 'fill_in_the_blank') {
+                    // For fill-in-the-blank, options array is not required
+                    if (q.options !== undefined && !Array.isArray(q.options)) {
+                         throw new Error(`Fill-in-the-blank question ${index + 1}: 'options' field, if present, must be an array.`);
+                    }
+                }
+            });
+        }
+
+        /**
+         * Displays the quiz questions and options on the page.
+         * @param {Object} data - The quiz data object.
+         */
+        function displayQuiz(data) {
+            quizData = data; // Store quiz data globally
+            score = 0; // Reset score
+            userAnswers = Array(quizData.questions.length).fill(null); // Initialize user answers array
+            currentQuestionIndex = 0; // Start with the first question
+
+            jsonInputSection.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            questionsSlideContainer.innerHTML = ''; // Clear previous questions
+            errorMessageElement.classList.add('hidden'); // Hide any previous errors
+            feedbackContainer.innerHTML = ''; // Clear previous feedback
+
+            quizTitleElement.textContent = quizData.title;
+            submitQuizButton.classList.remove('hidden'); // Submit button always visible
+
+
+            quizData.questions.forEach((q, index) => {
+                let questionCard;
+                if (q.type === 'multiple_choice') {
+                    questionCard = document.createElement('div');
+                    questionCard.className = 'question-card';
+                    questionCard.setAttribute('data-question-index', index);
+                    questionCard.setAttribute('data-question-type', q.type);
+
+                    const questionText = document.createElement('p');
+                    questionText.className = 'text-lg font-medium text-gray-900 mb-4';
+                    questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
+                    questionCard.appendChild(questionText);
+
+                    const optionsList = document.createElement('div');
+                    optionsList.className = 'flex flex-col gap-2';
+
+                    q.options.forEach((option) => {
+                        const optionLabel = document.createElement('label');
+                        optionLabel.className = 'option-label';
+
+                        const radioInput = document.createElement('input');
+                        radioInput.type = 'radio';
+                        radioInput.name = `question-${index}`;
+                        radioInput.value = option; // Keep original value for display
+                        radioInput.className = 'form-radio h-5 w-5 text-indigo-600 transition duration-150 ease-in-out';
+                        radioInput.setAttribute('data-question-index', index);
+                        radioInput.setAttribute('data-option-value', option);
+
+                        if (liveCheckEnabled) {
+                            radioInput.addEventListener('change', handleLiveAnswer);
+                        }
+
+                        const optionSpan = document.createElement('span');
+                        optionSpan.className = 'ml-3 text-base text-gray-700';
+                        optionSpan.innerHTML = applyBoldFormatting(option);
+
+                        optionLabel.appendChild(radioInput);
+                        optionLabel.appendChild(optionSpan);
+                        optionsList.appendChild(optionLabel);
+                    });
+
+                    questionCard.appendChild(optionsList);
+
+                } else if (q.type === 'fill_in_the_blank') {
+                    questionCard = document.createElement('div');
+                    questionCard.className = 'fill-in-the-blank-card'; // Different class for styling
+                    questionCard.setAttribute('data-question-index', index);
+                    questionCard.setAttribute('data-question-type', q.type);
+
+                    const questionText = document.createElement('p');
+                    questionText.className = 'question-text';
+                    questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
+                    questionCard.appendChild(questionText);
+
+                    const revealButton = document.createElement('button');
+                    revealButton.className = 'reveal-answer-button';
+                    revealButton.textContent = 'Reveal Answer';
+                    revealButton.setAttribute('data-question-index', index);
+                    revealButton.addEventListener('click', handleRevealAnswer);
+                    questionCard.appendChild(revealButton);
+
+                    const revealedAnswerDiv = document.createElement('div');
+                    revealedAnswerDiv.className = 'revealed-answer';
+                    revealedAnswerDiv.innerHTML = applyBoldFormatting(q.correctAnswer);
+                    questionCard.appendChild(revealedAnswerDiv);
+                }
+                questionsSlideContainer.appendChild(questionCard);
+            });
+
+            showQuestion(currentQuestionIndex); // Show the first question
+        }
+
+        /**
+         * Displays a specific question by index and updates navigation buttons.
+         * @param {number} index - The index of the question to display.
+         */
+        function showQuestion(index) {
+            if (!quizData || !quizData.questions || quizData.questions.length === 0) {
+                return; // No quiz loaded
+            }
+
+            // Ensure index is within bounds
+            if (index < 0) {
+                index = 0;
+            } else if (index >= quizData.questions.length) {
+                index = quizData.questions.length - 1;
+            }
+
+            currentQuestionIndex = index;
+
+            // Hide all questions
+            const allQuestionCards = questionsSlideContainer.querySelectorAll('.question-card, .fill-in-the-blank-card');
+            allQuestionCards.forEach(card => card.classList.remove('active'));
+
+            // Show the current question
+            const currentCard = questionsSlideContainer.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
+            if (currentCard) {
+                currentCard.classList.add('active');
+                // Re-typeset math for the active card
+                if (window.MathJax) {
+                    window.MathJax.typesetPromise([currentCard]).catch((err) => console.error("MathJax typesetting error for current slide:", err));
+                }
+            }
+
+            // Update question counter
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
+
+            // Update button states
+            prevQuestionButton.disabled = (currentQuestionIndex === 0);
+            nextQuestionButton.disabled = (currentQuestionIndex === quizData.questions.length - 1);
+        }
+
+
+        /**
+         * Handles live answer checking for multiple-choice questions.
+         * @param {Event} event - The change event from the radio button.
+         */
+        function handleLiveAnswer(event) {
+            const selectedRadio = event.target;
+
+            // CRITICAL NULL CHECK: Ensure selectedRadio is not null or undefined
+            if (!selectedRadio) {
+                console.error("handleLiveAnswer: event.target (selectedRadio) is null or undefined. Aborting.");
+                return;
+            }
+
+            const questionIndex = parseInt(selectedRadio.getAttribute('data-question-index'));
+            const questionData = quizData.questions[questionIndex]; // Assuming quizData and index are valid
+
+            const questionCard = selectedRadio.closest('.question-card');
+            if (!questionCard) {
+                console.error("handleLiveAnswer: Could not find parent .question-card for selected radio.", selectedRadio);
+                return;
+            }
+
+            const userAnswer = selectedRadio.value;
+            const correctAnswer = questionData.correctAnswer;
+            // Trim and convert to lowercase, and strip prefixes for robust comparison
+            const isCorrect = (stripPrefix(userAnswer).trim().toLowerCase() === stripPrefix(correctAnswer).trim().toLowerCase());
+
+            // Update userAnswers array for this question
+            userAnswers[questionIndex] = {
+                question: questionData.question,
+                userAnswer: userAnswer, // Store original user answer for display
+                correctAnswer: correctAnswer, // Store original correct answer for display
+                isCorrect: isCorrect,
+                type: questionData.type
+            };
+
+            const optionLabels = questionCard.querySelectorAll('.option-label');
+
+            // Clear previous live feedback classes for this question
+            optionLabels.forEach(label => {
+                label.classList.remove('correct-live', 'incorrect-live');
+            });
+
+            // Apply visual feedback to the selected option
+            const selectedOptionLabel = selectedRadio.closest('.option-label');
+            if (selectedOptionLabel) { // Add null check for selectedOptionLabel too, just in case
+                if (isCorrect) {
+                    selectedOptionLabel.classList.add('correct-live');
+                } else {
+                    selectedOptionLabel.classList.add('incorrect-live');
+                    // Highlight the correct answer if the selected answer was wrong
+                    // Find the radio button whose value (after stripping prefix, trimming, and lowercasing) matches the correct answer
+                    const correctOptionRadio = Array.from(questionCard.querySelectorAll('input[type="radio"]')).find(radio =>
+                        stripPrefix(radio.value).trim().toLowerCase() === stripPrefix(correctAnswer).trim().toLowerCase()
+                    );
+
+                    if (correctOptionRadio) {
+                        const correctOptionLabel = correctOptionRadio.closest('.option-label');
+                        if (correctOptionLabel) {
+                            correctOptionLabel.classList.add('correct-live');
+                        }
+                    }
+                }
+            }
+
+
+            // Re-typeset math in the updated question card
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in live check:", err));
+            }
+        }
+
+        /**
+         * Handles revealing the answer for fill-in-the-blank questions in live check mode.
+         * @param {Event} event - The click event from the reveal button.
+         */
+        function handleRevealAnswer(event) {
+            const button = event.target;
+            const questionIndex = parseInt(button.getAttribute('data-question-index'));
+            const questionData = quizData.questions[questionIndex];
+            const questionCard = button.closest('.fill-in-the-blank-card');
+            const revealedAnswerDiv = questionCard.querySelector('.revealed-answer');
+
+            revealedAnswerDiv.classList.add('show'); // Show the answer
+            button.disabled = true; // Disable the button after revealing
+
+            // Mark this question as "answered" (viewed) for submission purposes
+            userAnswers[questionIndex] = {
+                question: questionData.question,
+                userAnswer: 'Answer Revealed', // Indicate that the answer was viewed
+                correctAnswer: questionData.correctAnswer,
+                isCorrect: true, // For fill-in-the-blank, "correct" means "answer revealed" for tracking
+                type: questionData.type
+            };
+
+            // Re-typeset math in the updated card
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in reveal:", err));
+            }
+        }
+
+
+        /**
+         * Submits the quiz, calculates the score, and displays results.
+         */
+        function submitQuiz() {
+            if (!quizData) {
+                showError("No quiz loaded. Please load a JSON quiz first.");
+                return;
+            }
+
+            score = 0;
+            let allMultipleChoiceAnswered = true; // Track if all MC questions are answered
+
+            quizData.questions.forEach((q, index) => {
+                if (q.type === 'multiple_choice') {
+                    const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                    let userAnswer = null;
+                    let isCorrect = false;
+
+                    if (selectedOption) {
+                        userAnswer = selectedOption.value;
+                        // Trim and convert to lowercase, and strip prefixes for robust comparison
+                        if (stripPrefix(userAnswer).trim().toLowerCase() === stripPrefix(q.correctAnswer).trim().toLowerCase()) {
+                            score++;
+                            isCorrect = true;
+                        }
+                    } else {
+                        allMultipleChoiceAnswered = false;
+                    }
+
+                    userAnswers[index] = {
+                        question: q.question,
+                        userAnswer: userAnswer,
+                        correctAnswer: q.correctAnswer,
+                        isCorrect: isCorrect,
+                        type: q.type
+                    };
+                } else if (q.type === 'fill_in_the_blank') {
+                    // For fill-in-the-blank, we don't score based on user input during quiz
+                    // But we ensure it's recorded in userAnswers for breakdown display
+                    if (userAnswers[index] === null) { // If not already revealed by live check
+                        userAnswers[index] = {
+                            question: q.question,
+                            userAnswer: 'Not applicable (Flashcard)', // Indicate no user input
+                            correctAnswer: q.correctAnswer,
+                            isCorrect: false, // Not "correct" in the sense of user input
+                            type: q.type
+                        };
+                    }
+                    // If live check was enabled and user revealed it, userAnswers[index] is already set
+                }
+            });
+
+            if (!allMultipleChoiceAnswered && !liveCheckEnabled) { // Only enforce all answered if not live check
+                showError("Please answer all multiple-choice questions before submitting.");
+                return;
+            }
+
+            displayResults(score, quizData.questions.length);
+        }
+
+        /**
+         * Displays the quiz results and the breakdown of answers.
+         * @param {number} finalScore - The user's score.
+         * @param {number} totalQuestions - The total number of questions.
+         */
+        function displayResults(finalScore, totalQuestions) {
+            quizSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+
+            // Calculate total possible score from multiple-choice questions only
+            const totalPossibleScore = quizData.questions.filter(q => q.type === 'multiple_choice').length;
+            scoreDisplay.textContent = `You scored ${finalScore} out of ${totalPossibleScore} on multiple-choice questions!`;
+
+            feedbackMessage.classList.remove('hidden', 'pass', 'fail');
+            if (finalScore === totalPossibleScore) {
+                feedbackMessage.textContent = "Congratulations! You got all the multiple-choice answers correct!";
+                feedbackMessage.classList.add('pass');
+            } else if (finalScore >= totalPossibleScore / 2) {
+                feedbackMessage.textContent = "Good effort! You did well on multiple-choice questions.";
+                feedbackMessage.classList.add('pass');
+            } else {
+                feedbackMessage.textContent = "Keep practicing! You'll get there.";
+                feedbackMessage.classList.add('fail');
+            }
+
+            // Display individual answer breakdown
+            feedbackContainer.innerHTML = ''; // Clear previous feedback
+            userAnswers.forEach((answer, index) => {
+                const feedbackItem = document.createElement('div');
+                feedbackItem.className = `answer-feedback-item`; // Base class
+
+                if (answer.type === 'multiple_choice') {
+                    // Only add 'incorrect' class if the answer is wrong
+                    if (!answer.isCorrect) {
+                        feedbackItem.classList.add('incorrect');
+                    }
+                }
+
+                const questionP = document.createElement('p');
+                questionP.className = 'question-text';
+                questionP.innerHTML = `${index + 1}. ${applyBoldFormatting(answer.question)}`;
+                feedbackItem.appendChild(questionP);
+
+                if (answer.type === 'multiple_choice') {
+                    const yourAnswerP = document.createElement('p');
+                    yourAnswerP.className = 'your-answer';
+                    // Use original userAnswer for display, but indicate if not answered
+                    yourAnswerP.innerHTML = `Your Answer: ${applyBoldFormatting(answer.userAnswer || 'Not answered')} <span class="feedback-icon ${answer.isCorrect ? 'correct' : 'incorrect'}">${answer.isCorrect ? '&#10003;' : '&#10007;'}</span>`; // Checkmark or X
+                    feedbackItem.appendChild(yourAnswerP);
+
+                    if (!answer.isCorrect) {
+                        const correctAnswerP = document.createElement('p');
+                        correctAnswerP.className = 'correct-answer';
+                        correctAnswerP.innerHTML = `Correct Answer: ${applyBoldFormatting(answer.correctAnswer)}`;
+                        feedbackItem.appendChild(correctAnswerP);
+                    }
+                } else if (answer.type === 'fill_in_the_blank') {
+                    // For fill-in-the-blank, just show the correct answer
+                    const correctAnswerP = document.createElement('p');
+                    correctAnswerP.className = 'correct-answer';
+                    correctAnswerP.innerHTML = `Answer: ${applyBoldFormatting(answer.correctAnswer)}`;
+                    feedbackItem.appendChild(correctAnswerP);
+                }
+
+                feedbackContainer.appendChild(feedbackItem);
+            });
+
+            // Re-typeset math in the feedback section
+            if (window.MathJax) {
+                window.MathJax.typesetPromise([feedbackContainer]).catch((err) => console.error("MathJax typesetting error in feedback:", err));
+            }
+        }
+
+        /**
+         * Resets the quiz to the JSON input state.
+         */
+        function resetQuiz() {
+            quizData = null;
+            score = 0;
+            userAnswers = []; // Clear user answers
+            liveCheckEnabled = false; // Reset live check flag
+            currentQuestionIndex = 0; // Reset question index
+            jsonTextArea.value = ''; // Clear the text area
+            questionsSlideContainer.innerHTML = ''; // Clear questions
+            quizTitleElement.textContent = ''; // Clear title
+            questionCounter.textContent = ''; // Clear counter
+            feedbackContainer.innerHTML = ''; // Clear feedback container
+
+            // Reset checkbox states
+            shuffleQuestionsCheckbox.checked = false;
+            shuffleOptionsCheckbox.checked = false;
+            enableLiveCheckCheckbox.checked = false;
+
+            // Disable navigation buttons
+            prevQuestionButton.disabled = true;
+            nextQuestionButton.disabled = true;
+
+            resultsSection.classList.add('hidden');
+            quizSection.classList.add('hidden');
+            jsonInputSection.classList.remove('hidden');
+            hideError();
+        }
+
+        /**
+         * Displays an error message.
+         * @param {string} message - The error message to display.
+         */
+        function showError(message) {
+            errorMessageElement.textContent = message;
+            errorMessageElement.classList.remove('hidden');
+        }
+
+        /**
+         * Hides the error message.
+         */
+        function hideError() {
+            errorMessageElement.classList.add('hidden');
+            errorMessageElement.textContent = '';
+        }
+    </script>
+</body>
+</html>
