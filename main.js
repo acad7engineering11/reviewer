@@ -4,8 +4,6 @@ let userAnswers = [];
 let liveCheckEnabled = false;
 let currentQuestionIndex = 0;
 
-const availableQuizzes = ['gensci.json', 'finite_math.json'];
-
 const quizDropdown = document.getElementById('quiz-dropdown');
 const loadQuizButton = document.getElementById('load-quiz-button');
 const quizSelectionSection = document.getElementById('quiz-selection-section');
@@ -26,27 +24,16 @@ const enableLiveCheckCheckbox = document.getElementById('enableLiveCheck');
 const prevQuestionButton = document.getElementById('prev-question');
 const nextQuestionButton = document.getElementById('next-question');
 
+// Add event listeners for button clicks
 loadQuizButton.addEventListener('click', loadQuizFromDropdown);
 submitQuizButton.addEventListener('click', submitQuiz);
 retakeQuizButton.addEventListener('click', resetQuiz);
 prevQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex - 1));
 nextQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex + 1));
-document.addEventListener('DOMContentLoaded', populateQuizDropdown);
 
 /**
- * Populates the quiz dropdown with available quiz file names.
- */
-function populateQuizDropdown() {
-    availableQuizzes.forEach(quizFileName => {
-        const option = document.createElement('option');
-        option.value = quizFileName;
-        option.textContent = quizFileName.replace('.json', '');
-        quizDropdown.appendChild(option);
-    });
-}
-
-/**
- * Loads the selected quiz from a JSON file.
+ * Loads the selected quiz from a separate JSON file using fetch.
+ * This is an asynchronous operation.
  */
 async function loadQuizFromDropdown() {
     const selectedQuizFile = quizDropdown.value;
@@ -54,8 +41,13 @@ async function loadQuizFromDropdown() {
         showError("Please select a quiz from the list.");
         return;
     }
+    hideError();
+    quizSection.classList.add('hidden'); // Hide quiz section before loading
+    resultsSection.classList.add('hidden'); // Hide results section
+    quizSelectionSection.classList.remove('hidden'); // Show selection section
+
     try {
-        const response = await fetch(selectedQuizFile);
+        const response = await fetch(`./quizzes/${selectedQuizFile}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -63,6 +55,7 @@ async function loadQuizFromDropdown() {
         const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
         const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
         liveCheckEnabled = enableLiveCheckCheckbox.checked;
+
         validateQuizData(data);
         quizData = JSON.parse(JSON.stringify(data));
         if (shouldShuffleQuestions) {
@@ -77,8 +70,8 @@ async function loadQuizFromDropdown() {
         }
         startQuiz();
     } catch (e) {
-        console.error('Failed to load quiz:', e);
-        showError(`Failed to load quiz: ${e.message}`);
+        console.error('Failed to load or process quiz data:', e);
+        showError(`Failed to load quiz: ${e.message}. Make sure the quiz file exists and is correctly formatted.`);
     }
 }
 
@@ -525,4 +518,3 @@ function hideError() {
     errorMessageElement.classList.add('hidden');
     errorMessageElement.textContent = '';
 }
-
