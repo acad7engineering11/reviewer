@@ -1,0 +1,311 @@
+{
+  "title": "General Science Reviewer Quiz",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "question": "What type of motion is described as movement in a straight line where all parts of an object move the same distance and in the same direction?",
+      "options": [
+        "Rotational motion",
+        "Combined motion",
+        "Translational motion",
+        "Linear motion"
+      ],
+      "correctAnswer": "Translational motion"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A ceiling fan is an example of what type of motion?",
+      "options": [
+        "Rotational motion",
+        "Translational motion",
+        "Combined motion",
+        "Linear motion"
+        ],
+      "correctAnswer": "Rotational motion"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "A car driving straight ahead is an example of **________** motion.",
+      "correctAnswer": "translational"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "An object spinning around a fixed axis is undergoing **________** motion.",
+      "correctAnswer": "rotational"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What quantities describe translational motion?",
+      "options": [
+        "Angular quantities",
+        "Combined quantities",
+        "Linear quantities",
+        "Physical quantities"
+      ],
+      "correctAnswer": "Linear quantities"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What type of motion is a rolling wheel an example of?",
+      "options": [
+        "Rotational motion",
+        "Translational motion",
+        "Combined motion",
+        "Linear motion"
+      ],
+      "correctAnswer": "Combined motion"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of these quantities describes rotational motion?",
+      "options": [
+        "Velocity",
+        "Speed",
+        "Angular acceleration",
+        "Acceleration"
+      ],
+      "correctAnswer": "Angular acceleration"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "A wheelbarrow, which combines a lever and a wheel and axle, is an example of a **________** machine.",
+      "correctAnswer": "compound"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the formula for **Mechanical Advantage (MA)**?",
+      "options": [
+        "$$MA = \\frac{Input\\ Force}{Output\\ Force}$$",
+        "$$MA = \\frac{Output\\ Energy}{Input\\ Energy}$$",
+        "$$MA = \\frac{Output\\ Force}{Input\\ Force}$$",
+        "$$MA = \\frac{Work\\ Done}{Time\\ Taken}$$"
+      ],
+      "correctAnswer": "$$MA = \\frac{Output\\ Force}{Input\\ Force}$$"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The mechanical efficiency of a machine with friction is considered an **________** machine.",
+      "correctAnswer": "actual"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the primary function of a simple machine?",
+      "options": [
+        "To increase work",
+        "To change the application of force",
+        "To increase energy",
+        "To reduce friction"
+      ],
+      "correctAnswer": "To change the application of force"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following is an example of a simple machine?",
+      "options": [
+        "A car",
+        "A wheelbarrow",
+        "A bicycle",
+        "An inclined plane"
+      ],
+      "correctAnswer": "An inclined plane"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The ratio of useful output work to the input work is a measure of a machine's **________**.",
+      "correctAnswer": "efficiency"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "In an ideal machine, what factor is assumed to be absent?",
+      "correctAnswer": "friction"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A machine with friction that reduces its efficiency is considered what?",
+      "options": [
+        "An ideal machine",
+        "A perfect machine",
+        "An actual machine",
+        "A simple machine"
+      ],
+      "correctAnswer": "An actual machine"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "The mechanical advantage is the ratio of output force to **________** force.",
+      "options": [
+        "net",
+        "input",
+        "total",
+        "friction"
+      ],
+      "correctAnswer": "input"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What principle is the foundation for hydraulic systems and states that pressure in a confined fluid is transmitted equally throughout?",
+      "options": [
+          "Archimedes' Principle",
+          "Pascal's Principle",
+          "Ohm's Law",
+          "Newton's Law"
+      ],
+      "correctAnswer": "Pascal's Principle"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "According to Archimedes' Principle, the buoyant force on an object is equal to the weight of the **________** it displaces.",
+      "correctAnswer": "fluid"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What are the units for pressure, which is force (F) divided by area (A)?",
+      "options": [
+        "Newtons (N)",
+        "Amperes (A)",
+        "Pascals (Pa)",
+        "Volts (V)"
+      ],
+      "correctAnswer": "Pascals (Pa)"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "Pascal's Principle is the foundation for what type of systems?",
+      "correctAnswer": "hydraulic"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What happens to an object's density if its volume increases while its mass remains constant?",
+      "options": [
+        "It increases",
+        "It decreases",
+        "It remains the same",
+        "It becomes zero"
+      ],
+      "correctAnswer": "It decreases"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "According to Archimedes' Principle, an object will float if its weight is less than or equal to what?",
+      "options": [
+        "The gravitational force",
+        "The buoyant force",
+        "The density of the fluid",
+        "The pressure of the fluid"
+      ],
+      "correctAnswer": "The buoyant force"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The formula for pressure is $P = \\frac{F}{A}$. What does 'F' stand for?",
+      "correctAnswer": "force"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of these is a material that resists the flow of electric current?",
+      "options": [
+        "Conductor",
+        "Resistor",
+        "Insulator",
+        "Capacitor"
+      ],
+      "correctAnswer": "Insulator"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The formula for Current (I) is the rate of flow of electric charge (Q) over time (t), which is **________**.",
+      "correctAnswer": "$$I = \\frac{Q}{t}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the formula for Ohm's Law that solves for resistance (R)?",
+      "options": [
+        "$$R = V \\div I$$",
+        "$$R = V \\times I$$",
+        "$$R = I \\div V$$",
+        "$$R = V + I$$"
+      ],
+      "correctAnswer": "$$R = V \\div I$$"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "Current (I) is measured in **________**.",
+      "correctAnswer": "Amperes (A)"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of these materials is a good conductor?",
+      "options": [
+        "Rubber",
+        "Copper",
+        "Plastic",
+        "Glass"
+      ],
+      "correctAnswer": "Copper"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "In the formula for current, $I = \\frac{Q}{t}$, the 'Q' stands for **________**.",
+      "correctAnswer": "electric charge"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Ohm's Law describes the relationship between voltage, current, and what other quantity?",
+      "options": [
+        "Energy",
+        "Power",
+        "Resistance",
+        "Time"
+      ],
+      "correctAnswer": "Resistance"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The flow of electric charge is called **________**.",
+      "correctAnswer": "current"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The bending of light as it passes from one medium to another is called **________**.",
+      "correctAnswer": "refraction"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What type of reflection occurs on rough surfaces, where light scatters in many different directions?",
+      "options": [
+        "Specular reflection",
+        "Diffuse reflection",
+        "Constructive reflection",
+        "Destructive reflection"
+      ],
+      "correctAnswer": "Diffuse reflection"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What wave property is responsible for the colorful patterns seen in thin films like soap bubbles?",
+      "options": [
+        "Refraction",
+        "Diffraction",
+        "Interference",
+        "Reflection"
+      ],
+      "correctAnswer": "Interference"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "When waves combine to create a brighter, more intense light, it is called **________** interference.",
+      "correctAnswer": "constructive"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "According to the Law of Reflection, the angle of incidence is equal to the angle of **________**.",
+      "correctAnswer": "reflection"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The spreading of light waves as they pass through an opening is called **________**.",
+      "correctAnswer": "diffraction"
+    }
+  ]
+}
+

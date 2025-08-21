@@ -51,33 +51,26 @@
                 max-width: 768px; /* Max width for larger screens */
             }
         }
-        textarea {
-            border: 1px solid #d1d5db; /* Light gray border */
-            border-radius: 0.5rem;
-            padding: 1rem;
-            resize: vertical; /* Allow vertical resizing */
-            min-height: 150px; /* Minimum height for textarea */
-            font-family: monospace; /* Monospace font for JSON */
-            font-size: 0.9rem;
-        }
-        .load-button {
-            background-color: #10b981; /* Green */
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
+        .file-select-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: #f9fafb;
             border-radius: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px dashed #e5e7eb;
         }
-        .load-button:hover {
-            background-color: #059669; /* Darker green on hover */
-            transform: translateY(-1px);
-        }
-        .load-button:active {
-            transform: translateY(0);
-            box-shadow: none;
+        .quiz-select {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            background-color: #ffffff;
+            font-size: 1rem;
+            color: #374151;
+            margin-top: 0.75rem;
         }
         .question-card, .fill-in-the-blank-card {
             background-color: #f9fafb; /* Lighter background for question cards */
@@ -131,7 +124,7 @@
             transform: translateY(0);
             box-shadow: none;
         }
-        .nav-button:disabled {
+        .nav-button:disabled, .submit-button:disabled {
             background-color: #9ca3af; /* Gray for disabled */
             cursor: not-allowed;
             transform: none;
@@ -319,10 +312,15 @@
     <div class="container">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">Quiz Maker</h1>
 
-        <!-- JSON Input Section -->
-        <div id="json-input-section" class="flex flex-col items-center justify-center p-6 bg-indigo-50 rounded-lg shadow-inner">
-            <label for="jsonTextArea" class="text-lg font-medium text-gray-700 mb-4">Paste your Quiz JSON here:</label>
-            <textarea id="jsonTextArea" placeholder='Paste your quiz JSON here, e.g., {"title": "My Quiz", "questions": [...]}' class="w-full max-w-lg border-2 border-indigo-300 rounded-lg p-4 text-indigo-700 bg-white focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"></textarea>
+        <!-- Quiz Selection Section -->
+        <div id="quiz-selection-section" class="flex flex-col items-center justify-center p-6 bg-indigo-50 rounded-lg shadow-inner">
+            <div class="file-select-container">
+                <p class="text-center text-lg text-gray-700 mb-2">Select a predefined quiz from the list:</p>
+                <select id="quiz-dropdown" class="quiz-select">
+                    <option value="" disabled selected>-- Select a Quiz --</option>
+                </select>
+                <button id="load-quiz-button" class="submit-button w-full max-w-sm mt-4">Load Quiz</button>
+            </div>
 
             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 mt-4 w-full justify-center">
                 <div class="flex items-center">
@@ -337,17 +335,6 @@
                     <input type="checkbox" id="enableLiveCheck" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
                     <label for="enableLiveCheck" class="ml-2 text-gray-700">Enable Live Check</label>
                 </div>
-            </div>
-
-            <button id="load-custom-quiz-button" class="load-button w-full max-w-sm mt-4">Load Custom Quiz</button>
-            <p class="text-sm text-gray-500 mt-2">Make sure your JSON follows the example format, using $...$ for inline math and **text** for bolding.</p>
-
-            <div class="mt-6 w-full max-w-lg border-t border-gray-200 pt-6 flex flex-col items-center">
-                <label for="premadeQuizSelector" class="text-lg font-medium text-gray-700 mb-4">Or select a Premade Quiz:</label>
-                <select id="premadeQuizSelector" class="w-full border-2 border-indigo-300 rounded-lg p-3 text-indigo-700 bg-white focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
-                    <option value="">-- Select a quiz --</option>
-                </select>
-                <button id="load-premade-quiz-button" class="load-button w-full max-w-sm mt-4 bg-purple-600 hover:bg-purple-700">Load Selected Premade Quiz</button>
             </div>
         </div>
 
@@ -391,334 +378,14 @@
         let liveCheckEnabled = false; // Flag for live check mode
         let currentQuestionIndex = 0; // Tracks the currently displayed question
 
-        // Define premade quizzes
-        const premadeQuizzes = {
-            "projectilemotionSTUDY0": {
-                "title": "Projectile Motion Formulas and Definitions Quiz",
-                "questions": [
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for the *Initial Horizontal Velocity Component*?",
-                        "options": [
-                            "$V_{0x} = V_0 \\sin\\theta$",
-                            "$V_{0x} = V_0 \\cos\\theta$",
-                            "$V_{0x} = V_0$",
-                            "$V_{0x} = \\frac{V_0}{\\cos\\theta}$"
-                        ],
-                        "correctAnswer": "$V_{0x} = V_0 \\cos\\theta$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for the *Initial Vertical Velocity Component*?",
-                        "options": [
-                            "$V_{0y} = V_0 \\cos\\theta$",
-                            "$V_{0y} = V_0 \\sin\\theta$",
-                            "$V_{0y} = V_0$",
-                            "$V_{0y} = \\frac{V_0}{\\sin\\theta}$"
-                        ],
-                        "correctAnswer": "$V_{0y} = V_0 \\sin\\theta$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the definition of *Projectile Motion*?",
-                        "options": [
-                            "a. Motion of an object moving in a straight line.",
-                            "b. Motion of an object in flight after being thrown or projected, subject only to gravity.",
-                            "c. Motion of an object under constant acceleration in all directions.",
-                            "d. Motion of an object in a circular path."
-                        ],
-                        "correctAnswer": "b. Motion of an object in flight after being thrown or projected, subject only to gravity."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Horizontal Position*?",
-                        "options": [
-                            "$x = x_0 + V_{0x}t$",
-                            "$x = x_0 + V_{0x}t + \\frac{1}{2}a_xt^2$",
-                            "$x = V_{0x}t$",
-                            "$x = x_0 + \\frac{1}{2}a_xt^2$"
-                        ],
-                        "correctAnswer": "$x = x_0 + V_{0x}t$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Vertical Position*?",
-                        "options": [
-                            "$y = y_0 + V_{0y}t$",
-                            "$y = y_0 + V_{0y}t + gt^2$",
-                            "$y = y_0 + V_{0y}t - \\frac{1}{2}gt^2$",
-                            "$y = V_{0y}t - \\frac{1}{2}gt^2$"
-                        ],
-                        "correctAnswer": "$y = y_0 + V_{0y}t - \\frac{1}{2}gt^2$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What best describes *Horizontal Motion (x-axis)* in projectile motion?",
-                        "options": [
-                            "a. Accelerated motion due to gravity.",
-                            "b. Constant velocity with no acceleration.",
-                            "c. Velocity changes direction constantly.",
-                            "d. Velocity decreases over time."
-                        ],
-                        "correctAnswer": "b. Constant velocity with no acceleration."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What best describes *Vertical Motion (y-axis)* in projectile motion?",
-                        "options": [
-                            "a. Constant velocity with no acceleration.",
-                            "b. Accelerated motion due to gravity.",
-                            "c. Velocity is always zero.",
-                            "d. Velocity increases only when moving upwards."
-                        ],
-                        "correctAnswer": "b. Accelerated motion due to gravity."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What best describes *Horizontal Velocity* in projectile motion (ignoring air resistance)?",
-                        "options": [
-                            "a. It constantly increases.",
-                            "b. It constantly decreases.",
-                            "c. It remains constant.",
-                            "d. It becomes zero at the peak of the trajectory."
-                        ],
-                        "correctAnswer": "c. It remains constant."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What best describes *Vertical Velocity* in projectile motion?",
-                        "options": [
-                            "a. It remains constant throughout the flight.",
-                            "b. It is only affected by horizontal forces.",
-                            "c. It changes due to gravity, decreasing upwards and increasing downwards.",
-                            "d. It is always zero."
-                        ],
-                        "correctAnswer": "c. It changes due to gravity, decreasing upwards and increasing downwards."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Time to Max Height ($t_m$)*?",
-                        "options": [
-                            "$t_m = \\frac{V_0 \\cos\\theta}{g}$",
-                            "$t_m = \\frac{2V_0 \\sin\\theta}{g}$",
-                            "$t_m = \\frac{V_0 \\sin\\theta}{g}$",
-                            "$t_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$"
-                        ],
-                        "correctAnswer": "$t_m = \\frac{V_0 \\sin\\theta}{g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Total Time of Flight ($T_f$)*?",
-                        "options": [
-                            "$T_f = \\frac{V_0 \\sin\\theta}{g}$",
-                            "$T_f = \\frac{V_0^2 \\sin(2\\theta)}{g}$",
-                            "$T_f = \\frac{2V_0 \\cos\\theta}{g}$",
-                            "$T_f = \\frac{2V_0 \\sin\\theta}{g}$"
-                        ],
-                        "correctAnswer": "$T_f = \\frac{2V_0 \\sin\\theta}{g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the definition of *Time of Flight*?",
-                        "options": [
-                            "a. The time it takes for the object to reach its highest point.",
-                            "b. The total horizontal distance the object travels.",
-                            "c. The total time the object is in the air.",
-                            "d. The time it takes for the object to hit the ground from its initial position."
-                        ],
-                        "correctAnswer": "c. The total time the object is in the air."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Maximum Height ($H_m$)*?",
-                        "options": [
-                            "$H_m = \\frac{V_0 \\sin\\theta}{g}$",
-                            "$H_m = \\frac{V_0^2 \\sin^2\\theta}{g}$",
-                            "$H_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$",
-                            "$H_m = \\frac{V_0^2 \\cos^2\\theta}{2g}$"
-                        ],
-                        "correctAnswer": "$H_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the definition of *Maximum Height*?",
-                        "options": [
-                            "a. The total horizontal distance traveled.",
-                            "b. The highest vertical point reached by the object.",
-                            "c. The initial vertical velocity.",
-                            "d. The time taken to fall to the ground."
-                        ],
-                        "correctAnswer": "b. The highest vertical point reached by the object."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Range ($R$)*?",
-                        "options": [
-                            "$R = \\frac{V_0^2 \\sin\\theta}{g}$",
-                            "$R = \\frac{V_0^2 \\cos(2\\theta)}{g}$",
-                            "$R = \\frac{V_0^2 \\sin(2\\theta)}{g}$",
-                            "$R = \\frac{V_0^2 \\sin^2\\theta}{g}$"
-                        ],
-                        "correctAnswer": "$R = \\frac{V_0^2 \\sin(2\\theta)}{g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the definition of *Range*?",
-                        "options": [
-                            "a. The total vertical distance the object travels.",
-                            "b. The initial horizontal velocity.",
-                            "c. The total horizontal distance the object travels.",
-                            "d. The time it takes to reach the ground."
-                        ],
-                        "correctAnswer": "c. The total horizontal distance the object travels."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Time from Horizontal Displacement*?",
-                        "options": [
-                            "$t = \\frac{x}{V_0 \\sin\\theta}$",
-                            "$t = \\frac{x}{V_0 \\cos\\theta}$",
-                            "$t = x \\cdot V_0 \\cos\\theta$",
-                            "$t = \\frac{V_0 \\cos\\theta}{x}$"
-                        ],
-                        "correctAnswer": "$t = \\frac{x}{V_0 \\cos\\theta}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is *Initial Velocity ($V_0$)*?",
-                        "options": [
-                            "a. The final speed of the object.",
-                            "b. The speed of the object at its highest point.",
-                            "c. The starting speed when the object is launched.",
-                            "d. The speed of the object just before it lands."
-                        ],
-                        "correctAnswer": "c. The starting speed when the object is launched."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is *Angle of Projection ($\theta$)*?",
-                        "options": [
-                            "a. The angle of the object's path at its maximum height.",
-                            "b. The angle the object makes with the vertical line.",
-                            "c. The angle from the horizontal line at which the object is launched.",
-                            "d. The angle of impact with the ground."
-                        ],
-                        "correctAnswer": "c. The angle from the horizontal line at which the object is launched."
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the approximate value and direction of *Acceleration due to Gravity ($g$)*?",
-                        "options": [
-                            "a. $9.8 \\text{ m/s}^2$ upwards",
-                            "b. $9.8 \\text{ m/s}^2$ horizontally",
-                            "c. $9.8 \\text{ m/s}^2$ downward",
-                            "d. $0 \\text{ m/s}^2$"
-                        ],
-                        "correctAnswer": "c. $9.8 \\text{ m/s}^2$ downward"
-                    }
-                ]
-            },
-            "projectilemotionSTUDY1": {
-                "title": "Projectile Motion Formulas Quiz",
-                "questions": [
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for the *Initial Horizontal Velocity Component*?",
-                        "options": [
-                            "a. $V_{0x} = V_0 \\sin\\theta$",
-                            "b. $V_{0x} = V_0 \\cos\\theta$",
-                            "c. $V_{0x} = V_0$",
-                            "d. $V_{0x} = \\frac{V_0}{\\cos\\theta}$"
-                        ],
-                        "correctAnswer": "$V_{0x} = V_0 \\cos\\theta$"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "What is the complete formula for the *Initial Vertical Velocity Component*?",
-                        "correctAnswer": "$V_{0y} = V_0 \\sin\\theta$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Horizontal Position*?",
-                        "options": [
-                            "a. $x = x_0 + V_{0x}t$",
-                            "b. $x = x_0 + V_{0x}t + \\frac{1}{2}a_xt^2$",
-                            "c. $x = V_{0x}t$",
-                            "d. $x = x_0 + \\frac{1}{2}a_xt^2$"
-                        ],
-                        "correctAnswer": "$x = x_0 + V_{0x}t$"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "What is the complete formula for *Vertical Position*?",
-                        "correctAnswer": "$y = y_0 + V_{0y}t - \\frac{1}{2}gt^2$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Time to Max Height ($t_m$)*?",
-                        "options": [
-                            "a. $t_m = \\frac{V_0 \\cos\\theta}{g}$",
-                            "b. $t_m = \\frac{2V_0 \\sin\\theta}{g}$",
-                            "c. $t_m = \\frac{V_0 \\sin\\theta}{g}$",
-                            "d. $t_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$"
-                        ],
-                        "correctAnswer": "$t_m = \\frac{V_0 \\sin\\theta}{g}$"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "What is the complete formula for *Total Time of Flight ($T_f$)*?",
-                        "correctAnswer": "$T_f = \\frac{2V_0 \\sin\\theta}{g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Maximum Height ($H_m$)*?",
-                        "options": [
-                            "a. $H_m = \\frac{V_0 \\sin\\theta}{g}$",
-                            "b. $H_m = \\frac{V_0^2 \\sin^2\\theta}{g}$",
-                            "c. $H_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$",
-                            "d. $H_m = \\frac{V_0^2 \\cos^2\\theta}{2g}$"
-                        ],
-                        "correctAnswer": "$H_m = \\frac{V_0^2 \\sin^2\\theta}{2g}$"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "What is the complete formula for *Range ($R$)*?",
-                        "correctAnswer": "$R = \\frac{V_0^2 \\sin(2\\theta)}{g}$"
-                    },
-                    {
-                        "type": "multiple_choice",
-                        "question": "What is the formula for *Time from Horizontal Displacement*?",
-                        "options": [
-                            "a. $t = \\frac{x}{V_0 \\sin\\theta}$",
-                            "b. $t = \\frac{x}{V_0 \\cos\\theta}$",
-                            "c. $t = x \\cdot V_0 \\cos\\theta$",
-                            "d. $t = \\frac{V_0 \\cos\\theta}{x}$"
-                        ],
-                        "correctAnswer": "$t = \\frac{x}{V_0 \\cos\\theta}$"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "A ball is thrown from a 101m tall building with an initial velocity of 5.6 m/s with an angle of 35°. What are the given values in this question? (Format: 'given:\\nvalue1 = ...\\nvalue2 = ...')",
-                        "correctAnswer": "given:\ninitial height = 101m\ninitial velocity = 5.6 m/s\nangle = 35°"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "A football player kicked a ball so that it was launched at an angle of 33.0° from the ground with a velocity of 25.5 m/s, and lands back on the ground shortly after. What are the given values in this question? (Format: 'given:\\nvalue1 = ...\\nvalue2 = ...')",
-                        "correctAnswer": "given:\ninitial angle = 33.0°\ninitial velocity = 25.5 m/s"
-                    },
-                    {
-                        "type": "fill_in_the_blank",
-                        "question": "A basketball player shot a ball at a horizontal distance of 7.0 m from the basket. The ball left the player’s hands at 2.0 m from the ground with a velocity of 9.0 m/s directed 57° from the horizontal. If the basket is 3.0 m from the ground... What are the given values in this question? (Format: 'given:\\nvalue1 = ...\\nvalue2 = ...')",
-                        "correctAnswer": "given:\nhorizontal distance = 7.0 m\ninitial height = 2.0 m\ninitial velocity = 9.0 m/s\ninitial angle = 57°\nbasket height = 3.0 m"
-                    }
-                ]
-            }
-        };
+        // Define the list of available JSON quiz files.
+        // You MUST have these files in the same directory as this HTML file.
+        const availableQuizzes = ['gensci.json'];
 
         // Get DOM elements
-        const jsonTextArea = document.getElementById('jsonTextArea');
-        const loadCustomQuizButton = document.getElementById('load-custom-quiz-button'); // Renamed ID
-        const jsonInputSection = document.getElementById('json-input-section');
+        const quizDropdown = document.getElementById('quiz-dropdown');
+        const loadQuizButton = document.getElementById('load-quiz-button');
+        const quizSelectionSection = document.getElementById('quiz-selection-section');
         const quizSection = document.getElementById('quiz-section');
         const quizTitleElement = document.getElementById('quiz-title');
         const questionCounter = document.getElementById('question-counter');
@@ -736,40 +403,71 @@
         const prevQuestionButton = document.getElementById('prev-question');
         const nextQuestionButton = document.getElementById('next-question');
 
-        // New elements for premade quizzes
-        const premadeQuizSelector = document.getElementById('premadeQuizSelector');
-        const loadPremadeQuizButton = document.getElementById('load-premade-quiz-button');
-
         // Event listeners
-        loadCustomQuizButton.addEventListener('click', loadQuizFromTextarea); // Updated listener
-        loadPremadeQuizButton.addEventListener('click', loadSelectedPremadeQuiz); // New listener
+        loadQuizButton.addEventListener('click', loadQuizFromDropdown);
         submitQuizButton.addEventListener('click', submitQuiz);
         retakeQuizButton.addEventListener('click', resetQuiz);
         prevQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex - 1));
         nextQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex + 1));
+        document.addEventListener('DOMContentLoaded', populateQuizDropdown);
 
-        // Populate premade quiz selector on load
-        document.addEventListener('DOMContentLoaded', () => {
-            for (const key in premadeQuizzes) {
-                if (premadeQuizzes.hasOwnProperty(key)) {
-                    const option = document.createElement('option');
-                    option.value = key;
-                    option.textContent = key;
-                    premadeQuizSelector.appendChild(option);
-                }
-            }
-        });
 
         /**
-         * Loads a selected premade quiz into the textarea and then loads the quiz.
+         * Populates the quiz dropdown with the list of available quiz files.
          */
-        function loadSelectedPremadeQuiz() {
-            const selectedCode = premadeQuizSelector.value;
-            if (selectedCode && premadeQuizzes[selectedCode]) {
-                jsonTextArea.value = JSON.stringify(premadeQuizzes[selectedCode], null, 2); // Pretty print JSON
-                loadQuizFromTextarea();
-            } else {
-                showError("Please select a valid premade quiz from the dropdown.");
+        function populateQuizDropdown() {
+            availableQuizzes.forEach(quizFileName => {
+                const option = document.createElement('option');
+                option.value = quizFileName;
+                option.textContent = quizFileName.replace('.json', ''); // Display without .json extension
+                quizDropdown.appendChild(option);
+            });
+        }
+
+        /**
+         * Loads and parses the quiz from the selected JSON file using fetch.
+         */
+        async function loadQuizFromDropdown() {
+            const selectedQuizFile = quizDropdown.value;
+            if (!selectedQuizFile) {
+                showError("Please select a quiz from the list.");
+                return;
+            }
+
+            try {
+                const response = await fetch(selectedQuizFile);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Get settings from checkboxes
+                const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
+                const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
+                liveCheckEnabled = enableLiveCheckCheckbox.checked;
+
+                validateQuizData(data); // Validate the structure
+
+                quizData = JSON.parse(JSON.stringify(data)); // Create a deep copy for the quiz instance
+
+                // Apply shuffling based on settings
+                if (shouldShuffleQuestions) {
+                    shuffleArray(quizData.questions);
+                }
+                if (shouldShuffleOptions) {
+                    quizData.questions.forEach(q => {
+                        if (q.type === 'multiple_choice') { // Only shuffle options for multiple choice
+                            shuffleArray(q.options);
+                        }
+                    });
+                }
+
+                displayQuiz(quizData);
+                hideError();
+
+            } catch (error) {
+                showError(`Failed to load or parse quiz. Check the JSON file or its path. Error: ${error.message}`);
+                console.error("Quiz loading error:", error);
             }
         }
 
@@ -803,48 +501,6 @@
             // This regex finds **text** and replaces it with <strong>text</strong>
             // The (.*?) is a non-greedy match for any characters between the asterisks.
             return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        }
-
-        /**
-         * Handles loading the quiz from the textarea content.
-         */
-        function loadQuizFromTextarea() {
-            const jsonText = jsonTextArea.value;
-            if (!jsonText.trim()) {
-                showError("Please paste your JSON quiz data into the text area.");
-                return;
-            }
-
-            try {
-                // Get settings from checkboxes
-                const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
-                const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
-                liveCheckEnabled = enableLiveCheckCheckbox.checked;
-
-                // Deep clone quizData to avoid modifying the original parsed object for re-quiz
-                const parsedData = JSON.parse(jsonText);
-                validateQuizData(parsedData); // Validate the structure
-
-                quizData = JSON.parse(JSON.stringify(parsedData)); // Create a deep copy for the quiz instance
-
-                // Apply shuffling based on settings
-                if (shouldShuffleQuestions) {
-                    shuffleArray(quizData.questions);
-                }
-                if (shouldShuffleOptions) {
-                    quizData.questions.forEach(q => {
-                        if (q.type === 'multiple_choice') { // Only shuffle options for multiple choice
-                            shuffleArray(q.options);
-                        }
-                    });
-                }
-
-                displayQuiz(quizData);
-                hideError();
-            } catch (parseError) {
-                showError("Error parsing JSON data. Please ensure it's valid JSON. " + parseError.message);
-                console.error("JSON parsing error:", parseError);
-            }
         }
 
         /**
@@ -903,7 +559,7 @@
             userAnswers = Array(quizData.questions.length).fill(null); // Initialize user answers array
             currentQuestionIndex = 0; // Start with the first question
 
-            jsonInputSection.classList.add('hidden');
+            quizSelectionSection.classList.add('hidden');
             resultsSection.classList.add('hidden');
             quizSection.classList.remove('hidden');
             questionsSlideContainer.innerHTML = ''; // Clear previous questions
@@ -1026,7 +682,6 @@
             nextQuestionButton.disabled = (currentQuestionIndex === quizData.questions.length - 1);
         }
 
-
         /**
          * Handles live answer checking for multiple-choice questions.
          * @param {Event} event - The change event from the radio button.
@@ -1092,7 +747,6 @@
                 }
             }
 
-
             // Re-typeset math in the updated question card
             if (window.MathJax) {
                 window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in live check:", err));
@@ -1128,13 +782,12 @@
             }
         }
 
-
         /**
          * Submits the quiz, calculates the score, and displays results.
          */
         function submitQuiz() {
             if (!quizData) {
-                showError("No quiz loaded. Please load a JSON quiz first.");
+                showError("No quiz loaded. Please select and load a quiz first.");
                 return;
             }
 
@@ -1203,16 +856,23 @@
             scoreDisplay.textContent = `You scored ${finalScore} out of ${totalPossibleScore} on multiple-choice questions!`;
 
             feedbackMessage.classList.remove('hidden', 'pass', 'fail');
-            if (finalScore === totalPossibleScore) {
-                feedbackMessage.textContent = "Congratulations! You got all the multiple-choice answers correct!";
-                feedbackMessage.classList.add('pass');
-            } else if (finalScore >= totalPossibleScore / 2) {
-                feedbackMessage.textContent = "Good effort! You did well on multiple-choice questions.";
-                feedbackMessage.classList.add('pass');
-            } else {
-                feedbackMessage.textContent = "Keep practicing! You'll get there.";
-                feedbackMessage.classList.add('fail');
+            if (totalPossibleScore > 0) { // Check if there are any multiple-choice questions
+                const percentage = (finalScore / totalPossibleScore) * 100;
+                if (percentage === 100) {
+                    feedbackMessage.textContent = "Congratulations! You got all the multiple-choice answers correct!";
+                    feedbackMessage.classList.add('pass');
+                } else if (percentage >= 50) {
+                    feedbackMessage.textContent = "Good effort! You did well on multiple-choice questions.";
+                    feedbackMessage.classList.add('pass');
+                } else {
+                    feedbackMessage.textContent = "Keep practicing! You'll get there.";
+                    feedbackMessage.classList.add('fail');
+                }
+            } else { // No multiple choice questions, just flashcards
+                 feedbackMessage.textContent = "You have completed the flashcard set!";
+                 feedbackMessage.classList.add('pass');
             }
+
 
             // Display individual answer breakdown
             feedbackContainer.innerHTML = ''; // Clear previous feedback
@@ -1271,17 +931,16 @@
             userAnswers = []; // Clear user answers
             liveCheckEnabled = false; // Reset live check flag
             currentQuestionIndex = 0; // Reset question index
-            jsonTextArea.value = ''; // Clear the text area
             questionsSlideContainer.innerHTML = ''; // Clear questions
             quizTitleElement.textContent = ''; // Clear title
             questionCounter.textContent = ''; // Clear counter
             feedbackContainer.innerHTML = ''; // Clear feedback container
+            quizDropdown.value = ""; // Reset dropdown selection
 
             // Reset checkbox states
             shuffleQuestionsCheckbox.checked = false;
             shuffleOptionsCheckbox.checked = false;
             enableLiveCheckCheckbox.checked = false;
-            premadeQuizSelector.value = ""; // Reset premade selector
 
             // Disable navigation buttons
             prevQuestionButton.disabled = true;
@@ -1289,7 +948,7 @@
 
             resultsSection.classList.add('hidden');
             quizSection.classList.add('hidden');
-            jsonInputSection.classList.remove('hidden');
+            quizSelectionSection.classList.remove('hidden');
             hideError();
         }
 
@@ -1312,3 +971,4 @@
     </script>
 </body>
 </html>
+
