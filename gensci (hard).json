@@ -10,7 +10,7 @@
         "$$25 \\, \\text{m/s}$$",
         "$$50 \\, \\text{m/s}$$"
       ],
-      "correctAnswer": "$$25 \\, \\text{m/s}$$"
+      "correctAnswer": "$$25 \\, \\text{m/s}$$ 1. Use the kinematic formula for velocity: $$v = u + at$$ 2. Substitute the values into the formula: $$v = 0 + (2.5 \\, \\text{m/s}^2)(10 \\, \\text{s})$$ 3. Calculate the final velocity: $$v = 25 \\, \\text{m/s}$$"
     },
     {
       "type": "multiple_choice",
@@ -21,7 +21,7 @@
         "$$80 \\, \\text{m/s}^2$$",
         "$$12 \\, \\text{m/s}^2$$"
       ],
-      "correctAnswer": "$$80 \\, \\text{m/s}^2$$"
+      "correctAnswer": "$$80 \\, \\text{m/s}^2$$ 1. Use Newton's Second Law: $$F = ma$$ 2. Rearrange to solve for acceleration: $$a = \\frac{F}{m}$$ 3. Substitute the values: $$a = \\frac{12 \\, \\text{N}}{0.15 \\, \\text{kg}}$$ 4. Calculate the acceleration: $$a = 80 \\, \\text{m/s}^2$$"
     },
     {
       "type": "multiple_choice",
@@ -32,7 +32,7 @@
         "$$1000 \\, \\text{J}$$",
         "$$10000 \\, \\text{J}$$"
       ],
-      "correctAnswer": "$$1000 \\, \\text{J}$$"
+      "correctAnswer": "$$1000 \\, \\text{J}$$ 1. Use the formula for work: $$W = F \\times d$$ 2. Substitute the values: $$W = 200 \\, \\text{N} \\times 5 \\, \\text{m}$$ 3. Calculate the work done: $$W = 1000 \\, \\text{J}$$"
     },
     {
       "type": "multiple_choice",
@@ -43,7 +43,7 @@
         "$$2000 \\, \\text{N}$$",
         "$$4000 \\, \\text{N}$$"
       ],
-      "correctAnswer": "$$2000 \\, \\text{N}$$"
+      "correctAnswer": "$$2000 \\, \\text{N}$$ 1. Use Pascal's Principle: $$\\frac{F_1}{A_1} = \\frac{F_2}{A_2}$$ 2. Rearrange to solve for output force: $$F_2 = F_1 \\times \\frac{A_2}{A_1}$$ 3. Substitute the values: $$F_2 = 50 \\, \\text{N} \\times \\frac{0.8 \\, \\text{m}^2}{0.02 \\, \\text{m}^2}$$ 4. Calculate the output force: $$F_2 = 2000 \\, \\text{N}$$"
     },
     {
       "type": "multiple_choice",
@@ -54,7 +54,7 @@
         "$$0.167 \\, \\Omega$$",
         "$$14 \\, \\Omega$$"
       ],
-      "correctAnswer": "$$6 \\, \\Omega$$"
+      "correctAnswer": "$$6 \\, \\Omega$$ 1. Convert the current from milliamperes to amperes: $$2000 \\, \\text{mA} = 2 \\, \\text{A}$$ 2. Use Ohm's Law: $$R = \\frac{V}{I}$$ 3. Substitute the values: $$R = \\frac{12 \\, \\text{V}}{2 \\, \\text{A}}$$ 4. Calculate the resistance: $$R = 6 \\, \\Omega$$"
     },
     {
       "type": "multiple_choice",
@@ -65,7 +65,7 @@
         "$$49 \\, \\text{J}$$",
         "$$98 \\, \\text{J}$$"
       ],
-      "correctAnswer": "$$98 \\, \\text{J}$$"
+      "correctAnswer": "$$98 \\, \\text{J}$$ 1. Use the formula for potential energy: $$PE = mgh$$ 2. Substitute the values: $$PE = (2 \\, \\text{kg})(9.8 \\, \\text{m/s}^2)(5 \\, \\text{m})$$ 3. Calculate the potential energy: $$PE = 98 \\, \\text{J}$$"
     },
     {
       "type": "multiple_choice",
@@ -76,7 +76,7 @@
         "$$4.9$$",
         "$$2$$"
       ],
-      "correctAnswer": "$$4.9$$"
+      "correctAnswer": "$$4.9$$ 1. Calculate the output force ($$F_{out}$$), which is the weight of the mass: $$F_{out} = mg = (50 \\, \\text{kg})(9.8 \\, \\text{m/s}^2) = 490 \\, \\text{N}$$ 2. Use the formula for mechanical advantage: $$MA = \\frac{F_{out}}{F_{in}}$$ 3. Substitute the values: $$MA = \\frac{490 \\, \\text{N}}{100 \\, \\text{N}}$$ 4. Calculate the mechanical advantage: $$MA = 4.9$$"
     },
     {
       "type": "multiple_choice",
@@ -87,7 +87,7 @@
         "$$123 \\, \\text{W}$$",
         "$$3600 \\, \\text{W}$$"
       ],
-      "correctAnswer": "$$360 \\, \\text{W}$$"
+      "correctAnswer": "$$360 \\, \\text{W}$$ 1. Convert the current from milliamperes to amperes: $$3000 \\, \\text{mA} = 3 \\, \\text{A}$$ 2. Use the formula for power: $$P = VI$$ 3. Substitute the values: $$P = (120 \\, \\text{V})(3 \\, \\text{A})$$ 4. Calculate the power consumption: $$P = 360 \\, \\text{W}$$"
     },
     {
       "type": "multiple_choice",
@@ -98,7 +98,7 @@
         "$$58.3 \\, \\text{m}$$",
         "$$40 \\, \\text{m}$$"
       ],
-      "correctAnswer": "$$58.3 \\, \\text{m}$$"
+      "correctAnswer": "$$58.3 \\, \\text{m}$$ 1. Use the Pythagorean theorem to find the magnitude of the displacement ($$d$$): $$d = \\sqrt{a^2 + b^2}$$ 2. Substitute the values: $$d = \\sqrt{(50 \\, \\text{m})^2 + (30 \\, \\text{m})^2} = \\sqrt{2500 + 900} = \\sqrt{3400}$$ 3. Calculate the final displacement: $$d \\approx 58.3 \\, \\text{m}$$"
     },
     {
       "type": "multiple_choice",
@@ -109,7 +109,7 @@
         "$$4 \\, \\text{m/s}$$",
         "$$10 \\, \\text{m/s}$$"
       ],
-      "correctAnswer": "$$1 \\, \\text{m/s}$$"
+      "correctAnswer": "$$1 \\, \\text{m/s}$$ 1. Use the relationship between linear and angular velocity: $$v = r\\omega$$ 2. Substitute the values: $$v = (0.5 \\, \\text{m})(2 \\, \\text{rad/s})$$ 3. Calculate the linear velocity: $$v = 1 \\, \\text{m/s}$$"
     },
     {
       "type": "multiple_choice",
@@ -120,7 +120,7 @@
         "$$133\\%$$",
         "$$50\\%$$"
       ],
-      "correctAnswer": "$$75\\%$$"
+      "correctAnswer": "$$75\\%$$ 1. Use the formula for efficiency: $$Efficiency = \\frac{W_{out}}{W_{in}} \\times 100\\%$$ 2. Substitute the values: $$Efficiency = \\frac{150 \\, \\text{J}}{200 \\, \\text{J}} \\times 100\\%$$ 3. Calculate the efficiency: $$Efficiency = 0.75 \\times 100\\% = 75\\%$$"
     },
     {
       "type": "multiple_choice",
@@ -131,7 +131,7 @@
         "$$250 \\, \\text{J}$$",
         "$$500 \\, \\text{J}$$"
       ],
-      "correctAnswer": "$$250 \\, \\text{J}$$"
+      "correctAnswer": "$$250 \\, \\text{J}$$ 1. Use the formula for kinetic energy: $$KE = \\frac{1}{2}mv^2$$ 2. Substitute the values: $$KE = \\frac{1}{2}(5 \\, \\text{kg})(10 \\, \\text{m/s})^2$$ 3. Calculate the kinetic energy: $$KE = \\frac{1}{2}(5)(100) = 250 \\, \\text{J}$$"
     },
     {
       "type": "multiple_choice",
@@ -142,7 +142,7 @@
         "$$50 \\, \\text{Pa}$$",
         "$$500 \\, \\text{Pa}$$"
       ],
-      "correctAnswer": "$$500 \\, \\text{Pa}$$"
+      "correctAnswer": "$$500 \\, \\text{Pa}$$ 1. Use the formula for pressure: $$P = \\frac{F}{A}$$ 2. Substitute the values: $$P = \\frac{5 \\, \\text{N}}{0.01 \\, \\text{m}^2}$$ 3. Calculate the pressure: $$P = 500 \\, \\text{Pa}$$"
     },
     {
       "type": "multiple_choice",
@@ -153,7 +153,7 @@
         "$$602 \\, \\text{W}$$",
         "$$600 \\, \\text{W}$$"
       ],
-      "correctAnswer": "$$300 \\, \\text{W}$$"
+      "correctAnswer": "$$300 \\, \\text{W}$$ 1. Use the formula for power: $$P = \\frac{W}{t}$$ 2. Substitute the values: $$P = \\frac{600 \\, \\text{J}}{2 \\, \\text{s}}$$ 3. Calculate the power: $$P = 300 \\, \\text{W}$$"
     },
     {
       "type": "multiple_choice",
@@ -164,7 +164,7 @@
         "$$490 \\, \\text{N}$$",
         "$$1000 \\, \\text{N}$$"
       ],
-      "correctAnswer": "$$4900 \\, \\text{N}$$"
+      "correctAnswer": "$$4900 \\, \\text{N}$$ 1. Use the formula for buoyant force: $$F_b = \\rho V g$$ 2. Substitute the values: $$F_b = (1000 \\, \\text{kg/m}^3)(0.5 \\, \\text{m}^3)(9.8 \\, \\text{m/s}^2)$$ 3. Calculate the buoyant force: $$F_b = 4900 \\, \\text{N}$$"
     },
     {
       "type": "multiple_choice",
@@ -175,7 +175,7 @@
         "$$7.5 \\, \\text{W}$$",
         "$$0.3 \\, \\text{J}$$"
       ],
-      "correctAnswer": "$$0.3 \\, \\text{W}$$"
+      "correctAnswer": "$$0.3 \\, \\text{W}$$ 1. Convert the current from milliamperes to amperes: $$200 \\, \\text{mA} = 0.2 \\, \\text{A}$$ 2. Use the formula for power: $$P = VI$$ 3. Substitute the values: $$P = (1.5 \\, \\text{V})(0.2 \\, \\text{A})$$ 4. Calculate the power consumed: $$P = 0.3 \\, \\text{W}$$"
     },
     {
       "type": "multiple_choice",
@@ -186,7 +186,7 @@
         "$$0.5 \\, \\text{hours}$$",
         "$$2.5 \\, \\text{hours}$$"
       ],
-      "correctAnswer": "$$2 \\, \\text{hours}$$"
+      "correctAnswer": "$$2 \\, \\text{hours}$$ 1. Use the formula for time: $$t = \\frac{d}{s}$$ 2. Substitute the values: $$t = \\frac{150 \\, \\text{km}}{75 \\, \\text{km/h}}$$ 3. Calculate the time taken: $$t = 2 \\, \\text{hours}$$"
     },
     {
       "type": "multiple_choice",
@@ -197,7 +197,7 @@
         "$$50 \\, \\text{kg/m}^3$$",
         "$$5000 \\, \\text{kg/m}^3$$"
       ],
-      "correctAnswer": "$$500 \\, \\text{kg/m}^3$$"
+      "correctAnswer": "$$500 \\, \\text{kg/m}^3$$ 1. Use the formula for density: $$\\rho = \\frac{m}{V}$$ 2. Substitute the values: $$\\rho = \\frac{5 \\, \\text{kg}}{0.01 \\, \\text{m}^3}$$ 3. Calculate the density: $$\\rho = 500 \\, \\text{kg/m}^3$$"
     },
     {
       "type": "multiple_choice",
@@ -208,7 +208,7 @@
         "$$49000 \\, \\text{J}$$",
         "$$98000 \\, \\text{J}$$"
       ],
-      "correctAnswer": "$$49000 \\, \\text{J}$$"
+      "correctAnswer": "$$49000 \\, \\text{J}$$ 1. Use the formula for potential energy: $$PE = mgh$$ 2. Substitute the values: $$PE = (1000 \\, \\text{kg})(9.8 \\, \\text{m/s}^2)(5 \\, \\text{m})$$ 3. Calculate the potential energy: $$PE = 49000 \\, \\text{J}$$"
     },
     {
       "type": "multiple_choice",
@@ -219,7 +219,7 @@
         "$$500 \\, \\text{mA}$$",
         "$$2000 \\, \\text{mA}$$"
       ],
-      "correctAnswer": "$$2000 \\, \\text{mA}$$"
+      "correctAnswer": "$$2000 \\, \\text{mA}$$ 1. Use Ohm's Law to find the current in amperes: $$I = \\frac{V}{R} = \\frac{10 \\, \\text{V}}{5 \\, \\Omega} = 2 \\, \\text{A}$$ 2. Convert the current from amperes to milliamperes: $$I = 2 \\, \\text{A} \\times 1000 = 2000 \\, \\text{mA}$$ 3. The final current is $$2000 \\, \\text{mA}$$"
     },
     {
       "type": "multiple_choice",
@@ -230,7 +230,7 @@
         "$$4.5 \\, \\text{V}$$",
         "$$6.0 \\, \\text{V}$$"
       ],
-      "correctAnswer": "$$6.0 \\, \\text{V}$$"
+      "correctAnswer": "$$6.0 \\, \\text{V}$$ 1. To find the total voltage, add the voltages of all batteries in series: $$V_{total} = V_1 + V_2 + V_3 + V_4$$ 2. Since the batteries are identical, this simplifies to: $$V_{total} = 4 \\times 1.5 \\, \\text{V}$$ 3. The total voltage is $$6.0 \\, \\text{V}$$"
     },
     {
       "type": "multiple_choice",
@@ -241,7 +241,7 @@
         "$$500 \\, \\text{mA}$$",
         "$$1000 \\, \\text{mA}$$"
       ],
-      "correctAnswer": "$$500 \\, \\text{mA}$$"
+      "correctAnswer": "$$500 \\, \\text{mA}$$ 1. Find the total voltage of the batteries in series: $$V_{total} = 4 \\times 1.5 \\, \\text{V} = 6 \\, \\text{V}$$ 2. Use Ohm's Law to find the current in amperes: $$I = \\frac{V_{total}}{R} = \\frac{6 \\, \\text{V}}{12 \\, \\Omega} = 0.5 \\, \\text{A}$$ 3. Convert the current from amperes to milliamperes: $$I = 0.5 \\, \\text{A} \\times 1000 = 500 \\, \\text{mA}$$ 4. The total current is $$500 \\, \\text{mA}$$"
     },
     {
       "type": "multiple_choice",
@@ -252,7 +252,7 @@
         "$$5.0 \\, \\text{A}$$",
         "$$50 \\, \\text{A}$$"
       ],
-      "correctAnswer": "$$0.5 \\, \\text{A}$$"
+      "correctAnswer": "$$0.5 \\, \\text{A}$$ 1. Use the conversion factor: $$1000 \\, \\text{mA} = 1 \\, \\text{A}$$ 2. To convert milliamperes to amperes, divide by 1000: $$I = \\frac{500 \\, \\text{mA}}{1000} = 0.5 \\, \\text{A}$$ 3. The current in amperes is $$0.5 \\, \\text{A}$$"
     },
     {
       "type": "multiple_choice",
@@ -263,7 +263,7 @@
         "$$90 \\, \\text{W}$$",
         "$$900 \\, \\text{W}$$"
       ],
-      "correctAnswer": "$$9.0 \\, \\text{W}$$"
+      "correctAnswer": "$$9.0 \\, \\text{W}$$ 1. Convert the current from milliamperes to amperes: $$1500 \\, \\text{mA} = 1.5 \\, \\text{A}$$ 2. Use the formula for power: $$P = VI$$ 3. Substitute the values: $$P = (6 \\, \\text{V})(1.5 \\, \\text{A})$$ 4. Calculate the power consumption: $$P = 9.0 \\, \\text{W}$$"
     },
     {
       "type": "multiple_choice",
@@ -274,7 +274,7 @@
         "$$3.0 \\, \\text{V}$$",
         "$$4.5 \\, \\text{V}$$"
       ],
-      "correctAnswer": "$$1.5 \\, \\text{V}$$"
+      "correctAnswer": "$$1.5 \\, \\text{V}$$ 1. When identical voltage sources are connected in parallel, the total voltage across the circuit is the same as the voltage of a single source 2. The total voltage is $$1.5 \\, \\text{V}$$"
     }
   ]
 }
