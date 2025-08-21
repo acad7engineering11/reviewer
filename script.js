@@ -228,13 +228,13 @@ function handleLiveAnswer(event) {
         console.error("handleLiveAnswer: event.target is null or undefined.");
         return;
     }
-    const questionIndex = parseInt(selectedRadio.getAttribute('data-question-index'));
-    const questionData = quizData.questions[questionIndex];
     const questionCard = selectedRadio.closest('.question-card');
     if (!questionCard) {
         console.error("handleLiveAnswer: Could not find parent .question-card.");
         return;
     }
+    const questionIndex = parseInt(questionCard.getAttribute('data-question-index'));
+    const questionData = quizData.questions[questionIndex];
     const userAnswer = selectedRadio.value;
     const correctAnswer = questionData.correctAnswer;
     const isCorrect = (stripPrefix(userAnswer).trim().toLowerCase() === stripPrefix(correctAnswer).trim().toLowerCase());
