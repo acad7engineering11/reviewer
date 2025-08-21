@@ -1,505 +1,413 @@
+// Global variables to store quiz data
 let quizData = null;
 let score = 0;
-let userAnswers = [];
-let liveCheckEnabled = false;
-let currentQuestionIndex = 0;
+let userAnswers = []; // To store user's selected answers and correctness
+let liveCheckEnabled = false; // Flag for live check mode
+let currentQuestionIndex = 0; // Tracks the currently displayed question
 
-const quizDropdown = document.getElementById('quiz-dropdown');
-const loadQuizButton = document.getElementById('load-quiz-button');
+// Define the list of available JSON quiz files.
+// You MUST have these files in the same directory as this index.html file for it to work.
+const predefinedQuizzes = {
+    "gensci.json": {
+        title: "General Science Reviewer",
+        questions: [{
+            "question": "Which of the following is the largest planet in our solar system?",
+            "options": ["Mars", "Jupiter", "Earth", "Saturn"],
+            "answer": "Jupiter"
+        }, {
+            "question": "What is the chemical symbol for gold?",
+            "options": ["Au", "Ag", "Fe", "Cu"],
+            "answer": "Au"
+        }, {
+            "question": "The process by which plants make their own food is called?",
+            "options": ["Respiration", "Transpiration", "Photosynthesis", "Germination"],
+            "answer": "Photosynthesis"
+        }]
+    },
+    "finite_math.json": {
+        title: "Finite Mathematics Reviewer",
+        questions: [{
+            "question": "What is the result of multiplying a $3 \\times 2$ matrix by a $2 \\times 4$ matrix?",
+            "options": ["A $3 \\times 4$ matrix", "A $2 \\times 2$ matrix", "A $4 \\times 3$ matrix", "This is not possible"],
+            "answer": "A $3 \\times 4$ matrix"
+        }, {
+            "question": "If $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$ and $B = \\begin{pmatrix} 5 \\\\ 6 \\end{pmatrix}$, what is $AB$?",
+            "options": ["$\\begin{pmatrix} 17 \\\\ 39 \\end{pmatrix}$", "$AB = \\begin{pmatrix} 13 \\\\ 19 \\end{pmatrix}$", "$\\begin{pmatrix} 17 & 39 \\end{pmatrix}$", "This is not possible"],
+            "answer": "$\\begin{pmatrix} 17 \\\\ 39 \\end{pmatrix}$"
+        }, {
+            "question": "What is the determinant of the matrix $\\begin{pmatrix} 4 & 2 \\\\ 1 & 5 \\end{pmatrix}$?",
+            "options": ["18", "22", "15", "10"],
+            "answer": "18"
+        }]
+    }
+};
+
+// DOM Elements
 const quizSelectionSection = document.getElementById('quiz-selection-section');
 const quizSection = document.getElementById('quiz-section');
+const resultsSection = document.getElementById('results-section');
+const quizDropdown = document.getElementById('quiz-dropdown');
+const loadQuizButton = document.getElementById('load-quiz-button');
 const quizTitleElement = document.getElementById('quiz-title');
 const questionCounter = document.getElementById('question-counter');
 const questionsSlideContainer = document.getElementById('questions-slide-container');
+const prevQuestionButton = document.getElementById('prev-question');
+const nextQuestionButton = document.getElementById('next-question');
 const submitQuizButton = document.getElementById('submit-quiz');
-const resultsSection = document.getElementById('results-section');
 const scoreDisplay = document.getElementById('score-display');
 const feedbackMessage = document.getElementById('feedback-message');
+const feedbackContainer = document.getElementById('feedback-container');
 const retakeQuizButton = document.getElementById('retake-quiz');
 const errorMessageElement = document.getElementById('error-message');
-const feedbackContainer = document.getElementById('feedback-container');
 const shuffleQuestionsCheckbox = document.getElementById('shuffleQuestions');
 const shuffleOptionsCheckbox = document.getElementById('shuffleOptions');
 const enableLiveCheckCheckbox = document.getElementById('enableLiveCheck');
-const prevQuestionButton = document.getElementById('prev-question');
-const nextQuestionButton = document.getElementById('next-question');
 
-// Add event listeners for button clicks
-loadQuizButton.addEventListener('click', loadQuizFromDropdown);
+// Event Listeners
+document.addEventListener('DOMContentLoaded', initializeQuiz);
+loadQuizButton.addEventListener('click', loadQuiz);
+nextQuestionButton.addEventListener('click', () => changeQuestion(1));
+prevQuestionButton.addEventListener('click', () => changeQuestion(-1));
 submitQuizButton.addEventListener('click', submitQuiz);
-retakeQuizButton.addEventListener('click', resetQuiz);
-prevQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex - 1));
-nextQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex + 1));
+retakeQuizButton.addEventListener('click', retakeQuiz);
 
 /**
- * Loads the selected quiz from a separate JSON file using fetch.
- * This is an asynchronous operation.
+ * Initializes the quiz by populating the dropdown with predefined quizzes.
  */
-async function loadQuizFromDropdown() {
-    const selectedQuizFile = quizDropdown.value;
-    if (!selectedQuizFile) {
-        showError("Please select a quiz from the list.");
-        return;
+function initializeQuiz() {
+    for (const file in predefinedQuizzes) {
+        const option = document.createElement('option');
+        option.value = file;
+        option.textContent = predefinedQuizzes[file].title;
+        quizDropdown.appendChild(option);
     }
-    hideError();
-    quizSection.classList.add('hidden'); // Hide quiz section before loading
-    resultsSection.classList.add('hidden'); // Hide results section
-    quizSelectionSection.classList.remove('hidden'); // Show selection section
-
-    try {
-        const response = await fetch(`./quizzes/${selectedQuizFile}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
-        const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
-        liveCheckEnabled = enableLiveCheckCheckbox.checked;
-
-        validateQuizData(data);
-        quizData = JSON.parse(JSON.stringify(data));
-        if (shouldShuffleQuestions) {
-            shuffleArray(quizData.questions);
-        }
-        if (shouldShuffleOptions) {
-            quizData.questions.forEach(q => {
-                if (q.type === 'multiple_choice' && q.options) {
-                    shuffleArray(q.options);
-                }
-            });
-        }
-        startQuiz();
-    } catch (e) {
-        console.error('Failed to load or process quiz data:', e);
-        showError(`Failed to load quiz: ${e.message}. Make sure the quiz file exists and is correctly formatted.`);
-    }
+    // Update button states
+    updateNavigationButtons();
 }
 
 /**
- * Shuffles an array in place using the Fisher-Yates algorithm.
- * @param {Array} array - The array to shuffle.
+ * Loads the selected quiz from the predefined JSON data.
+ */
+function loadQuiz() {
+    const selectedFile = quizDropdown.value;
+    if (!selectedFile) {
+        showError("Please select a quiz to load.");
+        return;
+    }
+
+    hideError();
+    quizData = predefinedQuizzes[selectedFile];
+
+    // Reset quiz state
+    currentQuestionIndex = 0;
+    score = 0;
+    userAnswers = [];
+    questionsSlideContainer.innerHTML = '';
+
+    // Apply shuffling if enabled
+    if (shuffleQuestionsCheckbox.checked) {
+        quizData.questions = shuffleArray([...quizData.questions]);
+    }
+
+    // Check for live check mode
+    liveCheckEnabled = enableLiveCheckCheckbox.checked;
+
+    displayQuiz();
+}
+
+/**
+ * Shuffles an array using the Fisher-Yates algorithm.
+ * @param {Array} array The array to shuffle.
+ * @returns {Array} The shuffled array.
  */
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
 }
 
 /**
- * Starts the quiz by hiding the selection screen and displaying the first question.
+ * Displays the loaded quiz content and the first question.
  */
-function startQuiz() {
-    userAnswers = new Array(quizData.questions.length).fill(null);
-    score = 0;
-    currentQuestionIndex = 0;
-    // Add transition to hide the selection screen
-    quizSelectionSection.classList.add('fade-out');
-    quizSelectionSection.addEventListener('animationend', () => {
-        quizSelectionSection.classList.add('hidden');
-        quizSection.classList.remove('hidden');
-        quizSection.classList.add('fade-in');
-    }, { once: true });
-
-    resultsSection.classList.add('hidden');
-    questionsSlideContainer.innerHTML = '';
-    errorMessageElement.classList.add('hidden');
-    feedbackContainer.innerHTML = '';
+function displayQuiz() {
+    quizSelectionSection.classList.add('hidden');
+    quizSection.classList.remove('hidden');
     quizTitleElement.textContent = quizData.title;
-    submitQuizButton.classList.remove('hidden');
 
-    quizData.questions.forEach((q, index) => {
-        let questionCard;
-        if (q.type === 'multiple_choice') {
-            questionCard = document.createElement('div');
-            questionCard.className = 'question-card';
-            questionCard.setAttribute('data-question-index', index);
-            questionCard.setAttribute('data-question-type', q.type);
-            const questionText = document.createElement('p');
-            questionText.className = 'text-lg font-medium text-gray-900 mb-4';
-            questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
-            questionCard.appendChild(questionText);
-            const optionsList = document.createElement('div');
-            optionsList.className = 'flex flex-col gap-2';
-            q.options.forEach((option) => {
-                const optionLabel = document.createElement('label');
-                optionLabel.className = 'option-label';
-                const radioInput = document.createElement('input');
-                radioInput.type = 'radio';
-                radioInput.name = `question-${index}`;
-                radioInput.value = option;
-                radioInput.className = 'form-radio h-5 w-5 text-indigo-600 transition duration-150 ease-in-out';
-                radioInput.setAttribute('data-question-index', index);
-                radioInput.setAttribute('data-option-value', option);
-                if (liveCheckEnabled) {
-                    radioInput.addEventListener('change', handleLiveAnswer);
-                }
-                const optionSpan = document.createElement('span');
-                optionSpan.className = 'ml-3 text-base text-gray-700';
-                optionSpan.innerHTML = applyBoldFormatting(option);
-                optionLabel.appendChild(radioInput);
-                optionLabel.appendChild(optionSpan);
-                optionsList.appendChild(optionLabel);
+    quizData.questions.forEach((question, index) => {
+        const isFillInTheBlank = question.type === 'fill_in_the_blank';
+        let card;
+        if (isFillInTheBlank) {
+            card = createFillInTheBlankCard(question, index);
+        } else {
+            card = createMultipleChoiceCard(question, index);
+        }
+        questionsSlideContainer.appendChild(card);
+    });
+
+    displayQuestion();
+}
+
+/**
+ * Creates a multiple-choice question card element.
+ * @param {Object} question The question data.
+ * @param {number} index The index of the question.
+ * @returns {HTMLElement} The created question card.
+ */
+function createMultipleChoiceCard(question, index) {
+    const card = document.createElement('div');
+    card.id = `question-card-${index}`;
+    card.className = `question-card ${index === 0 ? 'active' : ''}`;
+    card.innerHTML = `
+        <p class="text-lg font-medium text-gray-800 mb-4 question-text">${formatMath(question.question)}</p>
+        <div class="options-container">
+            ${createOptionsHtml(question.options, index, question.answer)}
+        </div>
+    `;
+    return card;
+}
+
+/**
+ * Creates a fill-in-the-blank question card element.
+ * @param {Object} question The question data.
+ * @param {number} index The index of the question.
+ * @returns {HTMLElement} The created question card.
+ */
+function createFillInTheBlankCard(question, index) {
+    const card = document.createElement('div');
+    card.id = `question-card-${index}`;
+    card.className = `fill-in-the-blank-card ${index === 0 ? 'active' : ''}`;
+    card.innerHTML = `
+        <p class="text-lg font-medium text-gray-800 mb-4 question-text">${formatMath(question.question)}</p>
+        <div class="flex flex-col items-center">
+            <input type="text" id="answer-input-${index}" class="px-4 py-2 border rounded-lg w-full max-w-sm mb-4 text-center" placeholder="Enter your answer...">
+            <button class="reveal-answer-button">Reveal Answer</button>
+            <p class="revealed-answer mt-4 text-green-600 font-semibold hidden">Correct Answer: <span>${formatMath(question.answer)}</span></p>
+        </div>
+    `;
+
+    // Event listener for reveal button
+    card.querySelector('.reveal-answer-button').addEventListener('click', () => {
+        const revealedAnswer = card.querySelector('.revealed-answer');
+        revealedAnswer.classList.remove('hidden');
+        revealedAnswer.classList.add('show');
+    });
+
+    return card;
+}
+
+/**
+ * Creates the HTML for the options of a multiple-choice question.
+ * @param {Array} options The list of options.
+ * @param {number} questionIndex The index of the question.
+ * @param {string} answer The correct answer for live check.
+ * @returns {string} The HTML string for the options.
+ */
+function createOptionsHtml(options, questionIndex, answer) {
+    let optionsToDisplay = [...options];
+    if (shuffleOptionsCheckbox.checked) {
+        optionsToDisplay = shuffleArray(optionsToDisplay);
+    }
+    return optionsToDisplay.map((option, optionIndex) => `
+        <label class="option-label">
+            <input type="radio" name="question-${questionIndex}" value="${option}" data-question-index="${questionIndex}" data-option-index="${optionIndex}" class="form-radio" />
+            <span class="ml-3 text-gray-700">${formatMath(option)}</span>
+        </label>
+    `).join('');
+}
+
+/**
+ * Displays the current question and updates the navigation and counter.
+ */
+function displayQuestion() {
+    const allQuestions = questionsSlideContainer.querySelectorAll('.question-card, .fill-in-the-blank-card');
+    allQuestions.forEach((card, index) => {
+        card.classList.toggle('active', index === currentQuestionIndex);
+        card.classList.toggle('hidden', index !== currentQuestionIndex);
+    });
+
+    questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
+    updateNavigationButtons();
+    MathJax.typesetPromise();
+    // Add event listeners to newly displayed options for live checking
+    setupLiveCheckListeners();
+}
+
+/**
+ * Sets up live check event listeners for the options of the current question.
+ */
+function setupLiveCheckListeners() {
+    if (liveCheckEnabled) {
+        const currentQuestionCard = questionsSlideContainer.querySelector(`.question-card.active`);
+        if (currentQuestionCard) {
+            const options = currentQuestionCard.querySelectorAll('input[type="radio"]');
+            options.forEach(option => {
+                option.addEventListener('change', handleLiveCheck);
             });
-            questionCard.appendChild(optionsList);
-        } else if (q.type === 'fill_in_the_blank') {
-            questionCard = document.createElement('div');
-            questionCard.className = 'fill-in-the-blank-card';
-            questionCard.setAttribute('data-question-index', index);
-            questionCard.setAttribute('data-question-type', q.type);
-            const questionText = document.createElement('p');
-            questionText.className = 'question-text';
-            questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
-            questionCard.appendChild(questionText);
-            const revealButton = document.createElement('button');
-            revealButton.textContent = "Reveal Answer";
-            revealButton.className = 'reveal-answer-button';
-            revealButton.addEventListener('click', () => revealAnswer(index));
-            questionCard.appendChild(revealButton);
-            const revealedAnswer = document.createElement('p');
-            revealedAnswer.className = 'revealed-answer';
-            revealedAnswer.innerHTML = `Answer: ${applyBoldFormatting(q.correctAnswer)}`;
-            questionCard.appendChild(revealedAnswer);
         }
-        questionsSlideContainer.appendChild(questionCard);
-    });
-    if (window.MathJax) {
-        window.MathJax.typesetPromise([questionsSlideContainer]).catch((err) => console.error("MathJax initial typesetting error:", err));
-    }
-    showQuestion(0, 'next'); // Start with 'next' for the initial slide-in
-}
-
-/**
- * Strips a prefix (like 'A.', '1.') from a string.
- * @param {string} text - The text to process.
- * @returns {string} The text with the prefix removed.
- */
-function stripPrefix(text) {
-    return text.replace(/^[A-Z]?\.?\s*|^[0-9]+\.\s*/, '');
-}
-
-/**
- * Applies bold formatting to text containing **...** syntax.
- * @param {string} text - The text to format.
- * @returns {string} The formatted HTML string.
- */
-function applyBoldFormatting(text) {
-    return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-}
-
-/**
- * Validates the structure of the loaded quiz data.
- * @param {object} data - The quiz data object.
- * @throws {Error} if the data structure is invalid.
- */
-function validateQuizData(data) {
-    if (!data || typeof data !== 'object') {
-        throw new Error("Quiz data must be an object.");
-    }
-    if (typeof data.title !== 'string' || data.title.trim() === '') {
-        throw new Error("Quiz must have a 'title' string.");
-    }
-    if (!Array.isArray(data.questions) || data.questions.length === 0) {
-        throw new Error("Quiz must have a non-empty 'questions' array.");
-    }
-    data.questions.forEach((q, index) => {
-        if (typeof q.type !== 'string' || !['multiple_choice', 'fill_in_the_blank'].includes(q.type)) {
-            throw new Error(`Question ${index + 1} has an invalid or missing 'type'. Must be 'multiple_choice' or 'fill_in_the_blank'.`);
-        }
-        if (typeof q.question !== 'string' || q.question.trim() === '') {
-            throw new Error(`Question ${index + 1} is missing 'question' text.`);
-        }
-        if (typeof q.correctAnswer !== 'string' || q.correctAnswer.trim() === '') {
-            throw new Error(`Question ${index + 1} is missing 'correctAnswer'.`);
-        }
-        if (q.type === 'multiple_choice') {
-            if (!Array.isArray(q.options) || q.options.length < 2) {
-                throw new Error(`Multiple-choice question ${index + 1} must have at least two 'options'.`);
-            }
-            const trimmedCorrectAnswerLower = stripPrefix(q.correctAnswer).trim().toLowerCase();
-            const trimmedOptionsLower = q.options.map(opt => stripPrefix(opt).trim().toLowerCase());
-            if (!trimmedOptionsLower.includes(trimmedCorrectAnswerLower)) {
-                throw new Error(`Correct answer for question ${index + 1} is not found in the options list.`);
-            }
-        }
-    });
-}
-
-/**
- * Displays a specific question and updates navigation buttons with animation.
- * @param {number} index - The index of the question to show.
- * @param {string} direction - 'prev' or 'next' for animation direction.
- */
-function showQuestion(index, direction) {
-    const questionCards = questionsSlideContainer.querySelectorAll('.question-card, .fill-in-the-blank-card');
-    if (index >= 0 && index < questionCards.length) {
-        // Find the current active card to animate out
-        const currentActiveCard = questionsSlideContainer.querySelector('.question-card.active, .fill-in-the-blank-card.active');
-        if (currentActiveCard) {
-            currentActiveCard.classList.remove('active');
-            // Animate the old card out
-            if (direction === 'next') {
-                currentActiveCard.style.animation = 'slideOutToLeft 0.5s forwards';
-            } else {
-                currentActiveCard.style.animation = 'slideOutToRight 0.5s forwards';
-            }
-        }
-        
-        // Animate the new card in after a short delay
-        setTimeout(() => {
-            questionCards.forEach(card => card.style.animation = '');
-            questionCards[index].classList.add('active');
-            if (direction === 'next') {
-                questionCards[index].style.animation = 'slideInFromRight 0.5s forwards';
-            } else {
-                questionCards[index].style.animation = 'slideInFromLeft 0.5s forwards';
-            }
-        }, 500); // Wait for the previous animation to finish
-
-        currentQuestionIndex = index;
-        questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
-        prevQuestionButton.disabled = (currentQuestionIndex === 0);
-        nextQuestionButton.disabled = (currentQuestionIndex === quizData.questions.length - 1);
     }
 }
 
 /**
- * Handles the live check functionality for multiple-choice questions.
- * @param {Event} event - The change event from the radio button.
+ * Handles the live check functionality when an option is selected.
+ * @param {Event} event The change event.
  */
-function handleLiveAnswer(event) {
-    const selectedRadio = event.target;
-    if (!selectedRadio) {
-        console.error("handleLiveAnswer: event.target (selectedRadio) is null or undefined. Aborting.");
-        return;
-    }
-    const questionIndex = parseInt(selectedRadio.getAttribute('data-question-index'));
-    const questionData = quizData.questions[questionIndex];
-    const questionCard = selectedRadio.closest('.question-card');
-    if (!questionCard) {
-        console.error("handleLiveAnswer: Could not find parent .question-card for selected radio.", selectedRadio);
-        return;
-    }
-    const userAnswer = selectedRadio.value;
-    const correctAnswer = questionData.correctAnswer;
-    const isCorrect = (stripPrefix(userAnswer).trim().toLowerCase() === stripPrefix(correctAnswer).trim().toLowerCase());
-    userAnswers[questionIndex] = {
-        question: questionData.question,
-        userAnswer: userAnswer,
-        correctAnswer: correctAnswer,
-        isCorrect: isCorrect,
-        type: questionData.type
-    };
-    const optionLabels = questionCard.querySelectorAll('.option-label');
-    optionLabels.forEach(label => {
+function handleLiveCheck(event) {
+    const selectedOption = event.target;
+    const questionIndex = parseInt(selectedOption.dataset.questionIndex, 10);
+    const selectedAnswer = selectedOption.value;
+    const correctAnswer = quizData.questions[questionIndex].answer;
+
+    // Reset previous live check feedback
+    const optionsContainer = selectedOption.closest('.options-container');
+    optionsContainer.querySelectorAll('.option-label').forEach(label => {
         label.classList.remove('correct-live', 'incorrect-live');
     });
-    const selectedOptionLabel = selectedRadio.closest('.option-label');
-    if (selectedOptionLabel) {
-        if (isCorrect) {
-            selectedOptionLabel.classList.add('correct-live');
-        } else {
-            selectedOptionLabel.classList.add('incorrect-live');
-            const correctOptionRadio = Array.from(questionCard.querySelectorAll('input[type="radio"]')).find(radio =>
-                stripPrefix(radio.value).trim().toLowerCase() === stripPrefix(correctAnswer).trim().toLowerCase()
-            );
-            if (correctOptionRadio) {
-                correctOptionRadio.closest('.option-label').classList.add('correct-live');
-            }
-        }
-    }
-    if (window.MathJax) {
-        window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in live check:", err));
+
+    // Apply new feedback
+    const label = selectedOption.closest('.option-label');
+    if (selectedAnswer === correctAnswer) {
+        label.classList.add('correct-live');
+    } else {
+        label.classList.add('incorrect-live');
     }
 }
 
 /**
- * Reveals the answer for a fill-in-the-blank question.
- * @param {number} index - The index of the question.
+ * Changes the current question displayed.
+ * @param {number} direction The direction to move (1 for next, -1 for back).
  */
-function revealAnswer(index) {
-    const questionCard = questionsSlideContainer.querySelector(`.fill-in-the-blank-card[data-question-index="${index}"]`);
-    if (!questionCard) return;
-    const revealButton = questionCard.querySelector('.reveal-answer-button');
-    const revealedAnswer = questionCard.querySelector('.revealed-answer');
-    if (revealButton && revealedAnswer) {
-        revealButton.classList.add('hidden');
-        revealedAnswer.classList.add('show');
-        const questionData = quizData.questions[index];
-        userAnswers[index] = {
-            question: questionData.question,
-            userAnswer: 'Answer Revealed',
-            correctAnswer: questionData.correctAnswer,
-            isCorrect: true,
-            type: questionData.type
-        };
-        if (window.MathJax) {
-            window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in reveal:", err));
-        }
+function changeQuestion(direction) {
+    const newIndex = currentQuestionIndex + direction;
+    if (newIndex >= 0 && newIndex < quizData.questions.length) {
+        // Save the user's answer before moving
+        saveAnswer();
+        currentQuestionIndex = newIndex;
+        displayQuestion();
     }
+}
+
+/**
+ * Saves the user's answer for the current question.
+ */
+function saveAnswer() {
+    const question = quizData.questions[currentQuestionIndex];
+    const isFillInTheBlank = question.type === 'fill_in_the_blank';
+    let userAnswer = '';
+    let isCorrect = false;
+
+    if (isFillInTheBlank) {
+        const inputElement = document.getElementById(`answer-input-${currentQuestionIndex}`);
+        userAnswer = inputElement ? inputElement.value.trim() : '';
+        isCorrect = userAnswer.toLowerCase() === question.answer.toLowerCase();
+    } else {
+        const selectedOption = document.querySelector(`input[name="question-${currentQuestionIndex}"]:checked`);
+        userAnswer = selectedOption ? selectedOption.value : '';
+        isCorrect = selectedOption ? selectedOption.value === question.answer : false;
+    }
+
+    // Check if an answer for this question already exists and update it
+    const existingAnswerIndex = userAnswers.findIndex(ans => ans.questionIndex === currentQuestionIndex);
+    if (existingAnswerIndex > -1) {
+        userAnswers[existingAnswerIndex] = {
+            questionIndex: currentQuestionIndex,
+            userAnswer,
+            isCorrect,
+        };
+    } else {
+        userAnswers.push({
+            questionIndex: currentQuestionIndex,
+            userAnswer,
+            isCorrect,
+        });
+    }
+}
+
+/**
+ * Updates the state of the navigation buttons.
+ */
+function updateNavigationButtons() {
+    prevQuestionButton.disabled = currentQuestionIndex === 0;
+    nextQuestionButton.disabled = currentQuestionIndex === quizData.questions.length - 1;
+    submitQuizButton.classList.toggle('hidden', currentQuestionIndex !== quizData.questions.length - 1);
+    nextQuestionButton.classList.toggle('hidden', currentQuestionIndex === quizData.questions.length - 1);
 }
 
 /**
  * Submits the quiz, calculates the score, and displays the results.
  */
 function submitQuiz() {
-    if (!quizData) {
-        showError("No quiz loaded. Please select and load a quiz first.");
-        return;
+    saveAnswer(); // Save the last question's answer
+    score = userAnswers.filter(answer => answer.isCorrect).length;
+
+    quizSection.classList.add('hidden');
+    resultsSection.classList.remove('hidden');
+
+    scoreDisplay.textContent = `You scored ${score} out of ${quizData.questions.length}!`;
+
+    if (score / quizData.questions.length >= 0.7) {
+        feedbackMessage.textContent = 'Congratulations! You passed!';
+        feedbackMessage.className = 'result-message pass';
+    } else {
+        feedbackMessage.textContent = 'Keep practicing! You can do better!';
+        feedbackMessage.className = 'result-message fail';
     }
-    score = 0;
-    let allMultipleChoiceAnswered = true;
-    quizData.questions.forEach((q, index) => {
-        if (q.type === 'multiple_choice') {
-            const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
-            let userAnswer = null;
-            let isCorrect = false;
-            if (selectedOption) {
-                userAnswer = selectedOption.value;
-                if (stripPrefix(userAnswer).trim().toLowerCase() === stripPrefix(q.correctAnswer).trim().toLowerCase()) {
-                    score++;
-                    isCorrect = true;
-                }
-            } else {
-                allMultipleChoiceAnswered = false;
-            }
-            userAnswers[index] = {
-                question: q.question,
-                userAnswer: userAnswer,
-                correctAnswer: q.correctAnswer,
-                isCorrect: isCorrect,
-                type: q.type
-            };
-        } else if (q.type === 'fill_in_the_blank') {
-            if (userAnswers[index] === null) {
-                userAnswers[index] = {
-                    question: q.question,
-                    userAnswer: 'Not applicable (Flashcard)',
-                    correctAnswer: q.correctAnswer,
-                    isCorrect: false,
-                    type: q.type
-                };
-            }
-        }
-    });
-    if (!allMultipleChoiceAnswered && !liveCheckEnabled) {
-        showError("Please answer all multiple-choice questions before submitting.");
-        return;
-    }
-    quizSection.classList.add('fade-out');
-    quizSection.addEventListener('animationend', () => {
-        quizSection.classList.add('hidden');
-        resultsSection.classList.remove('hidden');
-        resultsSection.classList.add('fade-in');
-    }, { once: true });
-    
-    const totalMultipleChoiceQuestions = quizData.questions.filter(q => q.type === 'multiple_choice').length;
-    scoreDisplay.textContent = `You scored ${score} out of ${totalMultipleChoiceQuestions} on multiple-choice questions.`;
-    displayResultsFeedback(score, totalMultipleChoiceQuestions);
+    feedbackMessage.classList.remove('hidden');
+
     displayAnswerBreakdown();
 }
 
 /**
- * Displays a summary of the user's answers.
+ * Displays a breakdown of the user's answers.
  */
 function displayAnswerBreakdown() {
-    feedbackContainer.innerHTML = '';
-    userAnswers.forEach((answer, index) => {
+    feedbackContainer.innerHTML = ''; // Clear previous feedback
+
+    quizData.questions.forEach((question, index) => {
+        const userAnswer = userAnswers.find(ans => ans.questionIndex === index);
+        const isCorrect = userAnswer ? userAnswer.isCorrect : false;
+
         const feedbackItem = document.createElement('div');
-        feedbackItem.className = `answer-feedback-item`;
-        if (answer.type === 'multiple_choice') {
-            if (!answer.isCorrect) {
-                feedbackItem.classList.add('incorrect');
-            }
-        }
-        const questionP = document.createElement('p');
-        questionP.className = 'question-text';
-        questionP.innerHTML = `${index + 1}. ${applyBoldFormatting(answer.question)}`;
-        const yourAnswerP = document.createElement('p');
-        yourAnswerP.className = 'your-answer';
-        const userAnswerText = answer.userAnswer ? `Your Answer: ${applyBoldFormatting(answer.userAnswer)}` : "Your Answer: No answer provided";
-        yourAnswerP.innerHTML = userAnswerText;
-        const correctAnswerP = document.createElement('p');
-        correctAnswerP.className = 'correct-answer';
-        correctAnswerP.innerHTML = `Correct Answer: ${applyBoldFormatting(answer.correctAnswer)}`;
-        feedbackItem.appendChild(questionP);
-        feedbackItem.appendChild(yourAnswerP);
-        feedbackItem.appendChild(correctAnswerP);
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'feedback-icon';
-        if (answer.type === 'multiple_choice') {
-            if (answer.isCorrect) {
-                iconSpan.innerHTML = '✔️';
-                iconSpan.classList.add('correct');
-            } else {
-                iconSpan.innerHTML = '❌';
-                iconSpan.classList.add('incorrect');
-            }
-        } else {
-            iconSpan.innerHTML = '🔍';
-            iconSpan.classList.add('correct');
-        }
-        feedbackItem.appendChild(iconSpan);
+        feedbackItem.className = `answer-feedback-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        feedbackItem.innerHTML = `
+            <p class="question-text">${index + 1}. ${formatMath(question.question)}</p>
+            <p class="your-answer">Your Answer: ${userAnswer ? formatMath(userAnswer.userAnswer) : 'No answer'}</p>
+            <p class="correct-answer">Correct Answer: ${formatMath(question.answer)}</p>
+        `;
         feedbackContainer.appendChild(feedbackItem);
     });
-    if (window.MathJax) {
-        window.MathJax.typesetPromise([feedbackContainer]).catch((err) => console.error("MathJax typesetting error in results:", err));
-    }
 }
 
 /**
- * Displays a final feedback message based on the quiz score.
- * @param {number} finalScore - The final score.
- * @param {number} totalPossibleScore - The maximum possible score.
+ * Resets the quiz to the selection state.
  */
-function displayResultsFeedback(finalScore, totalPossibleScore) {
-    feedbackMessage.classList.remove('hidden', 'pass', 'fail');
-    if (totalPossibleScore > 0) {
-        const percentage = (finalScore / totalPossibleScore) * 100;
-        if (percentage === 100) {
-            feedbackMessage.textContent = "Congratulations! You got all the multiple-choice answers correct!";
-            feedbackMessage.classList.add('pass');
-        } else if (percentage >= 50) {
-            feedbackMessage.textContent = "Good effort! You did well on multiple-choice questions.";
-            feedbackMessage.classList.add('pass');
-        } else {
-            feedbackMessage.textContent = "Keep practicing! You'll get there.";
-            feedbackMessage.classList.add('fail');
-        }
-    } else {
-        feedbackMessage.textContent = "You have completed the flashcard set!";
-        feedbackMessage.classList.add('pass');
-    }
-}
+function retakeQuiz() {
+    quizData = null; // Clear quiz data
+    score = 0; // Reset score
+    userAnswers = []; // Reset answers
+    liveCheckEnabled = false; // Reset live check flag
+    currentQuestionIndex = 0; // Reset question index
+    questionsSlideContainer.innerHTML = ''; // Clear questions
+    quizTitleElement.textContent = ''; // Clear title
+    questionCounter.textContent = ''; // Clear counter
+    feedbackContainer.innerHTML = ''; // Clear feedback container
+    quizDropdown.value = ""; // Reset dropdown selection
 
-/**
- * Resets the quiz to its initial state.
- */
-function resetQuiz() {
-    quizData = null;
-    score = 0;
-    userAnswers = [];
-    liveCheckEnabled = false;
-    currentQuestionIndex = 0;
-    questionsSlideContainer.innerHTML = '';
-    quizTitleElement.textContent = '';
-    questionCounter.textContent = '';
-    feedbackContainer.innerHTML = '';
-    quizDropdown.value = "";
+    // Reset checkbox states
     shuffleQuestionsCheckbox.checked = false;
     shuffleOptionsCheckbox.checked = false;
     enableLiveCheckCheckbox.checked = false;
+
+    // Disable navigation buttons
     prevQuestionButton.disabled = true;
     nextQuestionButton.disabled = true;
 
-    resultsSection.classList.add('fade-out');
-    resultsSection.addEventListener('animationend', () => {
-        resultsSection.classList.add('hidden');
-        quizSection.classList.add('hidden');
-        quizSelectionSection.classList.remove('hidden');
-        quizSelectionSection.classList.add('fade-in');
-        hideError();
-    }, { once: true });
+    resultsSection.classList.add('hidden');
+    quizSection.classList.add('hidden');
+    quizSelectionSection.classList.remove('hidden');
+    hideError();
 }
 
 /**
@@ -518,3 +426,31 @@ function hideError() {
     errorMessageElement.classList.add('hidden');
     errorMessageElement.textContent = '';
 }
+
+/**
+ * Formats a string with LaTeX math for MathJax.
+ * @param {string} text - The text to format.
+ * @returns {string} The formatted HTML string.
+ */
+function formatMath(text) {
+    // Replace $$ with [math] and $ with [inline-math] to prevent early MathJax rendering
+    return text.replace(/\$\$(.*?)\$\$/g, '<span class="display-math-container">$$$1$$</span>')
+               .replace(/\$(.*?)\$/g, '<span class="inline-math-container">$$1$$</span>');
+}
+
+// Add event listener to handle MathJax updates when content changes
+document.addEventListener('DOMContentLoaded', () => {
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1 && node.querySelector('.question-text, .option-label')) {
+                        MathJax.typesetPromise([node]).catch((err) => console.error(err));
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(questionsSlideContainer, { childList: true, subtree: true });
+});
