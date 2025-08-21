@@ -322,7 +322,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "A rectangle B has a length 1.5 times its width. Which is closer to \u03d5?",
+      "question": "Two rectangles have the same width. Rectangle A has a length that follows the Golden Ratio, and Rectangle B has a length 1.5 times its width. Which is closer to \u03d5?",
       "options": [
         "a. Rectangle A",
         "b. Rectangle B",
