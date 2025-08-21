@@ -1,0 +1,280 @@
+{
+  "title": "General Science Problem-Solving Quiz",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "question": "A car accelerates from rest at a rate of $2.5 \\, \\text{m/s}^2$ for $10 \\, \\text{s}$. What is its final velocity?",
+      "options": [
+        "$$2.5 \\, \\text{m/s}$$",
+        "$$12.5 \\, \\text{m/s}$$",
+        "$$25 \\, \\text{m/s}$$",
+        "$$50 \\, \\text{m/s}$$"
+      ],
+      "correctAnswer": "$$25 \\, \\text{m/s}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A baseball with a mass of $0.15 \\, \\text{kg}$ is thrown with a force of $12 \\, \\text{N}$. What is the acceleration of the baseball?",
+      "options": [
+        "$$1.8 \\, \\text{m/s}^2$$",
+        "$$0.0125 \\, \\text{m/s}^2$$",
+        "$$80 \\, \\text{m/s}^2$$",
+        "$$12 \\, \\text{m/s}^2$$"
+      ],
+      "correctAnswer": "$$80 \\, \\text{m/s}^2$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A box is pushed with a force of $200 \\, \\text{N}$ over a distance of $5 \\, \\text{m}$. How much work is done?",
+      "options": [
+        "$$40 \\, \\text{J}$$",
+        "$$205 \\, \\text{J}$$",
+        "$$1000 \\, \\text{J}$$",
+        "$$10000 \\, \\text{J}$$"
+      ],
+      "correctAnswer": "$$1000 \\, \\text{J}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A hydraulic lift has an input piston with an area of $0.02 \\, \\text{m}^2$ and an output piston with an area of $0.8 \\, \\text{m}^2$. If a force of $50 \\, \\text{N}$ is applied to the input piston, what is the output force?",
+      "options": [
+        "$$20 \\, \\text{N}$$",
+        "$$50 \\, \\text{N}$$",
+        "$$2000 \\, \\text{N}$$",
+        "$$4000 \\, \\text{N}$$"
+      ],
+      "correctAnswer": "$$2000 \\, \\text{N}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A $12 \\, \\text{V}$ battery is connected to a resistor. If the circuit has a current of $2000 \\, \\text{mA}$, what is the resistance of the resistor?",
+      "options": [
+        "$$24 \\, \\Omega$$",
+        "$$6 \\, \\Omega$$",
+        "$$0.167 \\, \\Omega$$",
+        "$$14 \\, \\Omega$$"
+      ],
+      "correctAnswer": "$$6 \\, \\Omega$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A $2 \\, \\text{kg}$ object is dropped from a height of $5 \\, \\text{m}$. What is its potential energy just before it is dropped? (Use $g = 9.8 \\, \\text{m/s}^2$)",
+      "options": [
+        "$$9.8 \\, \\text{J}$$",
+        "$$10 \\, \\text{J}$$",
+        "$$49 \\, \\text{J}$$",
+        "$$98 \\, \\text{J}$$"
+      ],
+      "correctAnswer": "$$98 \\, \\text{J}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A pulley system lifts a $50 \\, \\text{kg}$ mass with an applied force of $100 \\, \\text{N}$. What is the mechanical advantage? (Use $g = 9.8 \\, \\text{m/s}^2$)",
+      "options": [
+        "$$0.2$$",
+        "$$0.5$$",
+        "$$4.9$$",
+        "$$2$$"
+      ],
+      "correctAnswer": "$$4.9$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "An electric appliance uses $120 \\, \\text{V}$ and draws a current of $3000 \\, \\text{mA}$. What is its power consumption?",
+      "options": [
+        "$$40 \\, \\text{W}$$",
+        "$$360 \\, \\text{W}$$",
+        "$$123 \\, \\text{W}$$",
+        "$$3600 \\, \\text{W}$$"
+      ],
+      "correctAnswer": "$$360 \\, \\text{W}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A person walks $50 \\, \\text{m}$ to the east, then $30 \\, \\text{m}$ to the north. What is the magnitude of their displacement?",
+      "options": [
+        "$$20 \\, \\text{m}$$",
+        "$$80 \\, \\text{m}$$",
+        "$$58.3 \\, \\text{m}$$",
+        "$$40 \\, \\text{m}$$"
+      ],
+      "correctAnswer": "$$58.3 \\, \\text{m}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A wheel has a radius of $0.5 \\, \\text{m}$ and is rotating at $2 \\, \\text{rad/s}$. What is the linear velocity of a point on its edge?",
+      "options": [
+        "$$1 \\, \\text{m/s}$$",
+        "$$2.5 \\, \\text{m/s}$$",
+        "$$4 \\, \\text{m/s}$$",
+        "$$10 \\, \\text{m/s}$$"
+      ],
+      "correctAnswer": "$$1 \\, \\text{m/s}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "If $200 \\, \\text{J}$ of work is done on a machine and the output work is $150 \\, \\text{J}$, what is the efficiency of the machine?",
+      "options": [
+        "$$75\\%$$",
+        "$$66.7\\%$$",
+        "$$133\\%$$",
+        "$$50\\%$$"
+      ],
+      "correctAnswer": "$$75\\%$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A $5 \\, \\text{kg}$ object is moving at $10 \\, \\text{m/s}$. What is its kinetic energy?",
+      "options": [
+        "$$25 \\, \\text{J}$$",
+        "$$50 \\, \\text{J}$$",
+        "$$250 \\, \\text{J}$$",
+        "$$500 \\, \\text{J}$$"
+      ],
+      "correctAnswer": "$$250 \\, \\text{J}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A force of $5 \\, \\text{N}$ is applied to a piston with an area of $0.01 \\, \\text{m}^2$. What is the pressure exerted on the fluid?",
+      "options": [
+        "$$5 \\, \\text{Pa}$$",
+        "$$0.05 \\, \\text{Pa}$$",
+        "$$50 \\, \\text{Pa}$$",
+        "$$500 \\, \\text{Pa}$$"
+      ],
+      "correctAnswer": "$$500 \\, \\text{Pa}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A motor performs $600 \\, \\text{J}$ of work in $2 \\, \\text{s}$. What is the power of the motor?",
+      "options": [
+        "$$1200 \\, \\text{W}$$",
+        "$$300 \\, \\text{W}$$",
+        "$$602 \\, \\text{W}$$",
+        "$$600 \\, \\text{W}$$"
+      ],
+      "correctAnswer": "$$300 \\, \\text{W}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the buoyant force on a $0.5 \\, \\text{m}^3$ block submerged in water? (The density of water is $1000 \\, \\text{kg/m}^3$ and $g = 9.8 \\, \\text{m/s}^2$)",
+      "options": [
+        "$$500 \\, \\text{N}$$",
+        "$$4900 \\, \\text{N}$$",
+        "$$490 \\, \\text{N}$$",
+        "$$1000 \\, \\text{N}$$"
+      ],
+      "correctAnswer": "$$4900 \\, \\text{N}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A $1.5 \\, \\text{V}$ cell supplies a current of $200 \\, \\text{mA}$ to a small bulb. What is the power consumed by the bulb?",
+      "options": [
+        "$$0.3 \\, \\text{W}$$",
+        "$$0.75 \\, \\text{W}$$",
+        "$$7.5 \\, \\text{W}$$",
+        "$$0.3 \\, \\text{J}$$"
+      ],
+      "correctAnswer": "$$0.3 \\, \\text{W}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "How much time does it take a car to travel a distance of $150 \\, \\text{km}$ at an average speed of $75 \\, \\text{km/h}$?",
+      "options": [
+        "$$1 \\, \\text{hour}$$",
+        "$$2 \\, \\text{hours}$$",
+        "$$0.5 \\, \\text{hours}$$",
+        "$$2.5 \\, \\text{hours}$$"
+      ],
+      "correctAnswer": "$$2 \\, \\text{hours}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A block of wood with a volume of $0.01 \\, \\text{m}^3$ has a mass of $5 \\, \\text{kg}$. What is its density?",
+      "options": [
+        "$$500 \\, \\text{kg/m}^3$$",
+        "$$0.002 \\, \\text{kg/m}^3$$",
+        "$$50 \\, \\text{kg/m}^3$$",
+        "$$5000 \\, \\text{kg/m}^3$$"
+      ],
+      "correctAnswer": "$$500 \\, \\text{kg/m}^3$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A crane lifts a $1000 \\, \\text{kg}$ crate to a height of $5 \\, \\text{m}$. How much potential energy is gained by the crate? (Use $g = 9.8 \\, \\text{m/s}^2$)",
+      "options": [
+        "$$5000 \\, \\text{J}$$",
+        "$$9800 \\, \\text{J}$$",
+        "$$49000 \\, \\text{J}$$",
+        "$$98000 \\, \\text{J}$$"
+      ],
+      "correctAnswer": "$$49000 \\, \\text{J}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A resistor has a voltage of $10 \\, \\text{V}$ across it and a resistance of $5 \\, \\Omega$. What is the current flowing through it in milliamperes?",
+      "options": [
+        "$$2 \\, \\text{mA}$$",
+        "$$50 \\, \\text{mA}$$",
+        "$$500 \\, \\text{mA}$$",
+        "$$2000 \\, \\text{mA}$$"
+      ],
+      "correctAnswer": "$$2000 \\, \\text{mA}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the total voltage of four $1.5 \\, \\text{V}$ batteries connected in series?",
+      "options": [
+        "$$1.5 \\, \\text{V}$$",
+        "$$3.0 \\, \\text{V}$$",
+        "$$4.5 \\, \\text{V}$$",
+        "$$6.0 \\, \\text{V}$$"
+      ],
+      "correctAnswer": "$$6.0 \\, \\text{V}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Four $1.5 \\, \\text{V}$ batteries are connected in series to a $12 \\, \\Omega$ resistor. What is the total current in milliamperes?",
+      "options": [
+        "$$125 \\, \\text{mA}$$",
+        "$$250 \\, \\text{mA}$$",
+        "$$500 \\, \\text{mA}$$",
+        "$$1000 \\, \\text{mA}$$"
+      ],
+      "correctAnswer": "$$500 \\, \\text{mA}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A circuit has a current of $500 \\, \\text{mA}$. What is this current in Amperes?",
+      "options": [
+        "$$0.05 \\, \\text{A}$$",
+        "$$0.5 \\, \\text{A}$$",
+        "$$5.0 \\, \\text{A}$$",
+        "$$50 \\, \\text{A}$$"
+      ],
+      "correctAnswer": "$$0.5 \\, \\text{A}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A device has a voltage of $6 \\, \\text{V}$ and draws a current of $1500 \\, \\text{mA}$. What is its power consumption in Watts?",
+      "options": [
+        "$$0.9 \\, \\text{W}$$",
+        "$$9.0 \\, \\text{W}$$",
+        "$$90 \\, \\text{W}$$",
+        "$$900 \\, \\text{W}$$"
+      ],
+      "correctAnswer": "$$9.0 \\, \\text{W}$$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the total voltage of two $1.5 \\, \\text{V}$ batteries connected in parallel?",
+      "options": [
+        "$$0.75 \\, \\text{V}$$",
+        "$$1.5 \\, \\text{V}$$",
+        "$$3.0 \\, \\text{V}$$",
+        "$$4.5 \\, \\text{V}$$"
+      ],
+      "correctAnswer": "$$1.5 \\, \\text{V}$$"
+    }
+  ]
+}
