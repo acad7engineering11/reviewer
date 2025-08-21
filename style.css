@@ -127,3 +127,8 @@ body {
 .feedback-icon.incorrect {
     @apply text-red-400;
 }
+
+.question-card .text-lg.font-medium.text-gray-900,
+.question-card .ml-3.text-base.text-gray-700 {
+    @apply text-gray-100;
+}
