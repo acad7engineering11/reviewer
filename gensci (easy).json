@@ -305,7 +305,38 @@
       "type": "fill_in_the_blank",
       "question": "The spreading of light waves as they pass through an opening is called **________**.",
       "correctAnswer": "diffraction"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "According to Pascal's Principle, how is pressure related to force and area in a closed hydraulic system?",
+      "options": [
+        "Pressure is constant throughout the system, so $$\\frac{F_1}{A_1} = \\frac{F_2}{A_2}$$",
+        "Pressure is directly proportional to force and inversely proportional to area.",
+        "Pressure is always greater on the larger piston.",
+        "Pressure is transmitted only to the bottom of the container."
+      ],
+      "correctAnswer": "Pressure is constant throughout the system, so $$\\frac{F_1}{A_1} = \\frac{F_2}{A_2}$$"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "In a hydraulic system, a small input force applied over a small area can produce a large output force over a large area. This is known as force **________**.",
+      "correctAnswer": "multiplication"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A hydraulic jack is used to lift a car. If the input piston has an area of $0.05 \\, \\text{m}^2$ and the output piston has an area of $1 \\, \\text{m}^2$, what is the ratio of the output force to the input force?",
+      "options": [
+        "1:20",
+        "20:1",
+        "1:1",
+        "10:1"
+      ],
+      "correctAnswer": "20:1"
+    },
+    {
+      "type": "fill_in_the_blank",
+      "question": "The relation $P_1 = P_2$ is a mathematical representation of **________**.",
+      "correctAnswer": "Pascal's Principle"
     }
   ]
 }
-
