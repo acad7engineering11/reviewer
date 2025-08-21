@@ -1,0 +1,445 @@
+{
+  "title": "Finite Math Reviewer",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "question": "Which transformation changes the size of an object but keeps its shape?",
+      "options": [
+        "a. Rotation",
+        "b. Scaling",
+        "c. Shearing",
+        "d. Translation"
+      ],
+      "correctAnswer": "b. Scaling"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A shear transformation will:",
+      "options": [
+        "a. Tilt an object while keeping one side fixed",
+        "b. Flip the shape over an axis",
+        "c. Shrink the shape uniformly",
+        "d. Rotate the shape about the origin"
+      ],
+      "correctAnswer": "a. Tilt an object while keeping one side fixed"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "If a transformation preserves the shape and size of an object, it is:",
+      "options": [
+        "a. Rigid motion",
+        "b. Scaling",
+        "c. Shearing",
+        "d. Dilation"
+      ],
+      "correctAnswer": "a. Rigid motion"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which transformation moves a point $(x,y)$ to $(-x,y)$?",
+      "options": [
+        "a. Reflection across the x-axis",
+        "b. Reflection across the y-axis",
+        "c. Rotation 180° about the origin",
+        "d. Scaling by -1 in the y-direction"
+      ],
+      "correctAnswer": "b. Reflection across the y-axis"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Scaling is defined by which two parameters?",
+      "options": [
+        "a. Angle and axis of rotation",
+        "b. Length and direction",
+        "c. Shear factor and scale",
+        "d. Center and size"
+      ],
+      "correctAnswer": "d. Center and size"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which transformation has no fixed points except when the distance moved is zero?",
+      "options": [
+        "a. Translation",
+        "b. Reflection",
+        "c. Rotation",
+        "d. Scaling"
+      ],
+      "correctAnswer": "a. Translation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A triangle is rotated 180° about the origin. What is the image of the point $(3,-2)$?",
+      "options": [
+        "a. $(-3,2)$",
+        "b. $(3,2)$",
+        "c. $(-3,-2)$",
+        "d. $(3,-2)$"
+      ],
+      "correctAnswer": "a. $(-3,2)$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A figure is enlarged by a scale factor of 3 with respect to the origin. The point $(4,-1)$ maps to:",
+      "options": [
+        "a. $(12,-3)$",
+        "b. $(7,-4)$",
+        "c. $(1.33,-0.33)$",
+        "d. $(4,-3)$"
+      ],
+      "correctAnswer": "a. $(12,-3)$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which sequence of transformations could map a flag at $(2,3)$ to $(-2,-3)$?",
+      "options": [
+        "a. Reflection across the y-axis, then reflection across the x-axis",
+        "b. Rotation 90° counterclockwise",
+        "c. Scaling by factor 2, then reflection across y-axis",
+        "d. Translation left 4 units"
+      ],
+      "correctAnswer": "a. Reflection across the y-axis, then reflection across the x-axis"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "If a transformation preserves angles but changes lengths, it is:",
+      "options": [
+        "a. Isometry",
+        "b. Non-isometric similarity transformation",
+        "c. Shearing",
+        "d. Translation"
+      ],
+      "correctAnswer": "b. Non-isometric similarity transformation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following best describes tessellation?",
+      "options": [
+        "a. The art of folding paper into shapes",
+        "b. A pattern that covers a surface without gaps or overlaps",
+        "c. A pattern that repeats in three dimensions only",
+        "d. The study of plant growth patterns"
+      ],
+      "correctAnswer": "b. A pattern that covers a surface without gaps or overlaps"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following shapes can form a regular tessellation?",
+      "options": [
+        "a. Regular pentagon",
+        "b. Regular octagon",
+        "c. Regular hexagon",
+        "d. Scalene triangle"
+      ],
+      "correctAnswer": "c. Regular hexagon"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following is not a regular polygon that can tessellate by itself?",
+      "options": [
+        "a. Square",
+        "b. Equilateral triangle",
+        "c. Regular hexagon",
+        "d. Regular pentagon"
+      ],
+      "correctAnswer": "d. Regular pentagon"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which type of symmetry is common in tessellations?",
+      "options": [
+        "a. Only rotational",
+        "b. Only reflectional",
+        "c. Both reflectional and rotational",
+        "d. Rotational, reflectional, and translational"
+      ],
+      "correctAnswer": "d. Rotational, reflectional, and translational"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which real-life example is an irregular tessellation?",
+      "options": [
+        "a. Honeycomb cells",
+        "b. M. C. Escher's artwork of interlocking birds and fish",
+        "c. Checkerboard",
+        "d. Tiled bathroom floor made of identical hexagons"
+      ],
+      "correctAnswer": "b. M. C. Escher's artwork of interlocking birds and fish"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which tessellation type is formed by repeating a square in a grid pattern?",
+      "options": [
+        "a. Regular tessellation",
+        "b. Semi-regular tessellation",
+        "c. Irregular tessellation",
+        "d. Spiral tessellation"
+      ],
+      "correctAnswer": "a. Regular tessellation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A tiling pattern uses two regular polygons: squares and equilateral triangles. What type of tessellation is it?",
+      "options": [
+        "a. Regular",
+        "b. Semi-regular",
+        "c. Irregular",
+        "d. Non-tessellation"
+      ],
+      "correctAnswer": "b. Semi-regular"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which property ensures that a shape can tessellate the plane?",
+      "options": [
+        "a. Its interior angles divide evenly into 180°",
+        "b. Its interior angles sum to 180°",
+        "c. Its interior angles divide evenly into 360°",
+        "d. It has more than 4 sides"
+      ],
+      "correctAnswer": "c. Its interior angles divide evenly into 360°"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A brick wall pattern uses rectangles in rows, with each row offset from the previous one. This is an example of:",
+      "options": [
+        "a. Translation symmetry",
+        "b. Rotation symmetry",
+        "c. Glide reflection symmetry",
+        "d. No symmetry"
+      ],
+      "correctAnswer": "c. Glide reflection symmetry"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is a frieze pattern?",
+      "options": [
+        "a. A pattern that covers a whole plane without gaps",
+        "b. A repeating pattern that extends infinitely in one direction",
+        "c. A design made with circles",
+        "d. A three-dimensional mosaic"
+      ],
+      "correctAnswer": "b. A repeating pattern that extends infinitely in one direction"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "How many types of frieze patterns are there according to symmetry classification?",
+      "options": [
+        "a. 4",
+        "b. 5",
+        "c. 7",
+        "d. 8"
+      ],
+      "correctAnswer": "c. 7"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which symmetry is always present in a frieze pattern?",
+      "options": [
+        "a. Reflection symmetry",
+        "b. Translation symmetry",
+        "c. Rotation symmetry",
+        "d. Glide reflection symmetry"
+      ],
+      "correctAnswer": "b. Translation symmetry"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "If a frieze pattern has both translation and 180° rotation, which type of symmetry does it have?",
+      "options": [
+        "a. Pure translation",
+        "b. Translation + rotation",
+        "c. Translation + reflection",
+        "d. Reflection only"
+      ],
+      "correctAnswer": "b. Translation + rotation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What is the approximate value of the Golden Ratio ($\u03d5$)?",
+      "options": [
+        "a. 1.414",
+        "b. 1.618",
+        "c. 3.142",
+        "d. 2.718"
+      ],
+      "correctAnswer": "b. 1.618"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "The Golden Ratio is most commonly represented by which Greek letter?",
+      "options": [
+        "a. \u03d5",
+        "b. \u03c0",
+        "c. \u03b1",
+        "d. \u03b8"
+      ],
+      "correctAnswer": "a. \u03d5"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following best defines the Golden Ratio?",
+      "options": [
+        "a. The sum of two numbers divided by the larger is equal to the larger divided by the smaller",
+        "b. The product of two numbers equals their sum",
+        "c. The sum of two numbers equals the square of the larger number",
+        "d. The difference between two numbers equals the smaller number"
+      ],
+      "correctAnswer": "a. The sum of two numbers divided by the larger is equal to the larger divided by the smaller"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which is the main difference between a fractal and a regular polygon?",
+      "options": [
+        "a. Fractals have fixed sizes",
+        "b. Fractals show infinite detail at different scales, polygons do not",
+        "c. Polygons are irregular, fractals are always regular",
+        "d. Fractals have no patterns"
+      ],
+      "correctAnswer": "b. Fractals show infinite detail at different scales, polygons do not"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A rectangle has a width of 8 cm. If it is in the Golden Ratio, what is its approximate length?",
+      "options": [
+        "a. 8 cm",
+        "b. 12.94 cm",
+        "c. 10 cm",
+        "d. 16 cm"
+      ],
+      "correctAnswer": "b. 12.94 cm"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A sunflower has a spiral in one direction and 55 in the opposite direction. Which mathematical concept does this illustrate?",
+      "options": [
+        "a. Prime numbers",
+        "b. Golden ratio",
+        "c. Fibonacci sequence",
+        "d. Symmetry"
+      ],
+      "correctAnswer": "c. Fibonacci sequence"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A rectangle B has a length 1.5 times its width. Which is closer to \u03d5?",
+      "options": [
+        "a. Rectangle A",
+        "b. Rectangle B",
+        "c. Both are equal",
+        "d. Neither"
+      ],
+      "correctAnswer": "a. Rectangle A"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A rectangle is constructed with side lengths in the Golden Ratio, \u03d5. If the shorter side is 5 cm, what is the length of the longer side, to the nearest hundredth of a centimeter?",
+      "options": [
+        "a. 5.00 cm",
+        "b. 8.09 cm",
+        "c. 9.21 cm",
+        "d. 6.62 cm"
+      ],
+      "correctAnswer": "b. 8.09 cm"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following is a key characteristic of fractal geometry?",
+      "options": [
+        "a. It is made of straight lines only",
+        "b. It repeats smaller versions of its shape along its structure",
+        "c. It has no symmetry",
+        "d. It is a one-dimensional curve"
+      ],
+      "correctAnswer": "b. It repeats smaller versions of its shape along its structure"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which mathematical concept helps in creating tessellations in digital art and animation?",
+      "options": [
+        "a. Calculus",
+        "b. Coordinate geometry",
+        "c. Boolean algebra",
+        "d. Probability"
+      ],
+      "correctAnswer": "b. Coordinate geometry"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "In a tiled mosaic, a floral motif is repeated across the floor in evenly spaced rows and columns. Which symmetry transformation is primarily used?",
+      "options": [
+        "a. Translation",
+        "b. Reflection",
+        "c. Rotation",
+        "d. Spiral"
+      ],
+      "correctAnswer": "a. Translation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "If you cut a snowflake pattern along one of its lines of symmetry, what would you observe about the two halves?",
+      "options": [
+        "a. They are identical mirror images",
+        "b. They are rotated copies",
+        "c. They are scaled versions of each other",
+        "d. They have different shapes but equal areas"
+      ],
+      "correctAnswer": "a. They are identical mirror images"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which linear transformation moves every point of a shape by the same distance in the same direction?",
+      "options": [
+        "a. Rotation",
+        "b. Translation",
+        "c. Reflection",
+        "d. Shearing"
+      ],
+      "correctAnswer": "b. Translation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A pentagon is reflected over the y-axis and then translated 4 units up. What is the image of $(-5,2)$?",
+      "options": [
+        "a. $(-5,6)$",
+        "b. $(5,6)$",
+        "c. $(-5,-2)$",
+        "d. $(5,-2)$"
+      ],
+      "correctAnswer": "b. $(5,6)$"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A rectangle is first scaled by a factor of 0.5 in both directions, then rotated 90° counterclockwise. Which property is preserved?",
+      "options": [
+        "a. Area",
+        "b. Shape proportion",
+        "c. Orientation",
+        "d. Size"
+      ],
+      "correctAnswer": "b. Shape proportion"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "A pattern is created by repeatedly reflecting a triangle across different lines to fill the plane. This process is most related to:",
+      "options": [
+        "a. Rotation",
+        "b. Symmetry in tessellations",
+        "c. Shearing",
+        "d. Scaling"
+      ],
+      "correctAnswer": "b. Symmetry in tessellations"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which transformation flips a figure over a line, producing a mirror image?",
+      "options": [
+        "a. Rotation",
+        "b. Reflection",
+        "c. Scaling",
+        "d. Translation"
+      ],
+      "correctAnswer": "b. Reflection"
+    }
+  ]
+}
