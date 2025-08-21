@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STEM 11 ENGINEERING REVIEWER</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
+    <title>ACAD 7 REVIEWER</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- MathJax CDN for LaTeX rendering -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" id="MathJax-script" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
@@ -23,74 +20,62 @@
             }
         };
     </script>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('style.css');
+    </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center min-h-screen p-4">
-    <div class="container animated-card">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">ACAD 7 REVIEWER</h1>
+<body class="bg-gray-900 text-gray-100 flex items-center justify-center min-h-screen p-4 transition-colors duration-500">
+    <div class="container">
+        <h1 class="text-3xl font-bold text-center mb-4 transition-colors duration-500">ACAD 7 REVIEWER</h1>
 
-        <!-- Quiz Selection Section -->
-        <div id="quiz-selection-section" class="flex flex-col items-center justify-center p-6 bg-white bg-opacity-90 rounded-2xl shadow-xl transition-all duration-500">
+        <div id="quiz-selection-section">
             <div class="file-select-container">
-                <p class="text-center text-lg text-gray-700 mb-2">Select a predefined quiz from the list:</p>
+                <p class="text-center text-lg mb-2">Select a predefined quiz:</p>
                 <select id="quiz-dropdown" class="quiz-select">
                     <option value="" disabled selected>-- Select a Quiz --</option>
-                    <option value="gensci.json">General Science Reviewer</option>
-                    <option value="finite_math.json">Finite Mathematics Reviewer</option>
                 </select>
-                <button id="load-quiz-button" class="submit-button w-full max-w-sm mt-4">Load Quiz</button>
+                <button id="load-quiz-button" class="action-button mt-4">Load Quiz</button>
             </div>
-
             <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 mt-4 w-full justify-center">
                 <div class="flex items-center">
-                    <input type="checkbox" id="shuffleQuestions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="shuffleQuestions" class="ml-2 text-gray-700">Shuffle Questions</label>
+                    <input type="checkbox" id="shuffleQuestions" class="checkbox">
+                    <label for="shuffleQuestions" class="ml-2">Shuffle Questions</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="shuffleOptions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="shuffleOptions" class="ml-2 text-gray-700">Shuffle Options</label>
+                    <input type="checkbox" id="shuffleOptions" class="checkbox">
+                    <label for="shuffleOptions" class="ml-2">Shuffle Options</label>
                 </div>
                 <div class="flex items-center">
-                    <input type="checkbox" id="enableLiveCheck" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="enableLiveCheck" class="ml-2 text-gray-700">Enable Live Check</label>
+                    <input type="checkbox" id="enableLiveCheck" class="checkbox">
+                    <label for="enableLiveCheck" class="ml-2">Enable Live Check</label>
                 </div>
             </div>
-            <p class="text-center text-sm text-gray-500 mt-4">Created by non other than ACAD 7 11 STEM ENGINEERING Students of Lumbia National Highschool!</p>
         </div>
 
-        <!-- Quiz Display Section (Initially Hidden) -->
         <div id="quiz-section" class="hidden">
-            <h2 id="quiz-title" class="text-2xl font-semibold text-gray-800 mb-6 text-center"></h2>
-            <p id="question-counter" class="text-center text-gray-600 mb-4"></p>
-            <div id="questions-slide-container" class="relative">
-                <!-- Questions will be dynamically loaded here, only one visible at a time -->
-            </div>
+            <h2 id="quiz-title" class="text-2xl font-semibold mb-6 text-center"></h2>
+            <p id="question-counter" class="text-center text-gray-400 mb-4"></p>
+            <div id="questions-slide-container" class="relative"></div>
             <div class="flex justify-between mt-6">
-                <button id="prev-question" class="nav-button px-4 py-2">Back</button>
-                <button id="next-question" class="nav-button px-4 py-2">Next</button>
+                <button id="prev-question" class="nav-button">Back</button>
+                <button id="next-question" class="nav-button">Next</button>
             </div>
-            <button id="submit-quiz" class="submit-button w-full mt-6">Submit Quiz</button>
+            <button id="submit-quiz" class="action-button mt-6 w-full">Submit Quiz</button>
         </div>
 
-        <!-- Results Section (Initially Hidden) -->
         <div id="results-section" class="hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Quiz Results</h2>
-            <p id="score-display" class="text-xl font-bold text-center text-gray-700 mb-4"></p>
+            <h2 class="text-2xl font-semibold text-center mb-4">Quiz Results</h2>
+            <p id="score-display" class="text-xl font-bold text-center mb-4"></p>
             <div id="feedback-message" class="result-message hidden"></div>
             <div id="answers-breakdown" class="mt-8">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Your Answers Breakdown</h3>
-                <div id="feedback-container">
-                    <!-- Individual answer feedback will be loaded here -->
-                </div>
+                <h3 class="text-xl font-semibold text-center mb-4">Your Answers Breakdown</h3>
+                <div id="feedback-container"></div>
             </div>
-            <button id="retake-quiz" class="submit-button w-full mt-6">Retake Quiz</button>
+            <button id="retake-quiz" class="action-button w-full mt-6">Retake Quiz</button>
         </div>
 
-        <!-- Error Message Display -->
         <div id="error-message" class="error-message hidden"></div>
     </div>
-
-    <script src="main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
