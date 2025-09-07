@@ -181,6 +181,9 @@
                         <select id="lesson-dropdown" class="mt-1 block w-full max-w-sm pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md">
                             <option value="">Select a lesson...</option>
                         </select>
+                        <button id="start-lesson-btn" class="w-full max-w-sm px-6 py-3 mt-4 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors hidden">
+                            Start Lesson
+                        </button>
                     </div>
 
                     <button id="back-from-lessons-btn" class="w-full max-w-sm px-6 py-3 bg-gray-400 text-white rounded-lg shadow-md hover:bg-gray-500 transition-colors">
@@ -278,6 +281,7 @@
         const lessonQuarterDropdown = document.getElementById('lesson-quarter-dropdown');
         const lessonSelectionContainer = document.getElementById('lesson-selection-container');
         const lessonDropdown = document.getElementById('lesson-dropdown');
+        const startLessonBtn = document.getElementById('start-lesson-btn'); // New button for lessons
 
         const quizTitleElement = document.getElementById('quiz-title');
         const questionsSlideContainer = document.getElementById('questions-slide-container');
@@ -399,6 +403,15 @@
                 populateContentDropdown(lessonQuarterDropdown, lessonDropdown, 'guide lessons');
             }
         });
+        
+        // New event listener for the lesson dropdown to show the "Start Lesson" button
+        lessonDropdown.addEventListener('change', () => {
+            if (lessonDropdown.value) {
+                startLessonBtn.classList.remove('hidden');
+            } else {
+                startLessonBtn.classList.add('hidden');
+            }
+        });
 
         startExamBtn.addEventListener('click', () => {
             const quarter = examQuarterDropdown.value;
@@ -414,7 +427,7 @@
                     })
                     .then(data => {
                         hideLoading();
-                        startQuiz(data.name, data.questions);
+                        startQuiz(data.title, data.questions);
                     })
                     .catch(error => {
                         hideLoading();
@@ -423,6 +436,32 @@
                     });
             } else {
                 showError("Please select an exam to start.");
+            }
+        });
+        
+        // New event listener for the lesson "Start" button
+        startLessonBtn.addEventListener('click', () => {
+            const filePath = lessonDropdown.value;
+            if (filePath) {
+                showLoading();
+                fetch(filePath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to load ${filePath}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        hideLoading();
+                        startQuiz(data.title, data.questions);
+                    })
+                    .catch(error => {
+                        hideLoading();
+                        showError(error.message);
+                        console.error("Error loading lesson data:", error);
+                    });
+            } else {
+                showError("Please select a lesson to start.");
             }
         });
 
