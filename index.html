@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,19 @@
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- MathJax CDN for LaTeX rendering -->
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         // MathJax configuration to process inline math with $...$ and display math with $$...$$
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)']
+                ],
+                displayMath: [
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ]
             },
             svg: {
                 fontCache: 'global'
@@ -27,932 +32,555 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
+            background-color: #f3f4f6;
+            /* Light gray background */
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top for better content flow */
-            min-height: 100vh; /* Full viewport height */
+            align-items: center;
+            min-height: 100vh;
             padding: 1rem;
-            box-sizing: border-box;
         }
+
         .container {
-            background-color: #ffffff;
-            border-radius: 1rem; /* Rounded corners */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-            max-width: 90%; /* Responsive max-width */
             width: 100%;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        @media (min-width: 768px) { /* Medium screens and up (tablet landscape, desktop) */
-            .container {
-                max-width: 768px; /* Max width for larger screens */
-            }
-        }
-        .file-select-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            background-color: #f9fafb;
-            border-radius: 0.75rem;
-            border: 2px dashed #e5e7eb;
-        }
-        .quiz-select {
-            width: 100%;
-            max-width: 300px;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
+            max-width: 800px;
             background-color: #ffffff;
-            font-size: 1rem;
-            color: #374151;
-            margin-top: 0.75rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-top: 1rem;
         }
-        .question-card, .fill-in-the-blank-card {
-            background-color: #f9fafb; /* Lighter background for question cards */
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Very subtle shadow */
-            /* Ensure only one question is visible at a time */
-            display: none; /* Hidden by default */
-        }
-        .question-card.active {
-            display: block; /* Show active multiple-choice question */
-        }
-        .fill-in-the-blank-card.active {
-            display: flex; /* Show active fill-in-the-blank question as flex */
-        }
-        .option-label {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e7eb; /* Light gray border */
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-        }
-        .option-label:hover {
-            background-color: #f3f4f6; /* Light gray on hover */
-            border-color: #d1d5db;
-        }
-        .option-label input[type="radio"] {
-            margin-right: 0.75rem;
-            accent-color: #4f46e5; /* Indigo accent color for radio buttons */
-        }
-        .submit-button, .nav-button {
-            background-color: #4f46e5; /* Indigo */
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .submit-button:hover, .nav-button:hover {
-            background-color: #4338ca; /* Darker indigo on hover */
-            transform: translateY(-1px); /* Slight lift effect */
-        }
-        .submit-button:active, .nav-button:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-        .nav-button:disabled, .submit-button:disabled {
-            background-color: #9ca3af; /* Gray for disabled */
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        .result-message {
+
+        .container>div {
             padding: 1rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            margin-top: 1rem;
         }
-        .result-message.pass {
-            background-color: #d1fae5; /* Light green */
-            color: #065f46; /* Dark green text */
+
+        .slide-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            /* For smooth scrolling on iOS */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
         }
-        .result-message.fail {
-            background-color: #fee2e2; /* Light red */
-            color: #991b1b; /* Dark red text */
+
+        .slide-container::-webkit-scrollbar {
+            display: none;
         }
-        .error-message {
-            color: #dc2626; /* Red text for errors */
-            font-weight: 600;
-            text-align: center;
-            margin-top: 1rem;
+
+        .question-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            min-width: 100%;
         }
+
         .hidden {
             display: none;
         }
-        /* Styles for individual answer feedback */
-        .answer-feedback-item {
-            background-color: #f9fafb;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-        .answer-feedback-item p {
-            margin-bottom: 0.5rem;
-        }
-        .answer-feedback-item .question-text {
-            font-weight: 600;
-            color: #374151;
-        }
-        .answer-feedback-item .your-answer {
-            color: #4b5563;
-        }
-        .answer-feedback-item .correct-answer {
-            color: #10b981; /* Green for correct */
-            font-weight: 500;
-        }
-        .answer-feedback-item.incorrect .your-answer {
-            color: #ef4444; /* Red for incorrect */
-            font-weight: 500;
-        }
-        .answer-feedback-item .feedback-icon {
-            margin-left: 0.5rem;
-            font-size: 1.2em;
-        }
-        .feedback-icon.correct {
-            color: #10b981;
-        }
-        .feedback-icon.incorrect {
-            color: #ef4444;
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
         }
 
-        /* Live Check Feedback Styles */
-        .option-label.correct-live {
-            background-color: #d1fae5; /* Light green */
-            border-color: #065f46; /* Dark green border */
-        }
-        .option-label.incorrect-live {
-            background-color: #fee2e2; /* Light red */
-            border-color: #991b1b; /* Dark red border */
-        }
-        .option-label.correct-live .ml-3,
-        .option-label.incorrect-live .ml-3 {
-            color: #374151; /* Keep text color readable */
-        }
-        .option-label.correct-live input[type="radio"],
-        .option-label.incorrect-live input[type="radio"] {
-            accent-color: #065f46; /* Match accent color */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #000;
+            animation: spin 1s ease infinite;
         }
 
-        /* Fill-in-the-blank specific styles */
-        .fill-in-the-blank-card {
-            flex-direction: column; /* Ensure column layout for content */
-            align-items: center; /* Center content horizontally */
-            text-align: center;
-        }
-        .fill-in-the-blank-card .question-text {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 1rem;
-        }
-        .fill-in-the-blank-card .reveal-answer-button {
-            background-color: #3b82f6; /* Blue */
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            margin-top: 1rem;
-        }
-        .fill-in-the-blank-card .reveal-answer-button:hover {
-            background-color: #2563eb;
-            transform: translateY(-1px);
-        }
-        .fill-in-the-blank-card .revealed-answer {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #10b981; /* Green for revealed answer */
-            margin-top: 1rem;
-            display: none; /* Hidden by default */
-        }
-        .fill-in-the-blank-card .revealed-answer.show {
-            display: block;
-        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        /* Responsive adjustments for the slide container */
-        #questions-slide-container {
-            position: relative;
-            flex-grow: 1; /* Allow it to grow and take available space */
-            display: flex; /* To manage child question cards */
-            justify-content: center; /* Center question card horizontally */
-            align-items: center; /* Center question card vertically */
-            overflow: hidden; /* Hide overflow from non-active slides */
-            padding-bottom: 2rem; /* Add some padding at the bottom for content that might extend */
-            min-height: 250px; /* Ensure a reasonable minimum height for content */
-        }
-
-        /* Adjustments for smaller screens, especially landscape */
-        @media (max-width: 767px) {
-            .container {
-                padding: 0.5rem; /* Reduce overall padding on small screens */
-                gap: 1rem; /* Reduce gap between sections */
-            }
-            .question-card, .fill-in-the-blank-card {
-                padding: 1rem; /* Reduce padding inside question cards */
-            }
-            .option-label {
-                padding: 0.6rem 0.8rem; /* Adjust option padding */
-                font-size: 0.9rem; /* Slightly smaller font for options */
-            }
-            .question-text {
-                font-size: 1.1rem; /* Adjust question font size */
-            }
-            .nav-button, .submit-button, .reveal-answer-button {
-                padding: 0.6rem 1rem; /* Smaller buttons */
-                font-size: 0.9rem;
-            }
-            #questions-slide-container {
-                min-height: 200px; /* Slightly smaller min-height for very small screens */
+            100% {
+                transform: rotate(360deg);
             }
         }
 
-        /* Specific adjustments for landscape orientation on small devices */
-        @media (max-height: 500px) and (max-width: 900px) {
-            body {
-                padding: 0.5rem;
-                align-items: center;
-            }
-            .container {
-                padding: 0.8rem;
-                max-height: 95vh;
-                overflow-y: auto;
-            }
-            #questions-slide-container {
-                min-height: 150px;
-                padding-bottom: 1rem;
-            }
-            .question-text {
-                font-size: 1rem;
-            }
-            .option-label {
-                font-size: 0.85rem;
-            }
+        .question-container {
+            min-height: 200px;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="container">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">ACAD 7 REVIEWER</h1>
 
-        <!-- Quiz Selection Section -->
-        <div id="quiz-selection-section" class="flex flex-col items-center justify-center p-6 bg-indigo-50 rounded-lg shadow-inner">
-            <div class="file-select-container">
-                <p class="text-center text-lg text-gray-700 mb-2">Select a predefined quiz from the list:</p>
-                <select id="quiz-dropdown" class="quiz-select">
-                    <option value="" disabled selected>-- Select a Quiz --</option>
-                </select>
-                <button id="load-quiz-button" class="submit-button w-full max-w-sm mt-4">Load Quiz</button>
+<body>
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    <div class="container mx-auto">
+        <!-- Main Application View -->
+        <div id="main-view" class="text-gray-800">
+            <header class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-gray-900">STEM 11 ENGINEERING REVIEWER</h1>
+                <p class="mt-2 text-md text-gray-600">Prepare for your exams and review guide lessons with this interactive tool.</p>
+            </header>
+
+            <!-- Home Section -->
+            <div id="home-section" class="flex flex-col items-center justify-center p-6 space-y-4">
+                <h2 class="text-2xl font-semibold mb-4">Choose a Section</h2>
+                <button id="exams-btn" class="w-full max-w-sm px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
+                    Exams
+                </button>
+                <button id="guide-lessons-btn" class="w-full max-w-sm px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-colors">
+                    Guide Lessons
+                </button>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 mt-4 w-full justify-center">
-                <div class="flex items-center">
-                    <input type="checkbox" id="shuffleQuestions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="shuffleQuestions" class="ml-2 text-gray-700">Shuffle Questions</label>
+            <!-- Exams Section -->
+            <div id="exams-section" class="hidden p-6 space-y-6">
+                <h2 class="text-2xl font-semibold text-center mb-4">Exams</h2>
+                <div class="flex flex-col items-center space-y-4">
+                    <label for="exam-quarter-dropdown" class="block text-sm font-medium text-gray-700">Select Exam Quarter</label>
+                    <select id="exam-quarter-dropdown" class="mt-1 block w-full max-w-sm pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="">Select a quarter...</option>
+                    </select>
+
+                    <div id="exam-selection-container" class="w-full hidden">
+                        <label for="exam-dropdown" class="block text-sm font-medium text-gray-700 mt-4">Select Exam</label>
+                        <select id="exam-dropdown" class="mt-1 block w-full max-w-sm pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="">Select an exam...</option>
+                        </select>
+                    </div>
+
+                    <button id="start-exam-btn" class="w-full max-w-sm px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-colors hidden">
+                        Start Exam
+                    </button>
+                    <button id="back-from-exams-btn" class="w-full max-w-sm px-6 py-3 bg-gray-400 text-white rounded-lg shadow-md hover:bg-gray-500 transition-colors">
+                        Back to Home
+                    </button>
                 </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="shuffleOptions" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="shuffleOptions" class="ml-2 text-gray-700">Shuffle Options</label>
+            </div>
+
+            <!-- Guide Lessons Section -->
+            <div id="guide-lessons-section" class="hidden p-6 space-y-6">
+                <h2 class="text-2xl font-semibold text-center mb-4">Guide Lessons</h2>
+                <div class="flex flex-col items-center space-y-4">
+                    <label for="lesson-quarter-dropdown" class="block text-sm font-medium text-gray-700">Select Lesson Quarter</label>
+                    <select id="lesson-quarter-dropdown" class="mt-1 block w-full max-w-sm pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md">
+                        <option value="">Select a quarter...</option>
+                    </select>
+
+                    <div id="lesson-selection-container" class="w-full hidden">
+                        <label for="lesson-dropdown" class="block text-sm font-medium text-gray-700 mt-4">Select Lesson</label>
+                        <select id="lesson-dropdown" class="mt-1 block w-full max-w-sm pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md">
+                            <option value="">Select a lesson...</option>
+                        </select>
+                    </div>
+
+                    <button id="back-from-lessons-btn" class="w-full max-w-sm px-6 py-3 bg-gray-400 text-white rounded-lg shadow-md hover:bg-gray-500 transition-colors">
+                        Back to Home
+                    </button>
                 </div>
-                <div class="flex items-center">
-                    <input type="checkbox" id="enableLiveCheck" class="form-checkbox h-5 w-5 text-indigo-600 rounded">
-                    <label for="enableLiveCheck" class="ml-2 text-gray-700">Enable Live Check</label>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz-section" class="hidden p-6">
+                <header class="text-center mb-6">
+                    <h2 id="quiz-title" class="text-2xl font-semibold text-gray-900"></h2>
+                    <p id="question-counter" class="text-sm text-gray-500"></p>
+                    <p id="error-message" class="text-red-500 mt-2 hidden">An error occurred.</p>
+                </header>
+
+                <div id="questions-slide-container" class="slide-container mb-6 overflow-hidden relative">
+                    <!-- Question slides will be injected here -->
+                </div>
+
+                <div class="flex justify-between items-center mt-4">
+                    <button id="prev-question-btn" class="px-4 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                    <button id="next-question-btn" class="px-4 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="hidden p-6">
+                <header class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-900">Quiz Results</h2>
+                </header>
+                <div class="text-center space-y-2 mb-6">
+                    <p class="text-xl font-bold text-gray-700">Your Score: <span id="score-display" class="text-indigo-600"></span></p>
+                    <p id="percentage-display" class="text-lg text-gray-600"></p>
+                </div>
+                <div id="feedback-container" class="space-y-4">
+                    <!-- Feedback will be injected here -->
+                </div>
+                <div class="flex justify-center mt-6">
+                    <button id="retake-quiz-btn" class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-colors">Retake Quiz</button>
                 </div>
             </div>
         </div>
-
-        <!-- Quiz Display Section (Initially Hidden) -->
-        <div id="quiz-section" class="hidden">
-            <h2 id="quiz-title" class="text-2xl font-semibold text-gray-800 mb-6 text-center"></h2>
-            <p id="question-counter" class="text-center text-gray-600 mb-4"></p>
-            <div id="questions-slide-container" class="relative">
-                <!-- Questions will be dynamically loaded here, only one visible at a time -->
-            </div>
-            <div class="flex justify-between mt-6">
-                <button id="prev-question" class="nav-button px-4 py-2">Back</button>
-                <button id="next-question" class="nav-button px-4 py-2">Next</button>
-            </div>
-            <button id="submit-quiz" class="submit-button w-full mt-6">Submit Quiz</button>
-        </div>
-
-        <!-- Results Section (Initially Hidden) -->
-        <div id="results-section" class="hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Quiz Results</h2>
-            <p id="score-display" class="text-xl font-bold text-center text-gray-700 mb-4"></p>
-            <div id="feedback-message" class="result-message hidden"></div>
-            <div id="answers-breakdown" class="mt-8">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Your Answers Breakdown</h3>
-                <div id="feedback-container">
-                    <!-- Individual answer feedback will be loaded here -->
-                </div>
-            </div>
-            <button id="retake-quiz" class="submit-button w-full mt-6">Retake Quiz</button>
-        </div>
-
-        <!-- Error Message Display -->
-        <div id="error-message" class="error-message hidden"></div>
     </div>
 
-<script>
-    // Global variables to store quiz data
-    let quizData = null;
-    let score = 0;
-    let userAnswers = []; // To store user's selected answers and correctness
-    let liveCheckEnabled = false; // Flag for live check mode
-    let currentQuestionIndex = 0; // Tracks the currently displayed question
-
-    // Define the list of available JSON quiz files.
-    // You MUST have these files in the same directory as this HTML file.
-    const availableQuizzes = ['finite_math (easy).json', 'finite_math (hard).json', 'gensci (easy).json', 'gensci (hard).json'];
-
-    // Get DOM elements
-    const quizDropdown = document.getElementById('quiz-dropdown');
-    const loadQuizButton = document.getElementById('load-quiz-button');
-    const quizSelectionSection = document.getElementById('quiz-selection-section');
-    const quizSection = document.getElementById('quiz-section');
-    const quizTitleElement = document.getElementById('quiz-title');
-    const questionCounter = document.getElementById('question-counter');
-    const questionsSlideContainer = document.getElementById('questions-slide-container');
-    const submitQuizButton = document.getElementById('submit-quiz');
-    const resultsSection = document.getElementById('results-section');
-    const scoreDisplay = document.getElementById('score-display');
-    const feedbackMessage = document.getElementById('feedback-message');
-    const retakeQuizButton = document.getElementById('retake-quiz');
-    const errorMessageElement = document.getElementById('error-message');
-    const feedbackContainer = document.getElementById('feedback-container');
-    const shuffleQuestionsCheckbox = document.getElementById('shuffleQuestions');
-    const shuffleOptionsCheckbox = document.getElementById('shuffleOptions');
-    const enableLiveCheckCheckbox = document.getElementById('enableLiveCheck');
-    const prevQuestionButton = document.getElementById('prev-question');
-    const nextQuestionButton = document.getElementById('next-question');
-
-    // Event listeners
-    loadQuizButton.addEventListener('click', loadQuizFromDropdown);
-    submitQuizButton.addEventListener('click', submitQuiz);
-    retakeQuizButton.addEventListener('click', resetQuiz);
-    prevQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex - 1));
-    nextQuestionButton.addEventListener('click', () => showQuestion(currentQuestionIndex + 1));
-    document.addEventListener('DOMContentLoaded', populateQuizDropdown);
-
-
-    /**
-     * Populates the quiz dropdown with the list of available quiz files.
-     */
-    function populateQuizDropdown() {
-        availableQuizzes.forEach(quizFileName => {
-            const option = document.createElement('option');
-            option.value = quizFileName;
-            option.textContent = quizFileName.replace('.json', ''); // Display without .json extension
-            quizDropdown.appendChild(option);
-        });
-    }
-
-    /**
-     * Loads and parses the quiz from the selected JSON file using fetch.
-     */
-    async function loadQuizFromDropdown() {
-        const selectedQuizFile = quizDropdown.value;
-        if (!selectedQuizFile) {
-            showError("Please select a quiz from the list.");
-            return;
-        }
-
-        try {
-            const response = await fetch(selectedQuizFile);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    <script>
+        const contentData = {
+            "exams": {
+                "1st Quarter": [{
+                    "name": "Finite Math (Easy)",
+                    "file": "finite_math (easy).json"
+                }, {
+                    "name": "Finite Math (Hard)",
+                    "file": "finite_math (hard).json"
+                }, {
+                    "name": "General Science (Easy)",
+                    "file": "gensci (easy).json"
+                }, {
+                    "name": "General Science (Hard)",
+                    "file": "gensci (hard).json"
+                }],
+                "2nd Quarter": [],
+                "3rd Quarter": [],
+                "4th Quarter": []
+            },
+            "guide lessons": {
+                "1st Quarter": [],
+                "2nd Quarter": [],
+                "3rd Quarter": [],
+                "4th Quarter": []
             }
-            const data = await response.json();
+        };
 
-            // Get settings from checkboxes
-            const shouldShuffleQuestions = shuffleQuestionsCheckbox.checked;
-            const shouldShuffleOptions = shuffleOptionsCheckbox.checked;
-            liveCheckEnabled = enableLiveCheckCheckbox.checked;
+        // DOM Elements
+        const mainView = document.getElementById('main-view');
+        const homeSection = document.getElementById('home-section');
+        const examsSection = document.getElementById('exams-section');
+        const guideLessonsSection = document.getElementById('guide-lessons-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultsSection = document.getElementById('results-section');
 
-            validateQuizData(data); // Validate the structure
+        const examsBtn = document.getElementById('exams-btn');
+        const guideLessonsBtn = document.getElementById('guide-lessons-btn');
+        const backFromExamsBtn = document.getElementById('back-from-exams-btn');
+        const backFromLessonsBtn = document.getElementById('back-from-lessons-btn');
 
-            quizData = JSON.parse(JSON.stringify(data)); // Create a deep copy for the quiz instance
+        const examQuarterDropdown = document.getElementById('exam-quarter-dropdown');
+        const examSelectionContainer = document.getElementById('exam-selection-container');
+        const examDropdown = document.getElementById('exam-dropdown');
+        const startExamBtn = document.getElementById('start-exam-btn');
 
-            // Apply shuffling based on settings
-            if (shouldShuffleQuestions) {
-                shuffleArray(quizData.questions);
-            }
-            if (shouldShuffleOptions) {
-                quizData.questions.forEach(q => {
-                    if (q.type === 'multiple_choice') { // Only shuffle options for multiple choice
-                        shuffleArray(q.options);
-                    }
-                });
-            }
+        const lessonQuarterDropdown = document.getElementById('lesson-quarter-dropdown');
+        const lessonSelectionContainer = document.getElementById('lesson-selection-container');
+        const lessonDropdown = document.getElementById('lesson-dropdown');
 
-            displayQuiz(quizData);
+        const quizTitleElement = document.getElementById('quiz-title');
+        const questionsSlideContainer = document.getElementById('questions-slide-container');
+        const questionCounter = document.getElementById('question-counter');
+        const prevQuestionButton = document.getElementById('prev-question-btn');
+        const nextQuestionButton = document.getElementById('next-question-btn');
+        const errorMessageElement = document.getElementById('error-message');
+
+        const scoreDisplay = document.getElementById('score-display');
+        const percentageDisplay = document.getElementById('percentage-display');
+        const feedbackContainer = document.getElementById('feedback-container');
+        const retakeQuizBtn = document.getElementById('retake-quiz-btn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // State Variables
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+
+        // Utility Functions
+        function navigateTo(sectionId) {
+            homeSection.classList.add('hidden');
+            examsSection.classList.add('hidden');
+            guideLessonsSection.classList.add('hidden');
+            quizSection.classList.add('hidden');
+            resultsSection.classList.add('hidden');
+            document.getElementById(sectionId).classList.remove('hidden');
             hideError();
-
-        } catch (error) {
-            showError(`Failed to load or parse quiz. Check the JSON file or its path. Error: ${error.message}`);
-            console.error("Quiz loading error:", error);
         }
-    }
 
-    /**
-     * Shuffles an array in place using the Fisher-Yates (Knuth) algorithm.
-     * @param {Array} array - The array to shuffle.
-     */
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+        function showLoading() {
+            loadingOverlay.classList.remove('hidden');
         }
-    }
 
-    /**
-     * Removes alphabetical prefixes (like "a. ", "b. ") from a string.
-     * @param {string} text - The input string.
-     * @returns {string} The string with prefixes removed.
-     */
-    function stripPrefix(text) {
-        // Regex to match a single letter followed by a dot and optional space at the start of the string
-        return text.replace(/^[a-z]\.\s*/, '');
-    }
-
-    /**
-     * Converts **text** to <strong>text</strong> for bolding.
-     * @param {string} text - The input text.
-     * @returns {string} The text with bold formatting applied.
-     */
-    function applyBoldFormatting(text) {
-        // This regex finds **text** and replaces it with <strong>text</strong>
-        // The (.*?) is a non-greedy match for any characters between the asterisks.
-        return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    }
-
-    /**
-     * Validates the structure of the loaded quiz data.
-     * Throws an error if the structure is invalid.
-     * @param {Object} data - The parsed quiz data.
-     */
-    function validateQuizData(data) {
-        if (!data || typeof data !== 'object') {
-            throw new Error("Quiz data must be an object.");
+        function hideLoading() {
+            loadingOverlay.classList.add('hidden');
         }
-        if (typeof data.title !== 'string' || data.title.trim() === '') {
-            throw new Error("Quiz must have a 'title' string.");
-        }
-        if (!Array.isArray(data.questions) || data.questions.length === 0) {
-            throw new Error("Quiz must have a non-empty 'questions' array.");
-        }
-        data.questions.forEach((q, index) => {
-            if (typeof q.type !== 'string' || !['multiple_choice', 'fill_in_the_blank'].includes(q.type)) {
-                throw new Error(`Question ${index + 1} has an invalid or missing 'type'. Must be 'multiple_choice' or 'fill_in_the_blank'.`);
-            }
-            if (typeof q.question !== 'string' || q.question.trim() === '') {
-                throw new Error(`Question ${index + 1} is missing 'question' text.`);
-            }
-            if (typeof q.correctAnswer !== 'string' || q.correctAnswer.trim() === '') {
-                throw new Error(`Question ${index + 1} is missing 'correctAnswer'.`);
-            }
 
-            if (q.type === 'multiple_choice') {
-                if (!Array.isArray(q.options) || q.options.length < 2) {
-                    throw new Error(`Multiple-choice question ${index + 1} must have at least two 'options'.`);
+        function showError(message) {
+            errorMessageElement.textContent = message;
+            errorMessageElement.classList.remove('hidden');
+        }
+
+        function hideError() {
+            errorMessageElement.classList.add('hidden');
+        }
+
+        // Event Listeners for Navigation
+        examsBtn.addEventListener('click', () => {
+            populateQuarterDropdown(examQuarterDropdown, 'exams');
+            navigateTo('exams-section');
+        });
+
+        guideLessonsBtn.addEventListener('click', () => {
+            populateQuarterDropdown(lessonQuarterDropdown, 'guide lessons');
+            navigateTo('guide-lessons-section');
+        });
+
+        backFromExamsBtn.addEventListener('click', () => {
+            navigateTo('home-section');
+        });
+
+        backFromLessonsBtn.addEventListener('click', () => {
+            navigateTo('home-section');
+        });
+
+        function populateQuarterDropdown(dropdown, type) {
+            if (!contentData) return;
+            dropdown.innerHTML = '<option value="">Select a quarter...</option>';
+            const quarters = Object.keys(contentData[type]);
+            quarters.forEach(quarter => {
+                const option = document.createElement('option');
+                option.value = quarter;
+                option.textContent = quarter;
+                if (contentData[type][quarter].length === 0) {
+                    option.disabled = true;
+                    option.textContent += ' (Coming Soon)';
                 }
-                // Trim and convert to lowercase, and strip prefixes for robust comparison
-                const trimmedCorrectAnswerLower = stripPrefix(q.correctAnswer).trim().toLowerCase();
-                const trimmedOptionsLower = q.options.map(opt => stripPrefix(opt).trim().toLowerCase());
+                dropdown.appendChild(option);
+            });
+        }
 
-                // MODIFIED: Check if the correct answer *starts with* one of the options.
-                if (!trimmedOptionsLower.some(opt => trimmedCorrectAnswerLower.startsWith(opt))) {
-                    throw new Error(`Multiple-choice question ${index + 1}: 'correctAnswer' must start with one of the 'options'.`);
-                }
-            } else if (q.type === 'fill_in_the_blank') {
-                // For fill-in-the-blank, options array is not required
-                if (q.options !== undefined && !Array.isArray(q.options)) {
-                     throw new Error(`Fill-in-the-blank question ${index + 1}: 'options' field, if present, must be an array.`);
-                }
+        function populateContentDropdown(quarterDropdown, contentDropdown, type) {
+            const quarter = quarterDropdown.value;
+            contentDropdown.innerHTML = `<option value="">Select a ${type === 'exams' ? 'exam' : 'lesson'}...</option>`;
+            if (quarter && contentData && contentData[type][quarter]) {
+                const items = contentData[type][quarter];
+                items.forEach((item, index) => {
+                    const option = document.createElement('option');
+                    option.value = item.file;
+                    option.textContent = item.name;
+                    contentDropdown.appendChild(option);
+                });
+            }
+        }
+
+        examQuarterDropdown.addEventListener('change', () => {
+            examSelectionContainer.classList.add('hidden');
+            startExamBtn.classList.add('hidden');
+            if (examQuarterDropdown.value) {
+                examSelectionContainer.classList.remove('hidden');
+                populateContentDropdown(examQuarterDropdown, examDropdown, 'exams');
             }
         });
-    }
 
-    /**
-     * Displays the quiz questions and options on the page.
-     * @param {Object} data - The quiz data object.
-     */
-    function displayQuiz(data) {
-        quizData = data; // Store quiz data globally
-        score = 0; // Reset score
-        userAnswers = Array(quizData.questions.length).fill(null); // Initialize user answers array
-        currentQuestionIndex = 0; // Start with the first question
+        examDropdown.addEventListener('change', () => {
+            if (examDropdown.value) {
+                startExamBtn.classList.remove('hidden');
+            } else {
+                startExamBtn.classList.add('hidden');
+            }
+        });
 
-        quizSelectionSection.classList.add('hidden');
-        resultsSection.classList.add('hidden');
-        quizSection.classList.remove('hidden');
-        questionsSlideContainer.innerHTML = ''; // Clear previous questions
-        errorMessageElement.classList.add('hidden'); // Hide any previous errors
-        feedbackContainer.innerHTML = ''; // Clear previous feedback
+        lessonQuarterDropdown.addEventListener('change', () => {
+            lessonSelectionContainer.classList.add('hidden');
+            if (lessonQuarterDropdown.value) {
+                lessonSelectionContainer.classList.remove('hidden');
+                populateContentDropdown(lessonQuarterDropdown, lessonDropdown, 'guide lessons');
+            }
+        });
 
-        quizTitleElement.textContent = quizData.title;
-        submitQuizButton.classList.remove('hidden'); // Submit button always visible
+        startExamBtn.addEventListener('click', () => {
+            const quarter = examQuarterDropdown.value;
+            const filePath = examDropdown.value;
+            if (quarter && filePath) {
+                showLoading();
+                fetch(filePath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to load ${filePath}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        hideLoading();
+                        startQuiz(data.name, data.questions);
+                    })
+                    .catch(error => {
+                        hideLoading();
+                        showError(error.message);
+                        console.error("Error loading exam data:", error);
+                    });
+            } else {
+                showError("Please select an exam to start.");
+            }
+        });
 
+        function startQuiz(title, questions) {
+            currentQuestions = questions;
+            currentQuestionIndex = 0;
+            userAnswers = Array(currentQuestions.length).fill(null);
+            score = 0;
+            quizTitleElement.textContent = title;
+            renderQuiz();
+            navigateTo('quiz-section');
+        }
 
-        quizData.questions.forEach((q, index) => {
-            let questionCard;
-            if (q.type === 'multiple_choice') {
-                questionCard = document.createElement('div');
-                questionCard.className = 'question-card';
-                questionCard.setAttribute('data-question-index', index);
-                questionCard.setAttribute('data-question-type', q.type);
+        function renderQuiz() {
+            questionsSlideContainer.innerHTML = '';
+            currentQuestions.forEach((q, index) => {
+                const questionElement = createQuestionElement(q, index);
+                questionsSlideContainer.appendChild(questionElement);
+            });
+            updateNavigationButtons();
+            updateQuestionCounter();
+            questionsSlideContainer.scrollLeft = 0;
+            MathJax.typesetPromise();
+        }
 
-                const questionText = document.createElement('p');
-                questionText.className = 'text-lg font-medium text-gray-900 mb-4';
-                questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
-                questionCard.appendChild(questionText);
+        function createQuestionElement(questionData, index) {
+            const slide = document.createElement('div');
+            slide.className = 'question-slide p-4 border-b border-gray-200';
+            slide.setAttribute('data-index', index);
 
-                const optionsList = document.createElement('div');
-                optionsList.className = 'flex flex-col gap-2';
+            const questionContainer = document.createElement('div');
+            questionContainer.className = 'question-container mb-4 text-center';
 
-                q.options.forEach((option) => {
-                    const optionLabel = document.createElement('label');
-                    optionLabel.className = 'option-label';
+            const questionText = document.createElement('div');
+            questionText.className = 'text-lg font-medium text-gray-800 mb-4';
+            questionText.innerHTML = `Question ${index + 1}: ${questionData.question}`;
+            questionContainer.appendChild(questionText);
 
-                    const radioInput = document.createElement('input');
-                    radioInput.type = 'radio';
-                    radioInput.name = `question-${index}`;
-                    radioInput.value = option; // Keep original value for display
-                    radioInput.className = 'form-radio h-5 w-5 text-indigo-600 transition duration-150 ease-in-out';
-                    radioInput.setAttribute('data-question-index', index);
-                    radioInput.setAttribute('data-option-value', option);
+            const optionsList = document.createElement('div');
+            optionsList.className = 'flex flex-col space-y-2';
 
-                    if (liveCheckEnabled) {
-                        radioInput.addEventListener('change', handleLiveAnswer);
-                    }
+            questionData.options.forEach((option, optionIndex) => {
+                const label = document.createElement('label');
+                label.className = 'flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer transition-colors hover:bg-gray-100';
 
-                    const optionSpan = document.createElement('span');
-                    optionSpan.className = 'ml-3 text-base text-gray-700';
-                    optionSpan.innerHTML = applyBoldFormatting(option);
-
-                    optionLabel.appendChild(radioInput);
-                    optionLabel.appendChild(optionSpan);
-                    optionsList.appendChild(optionLabel);
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `question-${index}`;
+                input.value = option;
+                input.className = 'mr-3 h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500';
+                input.addEventListener('change', () => {
+                    userAnswers[index] = option;
+                    updateNavigationButtons();
                 });
 
-                questionCard.appendChild(optionsList);
+                const span = document.createElement('span');
+                span.className = 'text-gray-700';
+                span.innerHTML = option;
 
-            } else if (q.type === 'fill_in_the_blank') {
-                questionCard = document.createElement('div');
-                questionCard.className = 'fill-in-the-blank-card'; // Different class for styling
-                questionCard.setAttribute('data-question-index', index);
-                questionCard.setAttribute('data-question-type', q.type);
+                label.appendChild(input);
+                label.appendChild(span);
+                optionsList.appendChild(label);
+            });
 
-                const questionText = document.createElement('p');
-                questionText.className = 'question-text';
-                questionText.innerHTML = `${index + 1}. ${applyBoldFormatting(q.question)}`;
-                questionCard.appendChild(questionText);
-
-                const revealButton = document.createElement('button');
-                revealButton.className = 'reveal-answer-button';
-                revealButton.textContent = 'Reveal Answer';
-                revealButton.setAttribute('data-question-index', index);
-                revealButton.addEventListener('click', handleRevealAnswer);
-                questionCard.appendChild(revealButton);
-
-                const revealedAnswerDiv = document.createElement('div');
-                revealedAnswerDiv.className = 'revealed-answer';
-                revealedAnswerDiv.innerHTML = applyBoldFormatting(q.correctAnswer);
-                questionCard.appendChild(revealedAnswerDiv);
-            }
-            questionsSlideContainer.appendChild(questionCard);
-        });
-
-        showQuestion(currentQuestionIndex); // Show the first question
-    }
-
-    /**
-     * Displays a specific question by index and updates navigation buttons.
-     * @param {number} index - The index of the question to display.
-     */
-    function showQuestion(index) {
-        if (!quizData || !quizData.questions || quizData.questions.length === 0) {
-            return; // No quiz loaded
+            slide.appendChild(questionContainer);
+            slide.appendChild(optionsList);
+            return slide;
         }
 
-        // Ensure index is within bounds
-        if (index < 0) {
-            index = 0;
-        } else if (index >= quizData.questions.length) {
-            index = quizData.questions.length - 1;
-        }
+        function updateNavigationButtons() {
+            prevQuestionButton.disabled = currentQuestionIndex === 0;
+            nextQuestionButton.disabled = userAnswers[currentQuestionIndex] === null;
 
-        currentQuestionIndex = index;
-
-        // Hide all questions
-        const allQuestionCards = questionsSlideContainer.querySelectorAll('.question-card, .fill-in-the-blank-card');
-        allQuestionCards.forEach(card => card.classList.remove('active'));
-
-        // Show the current question
-        const currentCard = questionsSlideContainer.querySelector(`[data-question-index="${currentQuestionIndex}"]`);
-        if (currentCard) {
-            currentCard.classList.add('active');
-            // Re-typeset math for the active card
-            if (window.MathJax) {
-                window.MathJax.typesetPromise([currentCard]).catch((err) => console.error("MathJax typesetting error for current slide:", err));
-            }
-        }
-
-        // Update question counter
-        questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.questions.length}`;
-
-        // Update button states
-        prevQuestionButton.disabled = (currentQuestionIndex === 0);
-        nextQuestionButton.disabled = (currentQuestionIndex === quizData.questions.length - 1);
-    }
-
-    /**
-     * Handles live answer checking for multiple-choice questions.
-     * @param {Event} event - The change event from the radio button.
-     */
-    function handleLiveAnswer(event) {
-        const selectedRadio = event.target;
-
-        if (!selectedRadio) {
-            console.error("handleLiveAnswer: event.target (selectedRadio) is null or undefined. Aborting.");
-            return;
-        }
-
-        const questionIndex = parseInt(selectedRadio.getAttribute('data-question-index'));
-        const questionData = quizData.questions[questionIndex];
-
-        const questionCard = selectedRadio.closest('.question-card');
-        if (!questionCard) {
-            console.error("handleLiveAnswer: Could not find parent .question-card for selected radio.", selectedRadio);
-            return;
-        }
-
-        const userAnswer = selectedRadio.value;
-        const correctAnswer = questionData.correctAnswer;
-
-        // MODIFIED: Check if the correct answer starts with the user's answer.
-        const processedUserAnswer = stripPrefix(userAnswer).trim().toLowerCase();
-        const processedCorrectAnswer = stripPrefix(correctAnswer).trim().toLowerCase();
-        const isCorrect = processedCorrectAnswer.startsWith(processedUserAnswer);
-
-        userAnswers[questionIndex] = {
-            question: questionData.question,
-            userAnswer: userAnswer,
-            correctAnswer: correctAnswer,
-            isCorrect: isCorrect,
-            type: questionData.type
-        };
-
-        const optionLabels = questionCard.querySelectorAll('.option-label');
-        optionLabels.forEach(label => {
-            label.classList.remove('correct-live', 'incorrect-live');
-        });
-
-        const selectedOptionLabel = selectedRadio.closest('.option-label');
-        if (selectedOptionLabel) {
-            if (isCorrect) {
-                selectedOptionLabel.classList.add('correct-live');
+            if (currentQuestionIndex === currentQuestions.length - 1 && userAnswers[currentQuestionIndex] !== null) {
+                nextQuestionButton.textContent = 'Submit Quiz';
             } else {
-                selectedOptionLabel.classList.add('incorrect-live');
-                // MODIFIED: Highlight the correct answer if the selected answer was wrong.
-                const correctOptionRadio = Array.from(questionCard.querySelectorAll('input[type="radio"]')).find(radio => {
-                    const processedOption = stripPrefix(radio.value).trim().toLowerCase();
-                    return processedCorrectAnswer.startsWith(processedOption);
-                });
-
-                if (correctOptionRadio) {
-                    const correctOptionLabel = correctOptionRadio.closest('.option-label');
-                    if (correctOptionLabel) {
-                        correctOptionLabel.classList.add('correct-live');
-                    }
-                }
+                nextQuestionButton.textContent = 'Next';
             }
         }
 
-        if (window.MathJax) {
-            window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in live check:", err));
-        }
-    }
-
-    /**
-     * Handles revealing the answer for fill-in-the-blank questions in live check mode.
-     * @param {Event} event - The click event from the reveal button.
-     */
-    function handleRevealAnswer(event) {
-        const button = event.target;
-        const questionIndex = parseInt(button.getAttribute('data-question-index'));
-        const questionData = quizData.questions[questionIndex];
-        const questionCard = button.closest('.fill-in-the-blank-card');
-        const revealedAnswerDiv = questionCard.querySelector('.revealed-answer');
-
-        revealedAnswerDiv.classList.add('show');
-        button.disabled = true;
-
-        userAnswers[questionIndex] = {
-            question: questionData.question,
-            userAnswer: 'Answer Revealed',
-            correctAnswer: questionData.correctAnswer,
-            isCorrect: true,
-            type: questionData.type
-        };
-
-        if (window.MathJax) {
-            window.MathJax.typesetPromise([questionCard]).catch((err) => console.error("MathJax typesetting error in reveal:", err));
-        }
-    }
-
-    /**
-     * Submits the quiz, calculates the score, and displays results.
-     */
-    function submitQuiz() {
-        if (!quizData) {
-            showError("No quiz loaded. Please select and load a quiz first.");
-            return;
+        function updateQuestionCounter() {
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
         }
 
-        score = 0;
-        let allMultipleChoiceAnswered = true;
-
-        quizData.questions.forEach((q, index) => {
-            if (q.type === 'multiple_choice') {
-                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
-                let userAnswer = null;
-                let isCorrect = false;
-
-                if (selectedOption) {
-                    userAnswer = selectedOption.value;
-                    // MODIFIED: Check if the correct answer starts with the user's answer.
-                    const processedUserAnswer = stripPrefix(userAnswer).trim().toLowerCase();
-                    const processedCorrectAnswer = stripPrefix(q.correctAnswer).trim().toLowerCase();
-                    if (processedCorrectAnswer.startsWith(processedUserAnswer)) {
-                        score++;
-                        isCorrect = true;
-                    }
-                } else {
-                    allMultipleChoiceAnswered = false;
-                }
-
-                userAnswers[index] = {
-                    question: q.question,
-                    userAnswer: userAnswer,
-                    correctAnswer: q.correctAnswer,
-                    isCorrect: isCorrect,
-                    type: q.type
-                };
-            } else if (q.type === 'fill_in_the_blank') {
-                if (userAnswers[index] === null) {
-                    userAnswers[index] = {
-                        question: q.question,
-                        userAnswer: 'Not applicable (Flashcard)',
-                        correctAnswer: q.correctAnswer,
-                        isCorrect: false,
-                        type: q.type
-                    };
-                }
+        prevQuestionButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                scrollToQuestion(currentQuestionIndex);
             }
         });
 
-        if (!allMultipleChoiceAnswered && !liveCheckEnabled) {
-            showError("Please answer all multiple-choice questions before submitting.");
-            return;
-        }
-
-        displayResults(score, quizData.questions.length);
-    }
-
-    /**
-     * Displays the quiz results and the breakdown of answers.
-     * @param {number} finalScore - The user's score.
-     * @param {number} totalQuestions - The total number of questions.
-     */
-    function displayResults(finalScore, totalQuestions) {
-        quizSection.classList.add('hidden');
-        resultsSection.classList.remove('hidden');
-
-        const totalPossibleScore = quizData.questions.filter(q => q.type === 'multiple_choice').length;
-        scoreDisplay.textContent = `You scored ${finalScore} out of ${totalPossibleScore} on multiple-choice questions!`;
-
-        feedbackMessage.classList.remove('hidden', 'pass', 'fail');
-        if (totalPossibleScore > 0) {
-            const percentage = (finalScore / totalPossibleScore) * 100;
-            if (percentage === 100) {
-                feedbackMessage.textContent = "Congratulations! You got all the multiple-choice answers correct!";
-                feedbackMessage.classList.add('pass');
-            } else if (percentage >= 50) {
-                feedbackMessage.textContent = "Good effort! You did well on multiple-choice questions.";
-                feedbackMessage.classList.add('pass');
-            } else {
-                feedbackMessage.textContent = "Keep practicing! You'll get there.";
-                feedbackMessage.classList.add('fail');
+        nextQuestionButton.addEventListener('click', () => {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                scrollToQuestion(currentQuestionIndex);
+            } else if (currentQuestionIndex === currentQuestions.length - 1 && userAnswers[currentQuestionIndex] !== null) {
+                submitQuiz();
             }
-        } else {
-             feedbackMessage.textContent = "You have completed the flashcard set!";
-             feedbackMessage.classList.add('pass');
+        });
+
+        function scrollToQuestion(index) {
+            const slideWidth = questionsSlideContainer.clientWidth;
+            questionsSlideContainer.scroll({
+                left: index * slideWidth,
+                behavior: 'smooth'
+            });
+            updateQuestionCounter();
+            updateNavigationButtons();
+            // Re-check answers after scrolling
+            const currentQuestionElement = questionsSlideContainer.querySelector(`[data-index="${index}"]`);
+            if (userAnswers[index] !== null) {
+                const radio = currentQuestionElement.querySelector(`input[value="${userAnswers[index]}"]`);
+                if (radio) {
+                    radio.checked = true;
+                }
+            }
+            MathJax.typesetPromise();
         }
 
-        feedbackContainer.innerHTML = '';
-        userAnswers.forEach((answer, index) => {
+        function submitQuiz() {
+            score = 0;
+            feedbackContainer.innerHTML = '';
+            currentQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+                renderFeedback(q, userAnswers[index], index);
+            });
+            displayResults();
+        }
+
+        function renderFeedback(questionData, userAnswer, index) {
+            const isCorrect = userAnswer === questionData.correctAnswer;
             const feedbackItem = document.createElement('div');
-            feedbackItem.className = `answer-feedback-item`;
-
-            if (answer.type === 'multiple_choice' && !answer.isCorrect) {
-                feedbackItem.classList.add('incorrect');
-            }
-
-            const questionP = document.createElement('p');
-            questionP.className = 'question-text';
-            questionP.innerHTML = `${index + 1}. ${applyBoldFormatting(answer.question)}`;
-            feedbackItem.appendChild(questionP);
-
-            if (answer.type === 'multiple_choice') {
-                const yourAnswerP = document.createElement('p');
-                yourAnswerP.className = 'your-answer';
-                yourAnswerP.innerHTML = `Your Answer: ${applyBoldFormatting(answer.userAnswer || 'Not answered')} <span class="feedback-icon ${answer.isCorrect ? 'correct' : 'incorrect'}">${answer.isCorrect ? '&#10003;' : '&#10007;'}</span>`;
-                feedbackItem.appendChild(yourAnswerP);
-
-                if (!answer.isCorrect) {
-                    const correctAnswerP = document.createElement('p');
-                    correctAnswerP.className = 'correct-answer';
-                    correctAnswerP.innerHTML = `Correct Answer: ${applyBoldFormatting(answer.correctAnswer)}`;
-                    feedbackItem.appendChild(correctAnswerP);
-                }
-            } else if (answer.type === 'fill_in_the_blank') {
-                const correctAnswerP = document.createElement('p');
-                correctAnswerP.className = 'correct-answer';
-                correctAnswerP.innerHTML = `Answer: ${applyBoldFormatting(answer.correctAnswer)}`;
-                feedbackItem.appendChild(correctAnswerP);
-            }
-
+            feedbackItem.className = `p-4 rounded-lg shadow-sm border ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`;
+            feedbackItem.innerHTML = `
+                <p class="font-semibold text-gray-800">Question ${index + 1}:</p>
+                <div class="mt-1 mb-2 text-gray-700">${questionData.question}</div>
+                <p class="text-sm">Your Answer: <span class="font-medium ${isCorrect ? 'text-green-600' : 'text-red-600'}">${userAnswer || 'Not answered'}</span></p>
+                <p class="text-sm">Correct Answer: <span class="font-medium text-green-600">${questionData.correctAnswer}</span></p>
+            `;
             feedbackContainer.appendChild(feedbackItem);
-        });
-
-        if (window.MathJax) {
-            window.MathJax.typesetPromise([feedbackContainer]).catch((err) => console.error("MathJax typesetting error in feedback:", err));
+            MathJax.typesetPromise([feedbackItem]).catch((err) => console.error("MathJax typesetting error in feedback:", err));
         }
-    }
 
-    /**
-     * Resets the quiz to the JSON input state.
-     */
-    function resetQuiz() {
-        quizData = null;
-        score = 0;
-        userAnswers = [];
-        liveCheckEnabled = false;
-        currentQuestionIndex = 0;
-        questionsSlideContainer.innerHTML = '';
-        quizTitleElement.textContent = '';
-        questionCounter.textContent = '';
-        feedbackContainer.innerHTML = '';
-        quizDropdown.value = "";
+        function displayResults() {
+            scoreDisplay.textContent = `${score} / ${currentQuestions.length}`;
+            const percentage = (score / currentQuestions.length) * 100;
+            percentageDisplay.textContent = `${percentage.toFixed(2)}%`;
+            navigateTo('results-section');
+        }
 
-        shuffleQuestionsCheckbox.checked = false;
-        shuffleOptionsCheckbox.checked = false;
-        enableLiveCheckCheckbox.checked = false;
-
-        prevQuestionButton.disabled = true;
-        nextQuestionButton.disabled = true;
-
-        resultsSection.classList.add('hidden');
-        quizSection.classList.add('hidden');
-        quizSelectionSection.classList.remove('hidden');
-        hideError();
-    }
-
-    /**
-     * Displays an error message.
-     * @param {string} message - The error message to display.
-     */
-    function showError(message) {
-        errorMessageElement.textContent = message;
-        errorMessageElement.classList.remove('hidden');
-    }
-
-    /**
-     * Hides the error message.
-     */
-    function hideError() {
-        errorMessageElement.classList.add('hidden');
-        errorMessageElement.textContent = '';
-    }
-</script>
-
+        retakeQuizBtn.addEventListener('click', () => {
+            // Reset to the initial state
+            navigateTo('home-section');
+            examQuarterDropdown.value = '';
+            examDropdown.innerHTML = '<option value="">Select an exam...</option>';
+            examSelectionContainer.classList.add('hidden');
+            startExamBtn.classList.add('hidden');
+        });
+    </script>
 </body>
+
 </html>
