@@ -1,0 +1,437 @@
+{
+  "title": "Louis Pasteur: Life and Discoveries",
+  "questions": [
+    {
+      "type": "multiple_choice",
+      "question": "When was Louis Pasteur born?",
+      "options": [
+        "a) 27 Dec 1822",
+        "b) 15 Jan 1821",
+        "c) 1 Mar 1825",
+        "d) 12 Jul 1820"
+      ],
+      "correctAnswer": "a) 27 Dec 1822"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Where was Louis Pasteur born?",
+      "options": [
+        "a) Paris",
+        "b) Dole",
+        "c) Arbois",
+        "d) Lille"
+      ],
+      "correctAnswer": "b) Dole"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "In which town did Pasteur grow up?",
+      "options": [
+        "a) Dole",
+        "b) Arbois",
+        "c) Strasbourg",
+        "d) Lille"
+      ],
+      "correctAnswer": "b) Arbois"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What artistic skill did Pasteur have as a child?",
+      "options": [
+        "a) Music",
+        "b) Drawing and painting",
+        "c) Sculpting",
+        "d) Acting"
+      ],
+      "correctAnswer": "b) Drawing and painting"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which college did Pasteur attend for his Bachelor of Arts?",
+      "options": [
+        "a) Royal College of Lille",
+        "b) Royal College of Dole",
+        "c) Royal College of Besançon",
+        "d) École Normale"
+      ],
+      "correctAnswer": "c) Royal College of Besançon"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "In what year did Pasteur earn his Doctorate from École Normale in Paris?",
+      "options": [
+        "a) 1842",
+        "b) 1847",
+        "c) 1850",
+        "d) 1854"
+      ],
+      "correctAnswer": "b) 1847"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "True or False: Pasteur was a top student in all subjects during his childhood.",
+      "options": [
+        "a) True",
+        "b) False"
+      ],
+      "correctAnswer": "b) False"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Who did Pasteur marry?",
+      "options": [
+        "a) Marie Curie",
+        "b) Marie Laurent",
+        "c) Joseph Meister",
+        "d) Jeanne Pasteur"
+      ],
+      "correctAnswer": "b) Marie Laurent"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "How many of Pasteur’s children survived childhood?",
+      "options": [
+        "a) 1",
+        "b) 2",
+        "c) 3",
+        "d) 4"
+      ],
+      "correctAnswer": "b) 2"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What compound did Pasteur study in 1849 that led to stereochemistry?",
+      "options": [
+        "a) Glucose",
+        "b) Tartaric acid",
+        "c) Lactic acid",
+        "d) Citric acid"
+      ],
+      "correctAnswer": "b) Tartaric acid"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "True or False: Pasteur discovered that paratartaric acid and tartaric acid had the same chemical composition but different structures.",
+      "options": [
+        "a) True",
+        "b) False"
+      ],
+      "correctAnswer": "a) True"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What field of chemistry emerged from Pasteur’s study of tartaric acid?",
+      "options": [
+        "a) Organic chemistry",
+        "b) Biochemistry",
+        "c) Stereochemistry",
+        "d) Analytical chemistry"
+      ],
+      "correctAnswer": "c) Stereochemistry"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What phenomenon did Pasteur observe when he passed polarized light through the two types of crystals?",
+      "options": [
+        "a) Both crystals absorbed light",
+        "b) Both rotated light in the same direction",
+        "c) Rotated light in opposite directions",
+        "d) No effect on light"
+      ],
+      "correctAnswer": "c) Rotated light in opposite directions"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Prior to Pasteur, the prevailing scientific theory of how life arose from non-living matter was known as:",
+      "options": [
+        "a) Abiogenesis",
+        "b) Biogenesis",
+        "c) Spontaneous combustion",
+        "d) Panspermia"
+      ],
+      "correctAnswer": "a) Abiogenesis"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s Germ Theory proposed that:",
+      "options": [
+        "a) All diseases are caused by viruses.",
+        "b) Specific microorganisms cause specific diseases.",
+        "c) Spontaneous generation is how microbes are created.",
+        "d) Sickness is caused by an imbalance of the body's humors."
+      ],
+      "correctAnswer": "b) Specific microorganisms cause specific diseases."
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What was the significance of the swan-neck flask in Pasteur’s experiments?",
+      "options": [
+        "a) It allowed microbes to enter the broth but prevented air from reaching it.",
+        "b) It prevented microbes from reaching the broth while still allowing air to enter.",
+        "c) It trapped all gases inside the flask.",
+        "d) It allowed light to pass through the broth without interference."
+      ],
+      "correctAnswer": "b) It prevented microbes from reaching the broth while still allowing air to enter."
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteurization is a process that involves:",
+      "options": [
+        "a) Boiling a liquid to sterilize it completely.",
+        "b) Heating a liquid to a specific temperature for a set time to kill pathogens.",
+        "c) Freezing liquids to preserve them indefinitely.",
+        "d) Adding preservatives to prevent microbial growth."
+      ],
+      "correctAnswer": "b) Heating a liquid to a specific temperature for a set time to kill pathogens."
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which disease was first vaccinated against by Pasteur in animals?",
+      "options": [
+        "a) Smallpox",
+        "b) Chicken cholera",
+        "c) Rabies",
+        "d) Anthrax"
+      ],
+      "correctAnswer": "b) Chicken cholera"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What does the Germ Theory of disease state?",
+      "options": [
+        "a) Microbes spontaneously appear in sick organisms.",
+        "b) Specific microorganisms cause specific diseases.",
+        "c) Germs are always beneficial to humans.",
+        "d) Diseases are caused by bad air."
+      ],
+      "correctAnswer": "b) Specific microorganisms cause specific diseases."
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following best defines a microbe?",
+      "options": [
+        "a) Any visible organism",
+        "b) A microorganism too small to be seen without a microscope",
+        "c) Any germ that causes disease",
+        "d) Only bacteria that live in humans"
+      ],
+      "correctAnswer": "b) A microorganism too small to be seen without a microscope"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "What was Pasteur’s method for weakening microbes for vaccines called?",
+      "options": [
+        "a) Pasteurization",
+        "b) Attenuation",
+        "c) Fermentation",
+        "d) Crystallization"
+      ],
+      "correctAnswer": "b) Attenuation"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s public demonstration at Pouilly-le-Fort involved protecting which animals from anthrax?",
+      "options": [
+        "a) Dogs",
+        "b) Sheep and cattle",
+        "c) Chickens",
+        "d) Rabbits"
+      ],
+      "correctAnswer": "b) Sheep and cattle"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "True or False: Pasteur discovered penicillin.",
+      "options": [
+        "a) True",
+        "b) False"
+      ],
+      "correctAnswer": "b) False"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur showed that fermentation is caused by:",
+      "options": [
+        "a) Chemical reactions alone",
+        "b) Specific microbes",
+        "c) Air bubbles",
+        "d) Spontaneous reactions"
+      ],
+      "correctAnswer": "b) Specific microbes"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following is NOT a direct contribution of Pasteur?",
+      "options": [
+        "a) Germ Theory",
+        "b) Rabies vaccine",
+        "c) Penicillin",
+        "d) Anthrax vaccine"
+      ],
+      "correctAnswer": "c) Penicillin"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s work led to antiseptic techniques in surgery because it:",
+      "options": [
+        "a) Showed germs could infect wounds",
+        "b) Showed surgery should be done in darkness",
+        "c) Proved sterilization was unnecessary",
+        "d) Suggested germs were harmless"
+      ],
+      "correctAnswer": "a) Showed germs could infect wounds"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of these would surprise a teacher about Pasteur’s personal skills?",
+      "options": [
+        "a) He could paint",
+        "b) He played piano professionally",
+        "c) He was a skilled actor",
+        "d) He was a champion runner"
+      ],
+      "correctAnswer": "a) He could paint"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s early crystallography studies showed that:",
+      "options": [
+        "a) Crystals can move on their own",
+        "b) Life’s molecules are asymmetric",
+        "c) All molecules are symmetrical",
+        "d) Crystals are living organisms"
+      ],
+      "correctAnswer": "b) Life’s molecules are asymmetric"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur was motivated to study fermentation because:",
+      "options": [
+        "a) He loved cooking",
+        "b) The French government needed to save wine production",
+        "c) He wanted to invent beer",
+        "d) He was asked to study microbes in milk only"
+      ],
+      "correctAnswer": "b) The French government needed to save wine production"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "True or False: Pasteur believed applied science was separate from pure science.",
+      "options": [
+        "a) True",
+        "b) False"
+      ],
+      "correctAnswer": "b) False"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which of the following best defines pasteurization?",
+      "options": [
+        "a) Freezing liquids to prevent spoilage",
+        "b) Heating liquids to a specific temperature to kill harmful microbes",
+        "c) Boiling liquids to eliminate all microbes",
+        "d) Adding chemicals to preserve liquids"
+      ],
+      "correctAnswer": "b) Heating liquids to a specific temperature to kill harmful microbes"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur developed a vaccine for rabies after studying the disease in:",
+      "options": [
+        "a) Dogs",
+        "b) Cattle",
+        "c) Horses",
+        "d) Pigeons"
+      ],
+      "correctAnswer": "a) Dogs"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur suffered a severe stroke in which year?",
+      "options": [
+        "a) 1868",
+        "b) 1873",
+        "c) 1879",
+        "d) 1885"
+      ],
+      "correctAnswer": "a) 1868"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur's work on microbes challenged which old belief?",
+      "options": [
+        "a) Abiogenesis (spontaneous generation)",
+        "b) Microbes are always beneficial",
+        "c) All diseases are inherited",
+        "d) Air contains no organisms"
+      ],
+      "correctAnswer": "a) Abiogenesis (spontaneous generation)"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "The Pasteur Institute was inaugurated in:",
+      "options": [
+        "a) 1865",
+        "b) 1875",
+        "c) 1888",
+        "d) 1895"
+      ],
+      "correctAnswer": "c) 1888"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s famous quote “Chance favors the prepared mind” emphasizes:",
+      "options": [
+        "a) Luck is everything",
+        "b) Only preparation allows discovery",
+        "c) Science is mostly random",
+        "d) Ignorance leads to success"
+      ],
+      "correctAnswer": "b) Only preparation allows discovery"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Which disease did Pasteur help solve that threatened the French silk industry?",
+      "options": [
+        "a) Anthrax",
+        "b) Pébrine",
+        "c) Rabies",
+        "d) Chicken cholera"
+      ],
+      "correctAnswer": "b) Pébrine"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "The study of tiny organisms that Pasteur worked on is called:",
+      "options": [
+        "a) Biology",
+        "b) Microbiology",
+        "c) Virology",
+        "d) Chemistry"
+      ],
+      "correctAnswer": "b) Microbiology"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur continued his work despite serious illness. What helped him?",
+      "options": [
+        "a) Moving to the countryside",
+        "b) Using assistants",
+        "c) Stopping experiments",
+        "d) Ignoring safety rules"
+      ],
+      "correctAnswer": "b) Using assistants"
+    },
+    {
+      "type": "multiple_choice",
+      "question": "Pasteur’s work on attenuation showed that:",
+      "options": [
+        "a) All microbes are deadly",
+        "b) Weak microbes can trigger immunity",
+        "c) Microbes cannot be weakened",
+        "d) Only viruses can cause immunity"
+      ],
+      "correctAnswer": "b) Weak microbes can trigger immunity"
+    }
+  ]
+}
